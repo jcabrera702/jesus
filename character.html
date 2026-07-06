@@ -355,6 +355,59 @@
                 padding: 1.5rem;
             }
         }
+        /* Mobile-first baseline (keeps your current layout exactly as it is) */
+.archive-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+aside {
+    width: 100%;
+    max-height: 300px;
+    overflow-y: auto;
+    border-bottom: 1px solid #222;
+}
+
+#main-content {
+    width: 100%;
+    padding: 15px;
+}
+
+/* Desktop Responsive Layout (Triggers at 1024px viewport) */
+@media screen and (min-width: 1024px) {
+    .archive-container {
+        flex-direction: row;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    aside {
+        width: 320px;
+        height: 100vh;
+        max-height: 100vh;
+        overflow-y: auto;
+        position: sticky;
+        top: 0;
+        border-bottom: none;
+        border-right: 1px solid #222;
+    }
+
+    #main-content {
+        flex: 1;
+        height: 100vh;
+        overflow-y: auto;
+        padding: 40px;
+    }
+
+    /* Optimizes the character details layout for wide screens */
+    .grid-layout {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        align-items: start;
+    }
+}
     </style>
 </head>
 <body>
@@ -501,6 +554,15 @@
 <li class="menu-item" data-id="jonathan-prince"><button>114. Jonathan</button></li>
 <li class="menu-item" data-id="nehemiah-governor"><button>115. Nehemiah</button></li>
 <li class="menu-item" data-id="ezra-scribe"><button>116. Ezra</button></li>
+<li class="menu-item" data-id="balaam-prophet"><button>117. Balaam</button></li>
+<li class="menu-item" data-id="jethro-priest"><button>118. Jethro</button></li>
+<li class="menu-item" data-id="rebekah-matriarch"><button>119. Rebekah</button></li>
+<li class="menu-item" data-id="laban-aramean"><button>120. Laban</button></li>
+<li class="menu-item" data-id="manasseh-king"><button>121. Manasseh</button></li>
+<li class="menu-item" data-id="jehu-king"><button>122. Jehu</button></li>
+<li class="menu-item" data-id="cornelius-centurion"><button>123. Cornelius</button></li>
+<li class="menu-item" data-id="agabus-prophet"><button>124. Agabus</button></li>
+<li class="menu-item" data-id="athaliah-queen"><button>125. Athaliah</button></li>
                 </ul>
             </nav>
         </aside>
@@ -5427,6 +5489,372 @@
                         <div class="quote-callout">
                             <p>"For Ezra had set his heart to study the Law of the Lord, and to do it and to teach his statutes and rules in Israel... They read from the book, from the Law of God, clearly, and they gave the sense, so that the people understood the reading."</p>
                             <span>— Ezra 7:10 / Nehemiah 8:8</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 117. BALAAM PROFILE -->
+            <div id="balaam-prophet" class="character-stage">
+                <div class="meta-header">
+                    <span>Numbers 22–24 / 2 Peter 2 / Jude 1</span>
+                    <span class="divider">/</span>
+                    <span>The Wilderness Wandering</span>
+                </div>
+                <h2 class="hero-title">Balaam</h2>
+                <p class="hero-subtitle">The Mercenary Seer & The Prophet Blinded by Profit</p>
+
+                <div class="grid-layout">
+                    <div>
+                        <h3 class="section-heading">Character & Fallibility</h3>
+                        <div class="profile-card">
+                            <ul class="archetype-list">
+                                <li class="archetype-item">
+                                    <h4>The High-Value Diviner</h4>
+                                    <p>A renowned non-Israelite prophet hired by King Balak of Moab to place a catastrophic spiritual curse on the advancing Israelite camp, operating on a high-stakes corporate retainer for his supernatural services.</p>
+                                </li>
+                                <li class="archetype-item">
+                                    <h4>The Blindness of Greed</h4>
+                                    <p>Driven by the allure of royal wealth, he ignored divine warnings and set out on his donkey. He was so blinded by his avarice that he couldn't see the Angel of the Lord standing in the road with a drawn sword, leading to a surreal confrontation where his own donkey had to speak to save his life.</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="theology-pane">
+                        <h3 class="section-heading">How God Used Him</h3>
+                        <p><strong>The Hijacked Sorcery Engine:</strong> God completely hijacked Balaam’s voice. Every time he opened his mouth to pronounce an occult curse over Israel, the Holy Spirit overrode his intentions, forcing him to release magnificent, high-level prophetic blessings instead.</p>
+                        
+                        <p><strong>The Blueprint of the Messianic Star:</strong> Despite his toxic motives, God used Balaam to deliver one of the most stunning, long-range astronomical prophecies in the Pentateuch, forecasting a coming Ruler out of Jacob who would crush the adversarial kingdoms.</p>
+
+                        <div class="quote-callout">
+                            <p>"How can I curse whom God has not cursed? ...I see him, but not now; I behold him, but not near: a star shall come out of Jacob, and a scepter shall rise out of Israel..."</p>
+                            <span>— Numbers 23:8, 24:17</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 118. JETHRO PROFILE -->
+            <div id="jethro-priest" class="character-stage">
+                <div class="meta-header">
+                    <span>Exodus 3 & 18</span>
+                    <span class="divider">/</span>
+                    <span>The Exodus Era</span>
+                </div>
+                <h2 class="hero-title">Jethro (Reuel)</h2>
+                <p class="hero-subtitle">The Midianite Patriarch & The Architect of Organizational Delegation</p>
+
+                <div class="grid-layout">
+                    <div>
+                        <h3 class="section-heading">Character & Fallibility</h3>
+                        <div class="profile-card">
+                            <ul class="archetype-list">
+                                <li class="archetype-item">
+                                    <h4>The Wilderness Sanctuary Host</h4>
+                                    <p>The Priest of Midian who provided refuge, a domestic home base, and his daughter Zipporah to a fugitive Moses after he fled Egypt’s execution squads.</p>
+                                </li>
+                                <li class="archetype-item">
+                                    <h4>The Outside Management Audit</h4>
+                                    <p>Visiting the Hebrew camp after the Exodus, JCustom observed Moses single-handedly trying to resolve thousands of civic disputes from morning until evening. He recognized that this centralized bottlenecks would inevitably break both the leader and the community.</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="theology-pane">
+                        <h3 class="section-heading">How God Used Him</h3>
+                        <p><strong>The Father of Structural Scale:</strong> God used Jethro to save the early Israelite legal system from operational collapse. He delivered an elite, scalable blueprint for organizational delegation, telling Moses to appoint capable, trustworthy men over groups of thousands, hundreds, fifties, and tens.</p>
+                        
+                        <p><strong>The Outside Witness of Triumph:</strong> Jethro offered sacrifices to Yahweh upon hearing the data of the Exodus, declaring that God was greater than all other gods. His administrative intervention established a baseline principle that spiritual leadership requires structured operational wisdom.</p>
+
+                        <div class="quote-callout">
+                            <p>"What you are doing is not good. You and the people with you will certainly wear yourselves out, for the thing is too heavy for you. You are not able to do it alone... choose able men from all the people..."</p>
+                            <span>— Exodus 18:17-18, 21</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 119. REBEKAH PROFILE -->
+            <div id="rebekah-matriarch" class="character-stage">
+                <div class="meta-header">
+                    <span>Genesis 24–27</span>
+                    <span class="divider">/</span>
+                    <span>The Patriarchal Era</span>
+                </div>
+                <h2 class="hero-title">Rebekah</h2>
+                <p class="hero-subtitle">The Resolute Bride & The Strategic Mastermind of Family Succession</p>
+
+                <div class="grid-layout">
+                    <div>
+                        <h3 class="section-heading">Character & Fallibility</h3>
+                        <div class="profile-card">
+                            <ul class="archetype-list">
+                                <li class="archetype-item">
+                                    <h4>The Decisive Pioneer</h4>
+                                    <p>Discovered by Abraham’s servant at a well through her exceptional hospitality. She demonstrated massive personal agency, willingly leaving her homeland immediately to marry Isaac and carry the weight of the covenant promise.</p>
+                                </li>
+                                <li class="archetype-item">
+                                    <h4>The Architectural Deception</h4>
+                                    <p>Faced with a blind, aging husband who was determined to pass the primary covenant blessing to their carnal eldest son, Esau, Rebekah engineered a high-risk, domestic identity deception plot to secure the birthright for her preferred son, Jacob.</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="theology-pane">
+                        <h3 class="section-heading">How God Used Her</h3>
+                        <p><strong>The Executor of Sovereign Election:</strong> God used Rebekah’s sharp operational intervention to align history with His prior decree: *"The older shall serve the younger."* Her actions redirected the covenant lineage exactly where it belonged, bypassing cultural traditions of primogeniture.</p>
+                        
+                        <p><strong>The Protector of the Seed:</strong> Upon discovering Esau's retaliatory assassination plots, she acted swiftly again, orchestrating Jacob’s tactical evacuation to Haran, securing both his life and the future continuity of the twelve tribes.</p>
+
+                        <div class="quote-callout">
+                            <p>"The Lord said to her, 'Two nations are in your womb... the older shall serve the younger.' ...So Rebekah took the best garments of Esau her older son... and put them on Jacob her younger son."</p>
+                            <span>— Genesis 25:23, 27:15</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 120. LABAN PROFILE -->
+            <div id="laban-aramean" class="character-stage">
+                <div class="meta-header">
+                    <span>Genesis 24 & 29–31</span>
+                    <span class="divider">/</span>
+                    <span>The Patriarchal Era</span>
+                </div>
+                <h2 class="hero-title">Laban</h2>
+                <p class="hero-subtitle">The Cunning Aramean Patriarch & The Exploitative Taskmaster of Haran</p>
+
+                <div class="grid-layout">
+                    <div>
+                        <h3 class="section-heading">Character & Fallibility</h3>
+                        <div class="profile-card">
+                            <ul class="archetype-list">
+                                <li class="archetype-item">
+                                    <h4>The Transactional Master</h4>
+                                    <p>The brother of Rebekah and father of Leah and Rachel. He was an intensely greedy, manipulative opportunist who weaponized Eastern hospitality customs to maximize his personal agricultural wealth and livestock assets.</p>
+                                </li>
+                                <li class="archetype-item">
+                                    <h4>The Bait-and-Switch Marriage Ledger</h4>
+                                    <p>Exploited his nephew Jacob’s labor for seven years under the promise of Rachel’s hand, only to execute a calculated midnight bait-and-switch operation on the wedding night, forcing a heavily veiled Leah into the marriage tent to extract another seven years of free labor.</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="theology-pane">
+                        <h3 class="section-heading">How God Used Him</h3>
+                        <p><strong>The Crucible of the Deceiver:</strong> God used Laban as a harsh, domestic mirror to break and refine Jacob. By matching Jacob against an even more ruthless, deceptive strategist, God brought his grandson to the end of his own self-reliance.</p>
+                        
+                        <p><strong>The Multiplied House of Israel:</strong> Despite Laban changing Jacob’s wages ten separate times, God systematically transferred Laban's wealth and livestock over to Jacob. Laban's intense domestic pressure ultimately forced Jacob out of Haran, driving him back to the promised land as a wealthy patriarch of an entire nation.</p>
+
+                        <div class="quote-callout">
+                            <p>"Laban said, 'It is not so done in our country, to give the younger before the firstborn...' ...Thus Jacob served him for another seven years... and your father has cheated me and changed my wages ten times. But God did not permit him to harm me."</p>
+                            <span>— Genesis 29:26, 31:7</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 121. MANASSEH PROFILE -->
+            <div id="manasseh-king" class="character-stage">
+                <div class="meta-header">
+                    <span>2 Kings 21 / 2 Chronicles 33</span>
+                    <span class="divider">/</span>
+                    <span>The Divided Kingdom</span>
+                </div>
+                <h2 class="hero-title">Manasseh</h2>
+                <p class="hero-subtitle">The Archetype of Judicial Depravity & The Shocking Recipient of Exilic Mercy</p>
+
+                <div class="grid-layout">
+                    <div>
+                        <h3 class="section-heading">Character & Fallibility</h3>
+                        <div class="profile-card">
+                            <ul class="archetype-list">
+                                <li class="archetype-item">
+                                    <h4>The Institutional Demolisher</h4>
+                                    <p>The son of godly King Hezekiah, who ruled Judah for fifty-five bloody years. He systematically dismantled his father's spiritual reforms, erected altars to Baal directly inside Yahweh’s temple, practiced sorcery, sacrificed his own sons in the fire, and filled Jerusalem from end to end with innocent blood.</p>
+                                </li>
+                                <li class="archetype-item">
+                                    <h4>The Iron Chronicles of Captivity</h4>
+                                    <p>His horrific rebellion finally triggered the absolute, irreversible national judgment of Judah. Captured by Assyrian commanders, he was bound with bronze hooks through his nose, fettered in chains, and dragged off to a dark dungeon in Babylon.</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="theology-pane">
+                        <h3 class="section-heading">How God Used Him</h3>
+                        <p><strong>The Ultimate Limit-Test of Grace:</strong> God used Manasseh to establish the absolute outer boundary of divine mercy. Trapped in his Babylonian cell, the world's most depraved king genuinely humbled himself and cried out to God. In an astonishing display of grace, God answered his plea, restored his sanity, and reinstated him to the throne in Jerusalem.</p>
+                        
+                        <p><strong>The Final Reformer Remnant:</strong> His post-prison life became a rapid cleanup operation, as he spent his final years tearing down the very idols he had built, proving that no individual is ever structurally beyond the reach of genuine repentance.</p>
+
+                        <div class="quote-callout">
+                            <p>"And when he was in distress, he entreated the favor of the Lord his God and humbled himself greatly... and God was moved by his entreaty and heard his plea and brought him again to Jerusalem into his kingdom. Then Manasseh knew that the Lord was God."</p>
+                            <span>— 2 Chronicles 33:12-13</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 122. JEHU PROFILE -->
+            <div id="jehu-king" class="character-stage">
+                <div class="meta-header">
+                    <span>2 Kings 9–10</span>
+                    <span class="divider">/</span>
+                    <span>The Divided Kingdom</span>
+                </div>
+                <h2 class="hero-title">Jehu</h2>
+                <p class="hero-subtitle">The Furious Charioteer & The Lethal Purger of Baal</p>
+
+                <div class="grid-layout">
+                    <div>
+                        <h3 class="section-heading">Character & Fallibility</h3>
+                        <div class="profile-card">
+                            <ul class="archetype-list">
+                                <li class="archetype-item">
+                                    <h4>The High-Velocity Enforcer</h4>
+                                    <p>A military commander anointed by Elisha's proxy to violently wipe out the corrupt dynasty of Ahab. He was instantly recognized across the nation by his wild, reckless, and aggressive chariot driving style.</p>
+                                </li>
+                                <li class="archetype-item">
+                                    <h4>The Political Compromise</h4>
+                                    <p>While he executed systemic judgment on Ahab's house, Jezebel, and the priests of Baal with terrifying, cold-blooded efficiency, his internal heart baseline remained corrupt. He refused to walk entirely in the Law, preserving the golden calves at Bethel and Dan to maintain his political grip.</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="theology-pane">
+                        <h3 class="section-heading">How God Used Him</h3>
+                        <p><strong>The Operational Scythe:</strong> God utilized Jehu’s raw fury to completely uproot generations of deep-seated pagan rot. He engineered a massive sting operation, locking all the prophets of Baal inside their own temple under the pretense of a state sacrifice before ordering a complete tactical sweep.</p>
+                        
+                        <p><strong>The Executioner of Prophetic Ledger:</strong> His campaigns served as the concrete fulfillment of Elijah's ancient judicial prophecies, proving that no ruling family is insulated from accountability when they abuse corporate power and shed innocent blood.</p>
+
+                        <div class="quote-callout">
+                            <p>"The driving is like the driving of Jehu the son of Nimshi, for he drives furiously... Thus Jehu wiped out Baal from Israel."</p>
+                            <span>— 2 Kings 9:20, 10:28</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 123. CORNELIUS PROFILE -->
+            <div id="cornelius-centurion" class="character-stage">
+                <div class="meta-header">
+                    <span>Acts 10</span>
+                    <span class="divider">/</span>
+                    <span>The Early Church Pioneers</span>
+                </div>
+                <h2 class="hero-title">Cornelius</h2>
+                <p class="hero-subtitle">The Devout Centurion & The Italian Cohort Disruption</p>
+
+                <div class="grid-layout">
+                    <div>
+                        <h3 class="section-heading">Character & Fallibility</h3>
+                        <div class="profile-card">
+                            <ul class="archetype-list">
+                                <li class="archetype-item">
+                                    <h4>The Occupying Tactical Commander</h4>
+                                    <p>A high-ranking Roman Centurion stationed in Caesarea, commanding an elite unit known as the Italian Cohort. He held immense systemic authority within the pagan imperial machine.</p>
+                                </li>
+                                <li class="archetype-item">
+                                    <h4>The Cross-Cultural Impasse</h4>
+                                    <p>Despite his devout lifestyle, constant almsgiving, and prayers, he was completely isolated from covenant life by an absolute cultural and religious barrier—regarded as unclean, uncircumcised, and legally off-limits by the early Jewish church network.</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="theology-pane">
+                        <h3 class="section-heading">How God Used Him</h3>
+                        <p><strong>The Demolisher of Ethnic Barriers:</strong> God used Cornelius to shatter the internal biases of the early apostolic community. By sending a visionary directive to both Cornelius and Peter, God forced a historic meeting that completely reorganized the Church's global identity.</p>
+                        
+                        <p><strong>The Gentile Pentecost Pivot:</strong> While Peter was still delivering his message, the Holy Spirit sovereignly fell directly upon Cornelius and his entire household. This instant manifestation forced the Jewish leadership to recognize that God was granting repentance leading to life to the nations without requiring a cultural conversion to Judaism.</p>
+
+                        <div class="quote-callout">
+                            <p>"At Caesarea there was a man named Cornelius, a centurion of what was known as the Italian Cohort... And the believers from among the circumcised who had come with Peter were amazed, because the gift of the Holy Spirit was poured out even on the Gentiles."</p>
+                            <span>— Acts 10:1, 45</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 124. AGABUS PROFILE -->
+            <div id="agabus-prophet" class="character-stage">
+                <div class="meta-header">
+                    <span>Acts 11 & 21</span>
+                    <span class="divider">/</span>
+                    <span>The Early Church Pioneers</span>
+                </div>
+                <h2 class="hero-title">Agabus</h2>
+                <p class="hero-subtitle">The Structural Prophet & The Watchman of Imminent Crisis</p>
+
+                <div class="grid-layout">
+                    <div>
+                        <h3 class="section-heading">Character & Fallibility</h3>
+                        <div class="profile-card">
+                            <ul class="archetype-list">
+                                <li class="archetype-item">
+                                    <h4>The High-Accuracy Forecaster</h4>
+                                    <p>An itinerant New Testament prophet from Jerusalem who operated with a highly accurate, data-driven prophetic gift, traveling directly to strategic church hubs like Antioch to deliver critical warnings.</p>
+                                </li>
+                                <li class="archetype-item">
+                                    <h4>The Unvarnished Visual Graphic</h4>
+                                    <p>Faced with an intensely stubborn Apostle Paul who was tracking toward Jerusalem, Agabus walked up, untied Paul’s personal belt, bound his own hands and feet, and delivered a stark, disturbing warning of imminent imperial arrest that distressed the entire local team.</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="theology-pane">
+                        <h3 class="section-heading">How God Used Him</h3>
+                        <p><strong>The Logistical Shield:</strong> God utilized Agabus to save the early church from economic disaster. He explicitly predicted a massive, sweeping global famine during the reign of Claudius Caesar, giving the Antioch church a window to organize a major humanitarian supply chain to preserve the Judean saints.</p>
+                        
+                        <p><strong>The Reality Check for the Mission:</strong> His dramatic, confrontational warning in Caesarea served as the definitive stress-test for Paul’s resolve, forcing the leadership structure to count the cost of their global deployment and align with the reality of upcoming captivity.</p>
+
+                        <div class="quote-callout">
+                            <p>"And one of them named Agabus stood up and foretold by the Spirit that there would be a great famine over all the world... He took Paul's belt and bound his own feet and hands and said, 'Thus says the Holy Spirit, This is how the Jews at Jerusalem will bind the man who owns this belt...'"</p>
+                            <span>— Acts 11:28, 21:11</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 125. ATHALIAH PROFILE -->
+            <div id="athaliah-queen" class="character-stage">
+                <div class="meta-header">
+                    <span>2 Kings 11 / 2 Chronicles 22</span>
+                    <span class="divider">/</span>
+                    <span>The Divided Kingdom</span>
+                </div>
+                <h2 class="hero-title">Athaliah</h2>
+                <p class="hero-subtitle">The Usurping Queen Mother & The Purger of the Royal Seed</p>
+
+                <div class="grid-layout">
+                    <div>
+                        <h3 class="section-heading">Character & Fallibility</h3>
+                        <div class="profile-card">
+                            <ul class="archetype-list">
+                                <li class="archetype-item">
+                                    <h4>The Deep-State Infiltrator</h4>
+                                    <p>The daughter of Ahab and Jezebel, married into the southern Davidic line of Judah to consolidate northern Baalism. Upon the sudden death of her son King Ahaziah, she executed a ruthless, systematic coup d'état.</p>
+                                </li>
+                                <li class="archetype-item">
+                                    <h4>The Near-Extinction of the Line</h4>
+                                    <p>Driven by an insatiable hunger for total absolute power, she ordered the immediate execution of her own children and grandchildren—nearly wiping out the entire Davidic bloodline in a single domestic slaughter to secure her illegal hold on the throne.</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="theology-pane">
+                        <h3 class="section-heading">How God Used Her</h3>
+                        <p><strong>The Ultimate Providential Pivot:</strong> God used her dark coup to manifest His absolute control over human history. While she assumed her purge was 100% successful, God used a courageous princess (Jehosheba) to steal away the infant Joash from among the dead, hiding him deep inside the Temple chambers for six long years right under the tyrant's nose.</p>
+                        
+                        <p><strong>The Sudden Operational Inversion:</strong> Her seven-year reign ended in a brilliant, synchronized counter-coup led by High Priest Jehoiada. Joash was brought out, crowned, and Athaliah was executed outside the horse gate, demonstrating that no dark political maneuver can break God's covenant loyalty.</p>
+
+                        <div class="quote-callout">
+                            <p>"Now when Athaliah the mother of Ahaziah saw that her son was dead, she arose and destroyed all the royal family... But Jehosheba took Joash the son of Ahaziah and stole him away... and he remained with her six years, hidden in the house of the Lord, while Athaliah reigned over the land."</p>
+                            <span>— 2 Kings 11:1-3</span>
                         </div>
                     </div>
                 </div>
