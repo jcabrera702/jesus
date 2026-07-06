@@ -1,0 +1,1880 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scriptorium</title>
+
+<style>
+:root {
+  --bg: #f4efe3;
+  --text: #2b2b2b;
+  --accent: linear-gradient(135deg,#d4af37,#f6e27a);
+  --glass: rgba(255,255,255,0.7);
+}
+
+[data-theme="dark"] {
+  --bg: #0b1320;
+  --text: #e5e7eb;
+  --accent: linear-gradient(135deg,#60a5fa,#a78bfa);
+  --glass: rgba(255,255,255,0.06);
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.45;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Layout */
+.app {
+  display: flex;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+/* Panels */
+.panel {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Desktop Triptych */
+@media (min-width: 901px) {
+  .app {
+    height: 100vh;
+  }
+
+  .panel {
+    position: relative;
+    transform: none !important;
+  }
+
+  .nav {
+    display: none;
+  }
+}
+
+/* Mobile Sliding Panels */
+@media (max-width: 900px) {
+  .app {
+    position: relative;
+  }
+
+  .panel {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transform: translateX(100%);
+    transition: transform 0.35s cubic-bezier(.4,0,.2,1);
+    box-sizing: border-box;
+    padding: 72px 16px calc(84px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .panel.active {
+    transform: translateX(0);
+  }
+
+  .controls {
+    top: calc(8px + env(safe-area-inset-top, 0px));
+    right: 8px;
+    gap: 8px;
+  }
+
+  button {
+    min-height: 44px;
+  }
+
+  .search {
+    font-size: 16px;
+  }
+
+  .content-card {
+    padding: 16px;
+    border-radius: 14px;
+  }
+}
+
+/* Search */
+.search {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  width: 100%;
+  margin-bottom: 12px;
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  box-sizing: border-box;
+}
+
+/* Book cards */
+.book {
+  padding: 16px;
+  margin-bottom: 10px;
+  border-radius: 14px;
+  background: var(--glass);
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  transition: transform 0.15s ease, box-shadow 0.15s;
+}
+
+.book:active {
+  transform: scale(0.96);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* Content */
+.content-card {
+  padding: 20px;
+  border-radius: 18px;
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  animation: pageTurn 0.5s cubic-bezier(.25,.8,.25,1);
+}
+
+@keyframes pageTurn {
+  0% {
+    transform: rotateY(-40deg) scale(0.95);
+    opacity: 0;
+  }
+  100% {
+    transform: rotateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+.meta {
+  margin: 12px 0;
+  padding: 12px;
+  border-left: 4px solid gold;
+  border-radius: 6px;
+}
+
+/* Chapters */
+details.chapter {
+  margin: 10px 0;
+  background: rgba(0,0,0,0.03);
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+
+details.chapter summary {
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+}
+
+details.chapter p {
+  margin: 8px 0 0 0;
+  color: var(--text);
+}
+
+/* Controls */
+.controls {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  gap: 10px;
+  z-index: 10;
+}
+
+button {
+  border: none;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--accent);
+  color: white;
+  font-weight: 500;
+}
+
+/* Bottom nav */
+.nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.nav button {
+  flex: 1;
+  border-radius: 0;
+  padding: 14px;
+  font-size: 14px;
+  opacity: 0.6;
+}
+
+.nav button.active {
+  opacity: 1;
+  background: var(--accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel,
+  .book,
+  .content-card {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="controls">
+  <button onclick="toggleTheme()">Lux Nova</button>
+</div>
+
+<div class="app">
+
+  <!-- OLD -->
+  <div class="panel active" id="oldPanel">
+    <input class="search" placeholder="Search..." oninput="filterBooks(this.value)">
+    <div id="old"></div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="panel" id="content">
+    <div class="content-card">
+      <h2>Scriptorium</h2>
+      <p>Select a book</p>
+    </div>
+  </div>
+
+  <!-- NEW -->
+  <div class="panel" id="newPanel">
+    <div id="new"></div>
+  </div>
+
+</div>
+
+<div class="nav">
+  <button data-tab="oldPanel" onclick="switchTab('oldPanel')" class="active">Old</button>
+  <button data-tab="content" onclick="switchTab('content')">Read</button>
+  <button data-tab="newPanel" onclick="switchTab('newPanel')">New</button>
+</div>
+
+<script>
+const oldEl = document.getElementById('old');
+const newEl = document.getElementById('new');
+const contentEl = document.getElementById('content');
+
+const books = [
+  
+  {name:"Genesis", testament:"old", author:"Moses", mindset:"Origins & covenant identity", context:"Primeval history (creation, fall, flood, Babel) followed by patriarchal narratives (Abraham, Isaac, Jacob, Joseph) establishing God’s covenant people", theme:"God as Creator & covenant initiator",
+    chapters:[
+      {title:"Genesis 1", desc:"Creation of heavens and earth; light, separation of waters, vegetation, sun, moon, stars, sea and land creatures, and humanity."},
+      {title:"Genesis 2", desc:"Detailed account of the creation of man and woman and the Garden of Eden; man’s role and the tree of knowledge."},
+      {title:"Genesis 3", desc:"The fall: temptation by the serpent, disobedience, curses pronounced, and expulsion from Eden."},
+      {title:"Genesis 4", desc:"Cain and Abel: offerings, jealousy, murder, and Cain’s exile; genealogy of Cain’s line."},
+      {title:"Genesis 5", desc:"Genealogy from Adam to Noah, noting long lifespans and the line leading to Noah."},
+      {title:"Genesis 6", desc:"Human wickedness increases; God decides to send a flood; Noah found righteous and instructed to build the ark."},
+      {title:"Genesis 7", desc:"The flood begins; Noah, his family, and animals enter the ark; waters cover the earth."},
+      {title:"Genesis 8", desc:"Floodwaters recede; Noah sends out birds; the ark rests on Ararat; Noah exits and offers sacrifice."},
+      {title:"Genesis 9", desc:"God blesses Noah, establishes the rainbow covenant, instructions for life, and account of Noah’s sons."},
+      {title:"Genesis 10", desc:"Table of Nations: descendants of Noah’s sons and the spread of nations after the flood."},
+      {title:"Genesis 11", desc:"Tower of Babel: human pride, language confusion, dispersion; genealogy to Abram (Terah’s line)."},
+      {title:"Genesis 12", desc:"Call of Abram: promise to make him a great nation; Abram travels to Canaan and sojourns in Egypt."},
+      {title:"Genesis 13", desc:"Abram and Lot separate due to flocks and herds; Abram settles in Canaan and receives God’s promise."},
+      {title:"Genesis 14", desc:"Abram rescues Lot from captors; meets Melchizedek who blesses him; Abram’s refusal of king’s reward."},
+      {title:"Genesis 15", desc:"God’s covenant with Abram: promise of descendants, land, and a prophetic vision of Israel’s future."},
+      {title:"Genesis 16", desc:"Hagar and Ishmael: Sarai gives Hagar to Abram; Hagar bears Ishmael and receives promises from God."},
+      {title:"Genesis 17", desc:"Covenant of circumcision: Abram renamed Abraham; promise of Isaac; sign of the covenant established."},
+      {title:"Genesis 18", desc:"Three visitors announce Sarah will bear a son; Abraham intercedes for Sodom and Gomorrah."},
+      {title:"Genesis 19", desc:"Destruction of Sodom and Gomorrah for wickedness; Lot’s rescue and his daughters’ actions."},
+      {title:"Genesis 20", desc:"Abraham and Abimelech: another episode of Sarah being taken and then restored by God’s intervention."},
+      {title:"Genesis 21", desc:"Birth of Isaac; Hagar and Ishmael sent away; treaty between Abraham and Abimelech."},
+      {title:"Genesis 22", desc:"The binding of Isaac (Akedah): Abraham tested; God provides a ram; covenant reaffirmed."},
+      {title:"Genesis 23", desc:"Death of Sarah; Abraham purchases the cave of Machpelah as a family burial site."},
+      {title:"Genesis 24", desc:"Abraham’s servant finds Rebekah as a wife for Isaac through prayerful signs and hospitality."},
+      {title:"Genesis 25", desc:"Abraham dies; birth of Esau and Jacob; Esau sells his birthright to Jacob for a meal."},
+      {title:"Genesis 26", desc:"Isaac in Gerar: God’s promise repeated; Isaac prospers, rivalry with Abimelech, and covenant made."},
+      {title:"Genesis 27", desc:"Jacob deceives Isaac to receive Esau’s blessing, leading to family conflict and Jacob’s flight."},
+      {title:"Genesis 28", desc:"Jacob’s ladder: dream at Bethel with God’s promise; Jacob sets up a memorial at Bethel."},
+      {title:"Genesis 29", desc:"Jacob serves Laban, marries Leah and Rachel, and the struggles for love and labor are recounted."},
+      {title:"Genesis 30", desc:"Jacob’s family grows: births of many sons and daughters; Jacob’s flocks increase by clever breeding."},
+      {title:"Genesis 31", desc:"Jacob flees Laban with his family; Laban pursues; they make a covenant at Mizpah."},
+      {title:"Genesis 32", desc:"Jacob prepares to meet Esau, wrestles with a man (God) and is renamed Israel after prevailing."},
+      {title:"Genesis 33", desc:"Jacob and Esau reconcile; generous offers are refused and peace is established between them."},
+      {title:"Genesis 34", desc:"Dinah is violated by Shechem; Simeon and Levi take revenge against the city in deception and slaughter."},
+      {title:"Genesis 35", desc:"Jacob returns to Bethel; God reaffirms promises; Rachel dies giving birth to Benjamin; Isaac dies."},
+      {title:"Genesis 36", desc:"Genealogy of Esau (Edom), listing chiefs and descendants of Esau’s line."},
+      {title:"Genesis 37", desc:"Joseph’s dreams spark jealousy; his brothers sell him into slavery; Joseph taken to Egypt."},
+      {title:"Genesis 38", desc:"Tamar and Judah: a family drama of marriage, deception, and apparent justice."},
+      {title:"Genesis 39", desc:"Joseph in Potiphar’s house: succeeds, is falsely accused by Potiphar’s wife, and imprisoned."},
+      {title:"Genesis 40", desc:"Joseph interprets the dreams of Pharaoh’s cupbearer and baker while in prison."},
+      {title:"Genesis 41", desc:"Pharaoh’s dreams; Joseph interprets; is elevated to second-in-command and prepares for famine."},
+      {title:"Genesis 42", desc:"Famine drives Joseph’s brothers to Egypt for grain; Joseph recognizes them but conceals his identity."},
+      {title:"Genesis 43", desc:"Second trip to Egypt: Benjamin accompanies brothers; Joseph hosts them and tests their character."},
+      {title:"Genesis 44", desc:"Joseph frames Benjamin by planting a cup; brothers plead; Judah offers himself in Benjamin’s place."},
+      {title:"Genesis 45", desc:"Joseph reveals himself to his brothers, forgives them, and invites Jacob’s family to Egypt."},
+      {title:"Genesis 46", desc:"Jacob (Israel) journeys to Egypt; the family list and settlement in Goshen are recorded."},
+      {title:"Genesis 47", desc:"Joseph manages the famine in Egypt: presents Jacob to Pharaoh, secures land, and centralizes provisions."},
+      {title:"Genesis 48", desc:"Jacob blesses Joseph’s sons Ephraim and Manasseh, giving the younger the greater blessing."},
+      {title:"Genesis 49", desc:"Jacob’s prophetic blessings over his twelve sons, predicting the tribes’ futures; Jacob’s death."},
+      {title:"Genesis 50", desc:"Death of Jacob, Joseph reassures his brothers, final instructions, and Joseph’s death and burial."}
+    ]
+  },
+
+  {name:"Exodus", testament:"old", author:"Moses", mindset:"Liberation & divine kingship", context:"Israel’s oppression in Egypt, miraculous deliverance, covenant formation at Sinai, and tabernacle instructions", theme:"Deliverance & covenant law",
+    chapters:[
+      {title:"Exodus 1", desc:"Israel multiplies in Egypt; a new Pharaoh enslaves them and orders Hebrew male infants killed."},
+      {title:"Exodus 2", desc:"Birth and early life of Moses; he flees to Midian after killing an Egyptian and marries Zipporah."},
+      {title:"Exodus 3", desc:"Moses encounters God at the burning bush; God commissions him to lead Israel out of Egypt."},
+      {title:"Exodus 4", desc:"God gives Moses signs; Aaron is appointed as spokesman and they return to Egypt."},
+      {title:"Exodus 5", desc:"Moses and Aaron confront Pharaoh; Pharaoh increases Israel’s burden and the people suffer."},
+      {title:"Exodus 6", desc:"God reassures Moses, reiterates the promise to deliver Israel, and the genealogy of Moses is recorded."},
+      {title:"Exodus 7", desc:"Aaron’s staff becomes a serpent; the first plague (water to blood) begins the contest with Pharaoh."},
+      {title:"Exodus 8", desc:"Plagues of frogs, gnats, and flies afflict Egypt as Pharaoh’s heart hardens and relents intermittently."},
+      {title:"Exodus 9", desc:"Plagues continue: livestock disease and painful boils strike Egypt; Pharaoh’s resistance grows."},
+      {title:"Exodus 10", desc:"Plagues of hail and locusts devastate the land; Pharaoh negotiates but refuses full release."},
+      {title:"Exodus 11", desc:"Moses announces the imminent final plague: the death of the Egyptian firstborn."},
+      {title:"Exodus 12", desc:"The Passover is instituted; the death of the firstborn strikes Egypt; Israel departs in haste."},
+      {title:"Exodus 13", desc:"Consecration of the firstborn and the ordinance of the Festival of Unleavened Bread; God leads by cloud and fire."},
+      {title:"Exodus 14", desc:"Crossing of the Red Sea: God parts the waters for Israel and drowns Pharaoh’s army."},
+      {title:"Exodus 15", desc:"Song of Moses and Miriam celebrates God’s victory; Israel’s journey continues and waters are made sweet."},
+      {title:"Exodus 16", desc:"God provides manna and quail; instructions about gathering daily bread and Sabbath observance."},
+      {title:"Exodus 17", desc:"Water from the rock at Rephidim; Israel fights Amalek and Joshua wins as Moses’ hands are upheld."},
+      {title:"Exodus 18", desc:"Jethro advises Moses to appoint judges to share leadership and relieve his burden."},
+      {title:"Exodus 19", desc:"Israel arrives at Mount Sinai; God prepares the people to receive his covenant and law."},
+      {title:"Exodus 20", desc:"The Ten Commandments are given, forming the moral core of the Sinai covenant."},
+      {title:"Exodus 21", desc:"Laws concerning servants, personal injury, and social responsibility are outlined."},
+      {title:"Exodus 22", desc:"Regulations addressing property, restitution, and justice among the people."},
+      {title:"Exodus 23", desc:"Further laws including Sabbath, sabbatical year, three annual festivals, and promises of divine protection."},
+      {title:"Exodus 24", desc:"The covenant is ratified with sacrifices; Moses and elders see God and Moses ascends the mountain."},
+      {title:"Exodus 25", desc:"God gives detailed instructions for the tabernacle, ark, and offerings for worship."},
+      {title:"Exodus 26", desc:"Specifications for the tabernacle’s curtains, frames, and inner sanctuary are provided."},
+      {title:"Exodus 27", desc:"Instructions for the altar of burnt offering, the courtyard, and the oil for the lamps."},
+      {title:"Exodus 28", desc:"Design and consecration of Aaron’s priestly garments for service in the tabernacle."},
+      {title:"Exodus 29", desc:"Consecration rituals for Aaron and his sons as priests, with offerings and ordination rites."},
+      {title:"Exodus 30", desc:"Altar of incense, atonement money, basin for washing, and anointing oil are prescribed."},
+      {title:"Exodus 31", desc:"Bezalel and Oholiab are appointed as chief craftsmen; Sabbath command reiterated as sign of the covenant."},
+      {title:"Exodus 32", desc:"The golden calf incident: Israel’s idolatry while Moses delays on the mountain; Moses intercedes."},
+      {title:"Exodus 33", desc:"God withdraws his presence; Moses pleads for God to go with Israel; tent of meeting established."},
+      {title:"Exodus 34", desc:"New tablets are inscribed; the covenant is renewed and God proclaims his character to Moses."},
+      {title:"Exodus 35", desc:"Moses repeats Sabbath law and calls for offerings; the people begin contributing for the tabernacle."},
+      {title:"Exodus 36", desc:"Skilled artisans begin building the tabernacle as the people bring generous contributions."},
+      {title:"Exodus 37", desc:"Construction of the ark, table, and lampstand by Bezalel is described in detail."},
+      {title:"Exodus 38", desc:"The altar of burnt offering, basin, and courtyard are constructed and materials accounted for."},
+      {title:"Exodus 39", desc:"Priestly garments are completed according to instructions and set aside for ordination."},
+      {title:"Exodus 40", desc:"The tabernacle is erected, God’s glory fills it, and the cloud guides Israel’s movements."}
+    ]
+  },
+
+  {name:"Leviticus", testament:"old", author:"Moses", mindset:"Holiness & sacred order", context:"Detailed priestly laws governing sacrifices, purity, priesthood, and worship practices within the covenant community", theme:"Holiness before God",
+    chapters:[
+      {title:"Leviticus 1", desc:"Instructions for burnt offerings and how they are to be presented by worshipers."},
+      {title:"Leviticus 2", desc:"Regulations for grain offerings, including acceptable ingredients and presentation."},
+      {title:"Leviticus 3", desc:"Peace (fellowship) offerings: procedures and portions for priest and offerer."},
+      {title:"Leviticus 4", desc:"Sin offering for unintentional sins by priests, leaders, and the community."},
+      {title:"Leviticus 5", desc:"Further rules for sin offerings, restitution, and guilt offerings for specific sins."},
+      {title:"Leviticus 6", desc:"Additional sacrificial procedures and duties for priests regarding offerings."},
+      {title:"Leviticus 7", desc:"Rules for the priests’ portions, peace offerings, and regulations for guilt offerings."},
+      {title:"Leviticus 8", desc:"Ordination of Aaron and his sons: consecration rituals for the priesthood."},
+      {title:"Leviticus 9", desc:"Aaron and sons begin priestly service; God’s glory appears and fire consumes offerings."},
+      {title:"Leviticus 10", desc:"Nadab and Abihu offer unauthorized fire and die; laws about priestly conduct follow."},
+      {title:"Leviticus 11", desc:"Clean and unclean animals defined; dietary laws for Israel."},
+      {title:"Leviticus 12", desc:"Purification rites after childbirth for women and associated clean/unclean periods."},
+      {title:"Leviticus 13", desc:"Regulations for diagnosing and handling skin diseases (often translated as leprosy)."},
+      {title:"Leviticus 14", desc:"Procedures for cleansing recovered skin disease and restoring persons to the community."},
+      {title:"Leviticus 15", desc:"Laws about bodily discharges and rituals for cleansing and offering."},
+      {title:"Leviticus 16", desc:"Day of Atonement: rituals for atonement of the sanctuary, priests, and people."},
+      {title:"Leviticus 17", desc:"Prohibition of blood consumption and regulations about sacrifices and worship."},
+      {title:"Leviticus 18", desc:"Forbidden sexual relations and boundaries for community holiness."},
+      {title:"Leviticus 19", desc:"Miscellaneous laws emphasizing holiness: love neighbor, justice, Sabbath, and festivals."},
+      {title:"Leviticus 20", desc:"Penalties for various sins, especially sexual and idolatrous practices."},
+      {title:"Leviticus 21", desc:"Qualifications and conduct required of priests and rules for priestly marriage."},
+      {title:"Leviticus 22", desc:"Regulations for acceptable offerings and who may eat sacred portions."},
+      {title:"Leviticus 23", desc:"Feasts of the Lord: Sabbath, Passover, Weeks, Trumpets, Atonement, Tabernacles."},
+      {title:"Leviticus 24", desc:"Lampstand and bread regulations; cases of blasphemy and justice procedures."},
+      {title:"Leviticus 25", desc:"Sabbatical year and Jubilee: land rest, debt release, and property restoration laws."},
+      {title:"Leviticus 26", desc:"Blessings for obedience and warnings of judgment for disobedience."},
+      {title:"Leviticus 27", desc:"Vows and dedications: valuation and redemption of persons and property."}
+    ]
+  },
+  {name:"Numbers", testament:"old", author:"Moses", mindset:"Testing, discipline & divine patience", context:"Israel’s wilderness journey marked by rebellion, census records, and preparation for a new generation", theme:"Faith vs rebellion",
+    chapters:[
+      {title:"Numbers 1", desc:"The census of Israel’s fighting men and arrangement of the camp are recorded."},
+      {title:"Numbers 2", desc:"Tribal encampment order around the tabernacle is detailed for marching and dwelling."},
+      {title:"Numbers 3", desc:"Levite families’ duties and census; duties of Kohathites, Gershonites, Merarites."},
+      {title:"Numbers 4", desc:"Levites’ responsibilities for transporting tabernacle components are specified."},
+      {title:"Numbers 5", desc:"Purity laws, restitution for wrongs, and the test for suspected adultery are outlined."},
+      {title:"Numbers 6", desc:"Nazirite vow regulations and priestly blessing instructions are given."},
+      {title:"Numbers 7", desc:"Offerings of tribal leaders for the dedication of the altar are listed."},
+      {title:"Numbers 8", desc:"Consecration of the Levites and their service for the tabernacle are described."},
+      {title:"Numbers 9", desc:"Passover observance and the cloud’s guidance for journeying are described."},
+      {title:"Numbers 10", desc:"Trumpets for camp movement; Israel departs Sinai at Jehovah’s command."},
+      {title:"Numbers 11", desc:"Complaints about food; the Lord provides quail and appoints seventy elders."},
+      {title:"Numbers 12", desc:"Miriam and Aaron oppose Moses; Miriam is struck with leprosy and healed after intercession."},
+      {title:"Numbers 13", desc:"Spies sent into Canaan return with report; ten give fearful report, two (Joshua and Caleb) trust God."},
+      {title:"Numbers 14", desc:"Israel rebels; God’s judgment leads to forty years wandering; Moses intercedes for the people."},
+      {title:"Numbers 15", desc:"Laws for offerings, unintentional sins, and penalties for intentional rebellion."},
+      {title:"Numbers 16", desc:"Korah, Dathan, and Abiram rebel; earth swallows rebels and fire consumes others."},
+      {title:"Numbers 17", desc:"Aaron’s staff buds to confirm his chosen priesthood as sign to the people."},
+      {title:"Numbers 18", desc:"Duties and support of priests and Levites are established; portions of offerings allocated."},
+      {title:"Numbers 19", desc:"Law of the red heifer and purification from ceremonial uncleanness are given."},
+      {title:"Numbers 20", desc:"Moses strikes the rock at Meribah; death of Miriam; Edom and Kadesh events; Aaron dies."},
+      {title:"Numbers 21", desc:"Israel defeats Canaanite kings; poisonous serpents are sent and a bronze serpent provided for healing."},
+      {title:"Numbers 22", desc:"Balaam and Balak: messengers seek a curse on Israel; Balaam’s donkey speaks."},
+      {title:"Numbers 23", desc:"Balaam pronounces blessings on Israel after God restrains him from cursing."},
+      {title:"Numbers 24", desc:"Further prophetic blessings from Balaam, including a future king’s rise."},
+      {title:"Numbers 25", desc:"Israel’s idolatry with Moabite women; plague breaks out; Phinehas acts to halt the judgment."},
+      {title:"Numbers 26", desc:"Second census of Israel’s warriors taken as a new generation arises."},
+      {title:"Numbers 27", desc:"Daughters of Zelophehad petition for inheritance rights; Joshua named Moses’ successor."},
+      {title:"Numbers 28", desc:"Continual offerings, Sabbath, monthly, and festival sacrifices are specified."},
+      {title:"Numbers 29", desc:"Detailed offerings for the Feast of Trumpets, Day of Atonement, and Feast of Tabernacles."},
+      {title:"Numbers 30", desc:"Laws about vows and their binding nature, especially for women and fathers/husbands."},
+      {title:"Numbers 31", desc:"War against Midian: Israelites punish Midian for leading them to sin and take spoils."},
+      {title:"Numbers 32", desc:"Reuben and Gad request land east of Jordan; Moses arranges settlement terms for them."},
+      {title:"Numbers 33", desc:"Stations of Israel’s journey from Egypt to the plains of Moab are listed."},
+      {title:"Numbers 34", desc:"Boundaries of Canaan and instructions for land allocation among the tribes are given."},
+      {title:"Numbers 35", desc:"Cities of refuge and regulations about manslaughter and murder are established."},
+      {title:"Numbers 36", desc:"Further provisions about inheritance to preserve tribal land holdings are clarified."}
+    ]
+  },
+
+  {name:"Deuteronomy", testament:"old", author:"Moses", mindset:"Covenant renewal & loyalty", context:"Moses’ farewell sermons reviewing the law and urging obedience before entering the Promised Land", theme:"Obedience & covenant faithfulness",
+    chapters:[
+      {title:"Deuteronomy 1", desc:"Moses recounts Israel’s journey and decisions, including the failure to enter Canaan earlier."},
+      {title:"Deuteronomy 2", desc:"Moses reviews wanderings, interactions with Edom and Moab, and instructions about the land."},
+      {title:"Deuteronomy 3", desc:"Defeat of Og king of Bashan; land distribution and Moses’ request to enter Canaan denied."},
+      {title:"Deuteronomy 4", desc:"Call to obedience, warning against idolatry, and the uniqueness of God proclaimed."},
+      {title:"Deuteronomy 5", desc:"The Ten Commandments are restated to the new generation."},
+      {title:"Deuteronomy 6", desc:"Shema: love the Lord wholly, teach children, and warning against forgetting God."},
+      {title:"Deuteronomy 7", desc:"Command to destroy Canaanite nations and warnings against intermarriage and idolatry."},
+      {title:"Deuteronomy 8", desc:"Remembering God’s provision in the wilderness and warnings against pride in prosperity."},
+      {title:"Deuteronomy 9", desc:"Moses reminds Israel of previous rebellions and God’s gracious rescue despite their sin."},
+      {title:"Deuteronomy 10", desc:"Renewal of the covenant: new tablets, Aaron’s role, and call to love the foreigner."},
+      {title:"Deuteronomy 11", desc:"Blessings for obedience and curses for disobedience; exhortation to choose life."},
+      {title:"Deuteronomy 12", desc:"Proper worship and the centralization of sacrifices at the place God chooses."},
+      {title:"Deuteronomy 13", desc:"Warning against false prophets and enticement to idolatry; community purging laws."},
+      {title:"Deuteronomy 14", desc:"Clean and unclean foods and tithe instructions for supporting Levites and worship."},
+      {title:"Deuteronomy 15", desc:"Sabbatical year debts released and instructions for generosity to the poor."},
+      {title:"Deuteronomy 16", desc:"Festival observances: Passover, Weeks (Pentecost), and Booths (Tabernacles)."},
+      {title:"Deuteronomy 17", desc:"Legal procedures for difficult cases, and guidance about kingship and justice."},
+      {title:"Deuteronomy 18", desc:"Provision for Levites, prohibition of pagan divination, and promise of a prophet like Moses."},
+      {title:"Deuteronomy 19", desc:"Cities of refuge, witness laws, and protections for life and property."},
+      {title:"Deuteronomy 20", desc:"Rules for warfare, sieges, and treatment of distant nations and cities."},
+      {title:"Deuteronomy 21", desc:"Various laws addressing criminals, inheritance, marriage, and family matters."},
+      {title:"Deuteronomy 22", desc:"Laws covering social responsibility, property, and sexual ethics."},
+      {title:"Deuteronomy 23", desc:"Community purity regulations including exclusion lists and camp cleanliness."},
+      {title:"Deuteronomy 24", desc:"Family and property laws: divorce, pledges, and worker protections."},
+      {title:"Deuteronomy 25", desc:"Justice measures such as fair weights, levirate marriage, and disciplining children."},
+      {title:"Deuteronomy 26", desc:"Firstfruits and tithes: confession of Israel’s history and worship practice."},
+      {title:"Deuteronomy 27", desc:"Curses pronounced on Mount Ebal; altar instructions as covenant reminder."},
+      {title:"Deuteronomy 28", desc:"Blessings for obedience and detailed curses for disobedience described."},
+      {title:"Deuteronomy 29", desc:"Renewal assembly: covenant terms reiterated before entering the land."},
+      {title:"Deuteronomy 30", desc:"Promise of restoration after repentance and call to choose life through obedience."},
+      {title:"Deuteronomy 31", desc:"Moses commissions Joshua, writes the law, and instructs Israel about future rebellion."},
+      {title:"Deuteronomy 32", desc:"Song of Moses recounting God’s faithfulness and Israel’s future failings."},
+      {title:"Deuteronomy 33", desc:"Moses’ blessing over the tribes of Israel before his death."},
+      {title:"Deuteronomy 34", desc:"Death of Moses on Mount Nebo and the transfer of leadership to Joshua."}
+    ]
+  },
+
+  {name:"Joshua", testament:"old", author:"Joshua", mindset:"Conquest & inheritance", context:"Military campaigns, land distribution, and covenant reaffirmation in Canaan", theme:"Promise fulfilled",
+    chapters:[
+      {title:"Joshua 1", desc:"Joshua succeeds Moses; God’s charge to be strong and courageous is given."},
+      {title:"Joshua 2", desc:"Rahab hides the spies in Jericho and secures protection for her family."},
+      {title:"Joshua 3", desc:"Israel crosses the Jordan on dry ground as the priests carry the ark into the river."},
+      {title:"Joshua 4", desc:"Memorial stones set up at Gilgal to remember the crossing of the Jordan."},
+      {title:"Joshua 5", desc:"Circumcision at Gilgal, Passover celebrated, and commander of the Lord appears to Joshua."},
+      {title:"Joshua 6", desc:"Fall of Jericho: Israel marches, priests blow trumpets, and the walls collapse."},
+      {title:"Joshua 7", desc:"Achan’s sin leads to Israel’s defeat at Ai; Achan is discovered and punished."},
+      {title:"Joshua 8", desc:"Ai is captured after an ambush; covenant at Mount Ebal is read aloud."},
+      {title:"Joshua 9", desc:"Gibeonite deception: they secure a treaty by pretending to be distant travelers."},
+      {title:"Joshua 10", desc:"Southern campaigns: sun stands still as Israel defeats southern kings and secures territory."},
+      {title:"Joshua 11", desc:"Northern campaigns defeat a coalition of kings; land conquest continues."},
+      {title:"Joshua 12", desc:"List of defeated kings east and west of Jordan; summary of conquests."},
+      {title:"Joshua 13", desc:"Remaining unconquered lands and distribution plans are outlined to Joshua."},
+      {title:"Joshua 14", desc:"Caleb claims Hebron by faith and receives his inheritance for following the Lord."},
+      {title:"Joshua 15", desc:"Boundaries and clans of Judah; cities in the hill country, Negev, and lowlands listed."},
+      {title:"Joshua 16", desc:"Territory of Ephraim and its towns are recorded, with remaining Canaanite towns."},
+      {title:"Joshua 17", desc:"Manasseh’s allotment and daughters’ inheritance; unfinished conquest issues."},
+      {title:"Joshua 18", desc:"Remaining land apportioned from Shiloh after a survey of the country."},
+      {title:"Joshua 19", desc:"Allocations for the remaining tribes are detailed."},
+      {title:"Joshua 20", desc:"Cities of refuge established for accidental manslayers to seek asylum."},
+      {title:"Joshua 21", desc:"Cities given to the Levites and their surrounding pasturelands are assigned."},
+      {title:"Joshua 22", desc:"Reuben, Gad, and half-Manasseh return home and build an altar that alarms the other tribes."},
+      {title:"Joshua 23", desc:"Joshua’s farewell address urging faithfulness to the covenant."},
+      {title:"Joshua 24", desc:"Covenant renewal at Shechem: Israel serves the Lord; Joshua’s death and burial."}
+    ]
+  },
+
+  {name:"Judges", testament:"old", author:"Samuel?", mindset:"Moral decline & cyclical rebellion", context:"Repeated cycles of sin, oppression, repentance, and deliverance under tribal leaders", theme:"Need for righteous leadership",
+    chapters:[
+      {title:"Judges 1", desc:"Israel’s incomplete conquest after Joshua; tribes fail to drive out all Canaanites."},
+      {title:"Judges 2", desc:"Israel’s cycle of sin and deliverance introduced after Joshua’s generation dies."},
+      {title:"Judges 3", desc:"Othniel, Ehud, and Shamgar deliver Israel from oppression as judges arise."},
+      {title:"Judges 4", desc:"Deborah and Barak lead Israel to victory over Jabin and Sisera."},
+      {title:"Judges 5", desc:"Song of Deborah celebrates the victory and praises God’s deliverance."},
+      {title:"Judges 6", desc:"Gideon called to deliver Israel from Midian amid doubt and signs of reassurance."},
+      {title:"Judges 7", desc:"Gideon defeats the Midianites with a reduced force by God’s strategy."},
+      {title:"Judges 8", desc:"Gideon pursues and defeats Midianite leaders; conflict over leadership and idolatry follows."},
+      {title:"Judges 9", desc:"Abimelech becomes a murderous ruler; his reign ends in violence and downfall."},
+      {title:"Judges 10", desc:"Tola and Jair judge Israel; oppression by Ammon leads to Israel’s cry for help."},
+      {title:"Judges 11", desc:"Jephthah delivers Israel from Ammon after a vow that tragically affects his daughter."},
+      {title:"Judges 12", desc:"Internal conflicts among Israelite tribes and the deaths of Jephthah and Ibzan."},
+      {title:"Judges 13", desc:"Birth of Samson foretold; his parents are given instructions for his Nazirite life."},
+      {title:"Judges 14", desc:"Samson marries a Philistine woman; shows of strength and conflict begin."},
+      {title:"Judges 15", desc:"Samson’s exploits continue with violent vengeance against the Philistines."},
+      {title:"Judges 16", desc:"Delilah betrays Samson; he is captured, blinded, and ultimately brings down a temple on his enemies."},
+      {title:"Judges 17", desc:"Micah’s shrine and private priesthood illustrate religious corruption in Israel."},
+      {title:"Judges 18", desc:"Danites steal Micah’s idols and establish idolatry in their city."},
+      {title:"Judges 19", desc:"A Levite’s concubine is abused leading to national outrage and civil war."},
+      {title:"Judges 20", desc:"Israel battles the tribe of Benjamin to punish atrocity; heavy losses occur."},
+      {title:"Judges 21", desc:"Provision made for surviving Benjaminites and lament over the broken unity of Israel."}
+    ]
+  },
+
+  {name:"Ruth", testament:"old", author:"Unknown", mindset:"Faithfulness in obscurity", context:"A Moabite woman’s loyalty leading to her inclusion in Israel and David’s lineage", theme:"Redemption & providence",
+    chapters:[
+      {title:"Ruth 1", desc:"Elimelech’s family in Moab; Naomi returns to Bethlehem after deaths of husband and sons, urging her daughters-in-law to stay."},
+      {title:"Ruth 2", desc:"Ruth gleans in Boaz’s field; Boaz shows kindness and provides protection and provision."},
+      {title:"Ruth 3", desc:"Ruth follows Naomi’s plan and approaches Boaz at the threshing floor, seeking his protection as kinsman-redeemer."},
+      {title:"Ruth 4", desc:"Boaz redeems Ruth, marries her; their son Obed becomes grandfather to David, securing the line of Israel’s king."}
+    ]
+  },
+
+  {name:"1 Samuel", testament:"old", author:"Samuel", mindset:"Transition & divine selection", context:"From judges to monarchy; rise of Saul and anointing of David", theme:"God’s choice of king",
+    chapters:[
+      {title:"1 Samuel 1", desc:"Hannah prays for a son; Samuel is born and dedicated to the Lord at Shiloh."},
+      {title:"1 Samuel 2", desc:"Hannah’s song of praise; Eli’s sons act wickedly and are judged by God."},
+      {title:"1 Samuel 3", desc:"The young Samuel hears God’s voice calling him; God reveals judgment on Eli’s house."},
+      {title:"1 Samuel 4", desc:"Ark captured by the Philistines; Eli’s sons die and Eli falls and dies upon hearing the news."},
+      {title:"1 Samuel 5", desc:"Philistines suffer plagues and the god Dagon falls before Israel’s God; ark returned."},
+      {title:"1 Samuel 6", desc:"The ark is returned to Israel with respect and offerings, settled at Beth-shemesh."},
+      {title:"1 Samuel 7", desc:"Samuel leads Israel to repentance; Israel is delivered from Philistine oppression."},
+      {title:"1 Samuel 8", desc:"Israel demands a king; Samuel warns of the costs, but the people persist."},
+      {title:"1 Samuel 9", desc:"Saul is introduced as Israel’s first king and is chosen by a search for lost donkeys."},
+      {title:"1 Samuel 10", desc:"Saul is privately anointed by Samuel and publicly confirmed as king; signs follow."},
+      {title:"1 Samuel 11", desc:"Saul rescues Jabesh-gilead and is affirmed as king in a national assembly."},
+      {title:"1 Samuel 12", desc:"Samuel’s farewell speech calling Israel to faithfulness under the new monarchy."},
+      {title:"1 Samuel 13", desc:"Saul’s unauthorized sacrifice; Jonathan’s victory and Saul’s disobedience lead to judgment."},
+      {title:"1 Samuel 14", desc:"Jonathan’s daring feat against the Philistines and Saul’s rash oath weaken Israel."},
+      {title:"1 Samuel 15", desc:"Saul fails to fully destroy Amalek and is rejected as king for disobedience."},
+      {title:"1 Samuel 16", desc:"David anointed in Bethlehem; Saul’s spirit troubles him and David enters royal service."},
+      {title:"1 Samuel 17", desc:"David defeats Goliath, demonstrating faith and launching his rise to prominence."},
+      {title:"1 Samuel 18", desc:"David’s success breeds Saul’s jealousy; David and Jonathan form a close covenant friendship."},
+      {title:"1 Samuel 19", desc:"Saul seeks to kill David; David flees and finds refuge with various allies."},
+      {title:"1 Samuel 20", desc:"David and Jonathan confirm their covenant; Saul’s hostility continues to grow."},
+      {title:"1 Samuel 21", desc:"David flees to Nob, eats consecrated bread, and feigns madness in Gath to escape."},
+      {title:"1 Samuel 22", desc:"David at Adullam; Saul orders priests killed; David rescues relatives and gathers followers."},
+      {title:"1 Samuel 23", desc:"David rescues Keilah; Saul pursues David but God protects him through prophetic guidance."},
+      {title:"1 Samuel 24", desc:"David spares Saul’s life in a cave, demonstrating respect for the Lord’s anointed."},
+      {title:"1 Samuel 25", desc:"Nabal’s insult and Abigail’s wise intervention; Nabal dies and David marries Abigail."},
+      {title:"1 Samuel 26", desc:"David again spares Saul, taking his spear and water as proof of restraint."},
+      {title:"1 Samuel 27", desc:"David lives among the Philistines, achieving a measure of security but moral compromise."},
+      {title:"1 Samuel 28", desc:"Saul seeks a medium at Endor for guidance and receives a grim prophecy."},
+      {title:"1 Samuel 29", desc:"Philistines distrust David in battle preparations; he returns to Ziklag."},
+      {title:"1 Samuel 30", desc:"David rescues captured families from the Amalekites after mourning and pursuing them."},
+      {title:"1 Samuel 31", desc:"Saul and his sons die in battle against the Philistines, ending his tragic reign."}
+    ]
+  },
+
+  {name:"2 Samuel", testament:"old", author:"Unknown", mindset:"Covenant kingship", context:"David’s reign, victories, failures, and God’s covenant promise of an eternal dynasty", theme:"Davidic covenant",
+    chapters:[
+      {title:"2 Samuel 1", desc:"David learns of Saul and Jonathan’s deaths and composes a lament over them."},
+      {title:"2 Samuel 2", desc:"David anointed king over Judah; civil conflict begins between David’s house and Ish-bosheth."},
+      {title:"2 Samuel 3", desc:"Power struggles continue; Abner defects to David but is murdered."},
+      {title:"2 Samuel 4", desc:"Assassination of Ish-bosheth; David punishes the murderers and consolidates rule."},
+      {title:"2 Samuel 5", desc:"David becomes king over all Israel, captures Jerusalem, and establishes his capital."},
+      {title:"2 Samuel 6", desc:"Ark brought to Jerusalem with celebration; Uzzah dies for irreverence; David worships."},
+      {title:"2 Samuel 7", desc:"God’s covenant with David promising an enduring dynasty and rest for Israel."},
+      {title:"2 Samuel 8", desc:"David’s military victories and organization of the kingdom are recounted."},
+      {title:"2 Samuel 9", desc:"David shows kindness to Mephibosheth, Jonathan’s son, restoring his inheritance."},
+      {title:"2 Samuel 10", desc:"Conflict with Ammon and Syria leads to David’s military engagements and success."},
+      {title:"2 Samuel 11", desc:"David’s sin with Bathsheba and arranged death of her husband Uriah; moral failure."},
+      {title:"2 Samuel 12", desc:"Nathan confronts David; consequences pronounced but forgiveness granted after repentance."},
+      {title:"2 Samuel 13", desc:"Family tragedy: Amnon assaults Tamar; Absalom plots revenge and kills Amnon."},
+      {title:"2 Samuel 14", desc:"Absalom reconciled with David through a wise woman’s counsel but harbors ambitions."},
+      {title:"2 Samuel 15", desc:"Absalom’s rebellion gains momentum; David flees Jerusalem."},
+      {title:"2 Samuel 16", desc:"Events during David’s flight: Ziba, Shimei’s curses, and David’s restraint."},
+      {title:"2 Samuel 17", desc:"Absalom’s counselors and Hushai’s counterplans lead to David’s survival strategy."},
+      {title:"2 Samuel 18", desc:"Joab kills Absalom in battle despite David’s grief; David mourns his son."},
+      {title:"2 Samuel 19", desc:"David returns to Jerusalem amidst political tensions and reconciliations."},
+      {title:"2 Samuel 20", desc:"Sheba’s rebellion and its suppression; Joab’s controversial actions."},
+      {title:"2 Samuel 21", desc:"Famine explained by Saul’s bloodguilt; Gibeonites’ dealings and David’s military exploits."},
+      {title:"2 Samuel 22", desc:"David’s song of deliverance celebrates God’s rescue and kingship."},
+      {title:"2 Samuel 23", desc:"David’s final words and list of mighty warriors and their deeds."},
+      {title:"2 Samuel 24", desc:"David’s census and subsequent plague; purchase of Araunah’s threshing floor for altar."}
+    ]
+  },
+
+  {name:"1 Kings", testament:"old", author:"Jeremiah?", mindset:"Glory to division", context:"Solomon’s reign, temple construction, and subsequent division into northern and southern kingdoms", theme:"Consequences of disobedience",
+    chapters:[
+      {title:"1 Kings 1", desc:"Solomon is anointed king as Adonijah’s attempt to seize the throne is thwarted."},
+      {title:"1 Kings 2", desc:"David’s final instructions to Solomon; consolidation of Solomon’s rule and executions of rivals."},
+      {title:"1 Kings 3", desc:"Solomon’s request for wisdom and the famous judgment involving two women and a baby."},
+      {title:"1 Kings 4", desc:"Solomon’s officials and the prosperity and administration of his kingdom are described."},
+      {title:"1 Kings 5", desc:"Solomon prepares for building the temple by arranging resources and craftsmen."},
+      {title:"1 Kings 6", desc:"Construction of the temple is described in detail, including dimensions and finishes."},
+      {title:"1 Kings 7", desc:"Solomon’s palace, the temple furnishings, and the bronze works by Hiram are detailed."},
+      {title:"1 Kings 8", desc:"Ark brought into the temple; Solomon’s dedicatory prayer and God’s glory fill the temple."},
+      {title:"1 Kings 9", desc:"God reaffirms his promise to Solomon; Solomon’s other building projects and foreign alliances."},
+      {title:"1 Kings 10", desc:"Visit of the Queen of Sheba and accounts of Solomon’s wealth and wisdom."},
+      {title:"1 Kings 11", desc:"Solomon’s decline through idolatry influenced by foreign wives and the resulting judgment."},
+      {title:"1 Kings 12", desc:"Rehoboam’s harshness causes the kingdom to split; Jeroboam leads the northern tribes."},
+      {title:"1 Kings 13", desc:"A prophet’s sign and the judgment on an old prophet who deceives him."},
+      {title:"1 Kings 14", desc:"Jeroboam’s sin leads to judgment; Abijah’s death in Judah and political unrest."},
+      {title:"1 Kings 15", desc:"Reigns of various kings in Judah and Israel, with notes on faithfulness and idolatry."},
+      {title:"1 Kings 16", desc:"Chronicle of kings in Israel and Ahab’s ascent to the throne, setting the stage for Elijah."},
+      {title:"1 Kings 17", desc:"Elijah proclaims drought, is fed by ravens, and later ministers to a widow at Zarephath."},
+      {title:"1 Kings 18", desc:"Elijah confronts Baal prophets on Mount Carmel and calls fire from heaven."},
+      {title:"1 Kings 19", desc:"Elijah flees Jezebel, experiences God at Horeb, and receives renewed commission."},
+      {title:"1 Kings 20", desc:"Ahab’s battles with Ben-hadad of Aram and prophetic interactions are recounted."},
+      {title:"1 Kings 21", desc:"Ahab and Jezebel’s plot to take Naboth’s vineyard leads to prophetic judgment."},
+      {title:"1 Kings 22", desc:"Ahab’s final battle and the prophet Micaiah’s true word result in Ahab’s death."}
+    ]
+  },
+
+  {name:"2 Kings", testament:"old", author:"Jeremiah?", mindset:"Decline & exile", context:"Spiritual سقوط of Israel and Judah culminating in Assyrian and Babylonian exiles", theme:"Judgment & exile",
+    chapters:[
+      {title:"2 Kings 1", desc:"Prophet confronts Ahaziah for seeking Baal-zebub; Elijah’s ministry continues."},
+      {title:"2 Kings 2", desc:"Elijah taken up to heaven in a whirlwind; Elisha succeeds him and receives a double portion."},
+      {title:"2 Kings 3", desc:"Alliance of Judah, Israel, and Edom against Moab and miraculous provision for victory."},
+      {title:"2 Kings 4", desc:"Elisha’s miracles: widow’s oil, Shunammite’s son raised, and purification of poisonous stew."},
+      {title:"2 Kings 5", desc:"Naaman healed of leprosy after bathing in the Jordan at Elisha’s instruction."},
+      {title:"2 Kings 6", desc:"Elisha’s servant sees angelic host; miracles continue amid Aramean conflicts."},
+      {title:"2 Kings 7", desc:"Provision miracle at Samaria during siege as lepers find abandoned Aramean camp supplies."},
+      {title:"2 Kings 8", desc:"Elisha predicts Hazael’s rise; narrative transitions through regional kings."},
+      {title:"2 Kings 9", desc:"Jehu anointed to execute judgment on Ahab’s house and Baal worship in Israel."},
+      {title:"2 Kings 10", desc:"Jehu’s purge of Baal worship and consolidation of power in Israel."},
+      {title:"2 Kings 11", desc:"Joash (Jehoash) preserved and later crowned king in Judah through Jehoiada’s plan."},
+      {title:"2 Kings 12", desc:"Joash repairs the temple and is later assassinated after straying from faithfulness."},
+      {title:"2 Kings 13", desc:"Elisha’s final acts and Israel’s ongoing struggles with Aram are recorded."},
+      {title:"2 Kings 14", desc:"Reign of Amaziah and Jeroboam II bring temporary stability and territorial gains."},
+      {title:"2 Kings 15", desc:"Chronicles of kings in Israel and Judah continue with shifting fidelity and decline."},
+      {title:"2 Kings 16", desc:"Ahaz’s reign in Judah and alliance with Assyria illustrate political and religious compromise."},
+      {title:"2 Kings 17", desc:"Fall of Israel to Assyria due to persistent idolatry and disobedience."},
+      {title:"2 Kings 18", desc:"Hezekiah’s reforms in Judah and Assyrian threat under Sennacherib are recounted."},
+      {title:"2 Kings 19", desc:"Hezekiah’s prayer and deliverance from Assyria; prophetic promise of preservation."},
+      {title:"2 Kings 20", desc:"Hezekiah’s illness and recovery; Babylonians visit, and Hezekiah’s pride is noted."},
+      {title:"2 Kings 21", desc:"Manasseh’s long idolatrous reign in Judah and subsequent judgment are described."},
+      {title:"2 Kings 22", desc:"Josiah’s reforms after finding the Book of the Law lead to national revival efforts."},
+      {title:"2 Kings 23", desc:"Josiah’s covenant renewal and cleansing of Judah from idolatry; temple reforms."},
+      {title:"2 Kings 24", desc:"Babylonian rise; Jehoiakim’s rebellion and deportations begin Judah’s exile."},
+      {title:"2 Kings 25", desc:"Fall of Jerusalem, destruction of the temple, and exile to Babylon; Zedekiah’s fate."}
+    ]
+  },
+
+  {name:"1 Chronicles", testament:"old", author:"Ezra?", mindset:"Priestly history & identity restoration", context:"Genealogies and David’s reign with emphasis on temple worship", theme:"Worship & covenant continuity",
+    chapters:[
+      {title:"1 Chronicles 1", desc:"Genealogies from Adam through the nations, situating Israel in world history."},
+      {title:"1 Chronicles 2", desc:"Genealogies of Israel’s tribes focusing on Judah and David’s ancestry."},
+      {title:"1 Chronicles 3", desc:"David’s descendants listed, emphasizing the royal line and future hopes."},
+      {title:"1 Chronicles 4", desc:"Further genealogies including the tribes of Judah, Simeon, and others."},
+      {title:"1 Chronicles 5", desc:"Genealogies and brief accounts of Reuben, Gad, and the half-tribe of Manasseh."},
+      {title:"1 Chronicles 6", desc:"Levitical genealogies and duties assigned to the Levites for temple service."},
+      {title:"1 Chronicles 7", desc:"Genealogies for other tribes and leaders mentioned for record."},
+      {title:"1 Chronicles 8", desc:"Genealogies of Benjamin’s leaders and notable lineages."},
+      {title:"1 Chronicles 9", desc:"Families of Jerusalem and those returning from exile are detailed."},
+      {title:"1 Chronicles 10", desc:"Death of Saul and the end of his house; transition toward David’s rule."},
+      {title:"1 Chronicles 11", desc:"David’s establishment as king in Jerusalem and his mighty men are recounted."},
+      {title:"1 Chronicles 12", desc:"David’s warriors rally to him at Hebron, showing broad support across tribes."},
+      {title:"1 Chronicles 13", desc:"David brings the ark toward Jerusalem but retreats after Uzzah’s death."},
+      {title:"1 Chronicles 14", desc:"David’s victories over the Philistines and establishment in Jerusalem."},
+      {title:"1 Chronicles 15", desc:"The ark successfully brought to Jerusalem with Levitical music and celebration."},
+      {title:"1 Chronicles 16", desc:"David’s psalm of thanks and establishment of worship and ministry in Jerusalem."},
+      {title:"1 Chronicles 17", desc:"God’s covenant with David reaffirmed through Nathan’s oracle."},
+      {title:"1 Chronicles 18", desc:"David’s military successes and the prosperity of his reign are summarized."},
+      {title:"1 Chronicles 19", desc:"Conflict with the Ammonites and Syrians leads to David’s campaigns."},
+      {title:"1 Chronicles 20", desc:"Further battles and records of giants defeated by Israel’s warriors."},
+      {title:"1 Chronicles 21", desc:"David’s census and the resulting plague; building of an altar for sacrifice."},
+      {title:"1 Chronicles 22", desc:"David’s preparations for the temple and charge to Solomon to build it."},
+      {title:"1 Chronicles 23", desc:"Organization of Levites and their duties for temple service are detailed."},
+      {title:"1 Chronicles 24", desc:"Priestly divisions and schedules for temple service are set out."},
+      {title:"1 Chronicles 25", desc:"Musicians and their responsibilities are appointed for worship."},
+      {title:"1 Chronicles 26", desc:"Gatekeepers and other temple officials are organized and assigned."},
+      {title:"1 Chronicles 27", desc:"David’s military and administrative officers are listed for governance."},
+      {title:"1 Chronicles 28", desc:"David’s charge to Solomon, including plans and materials for the temple."},
+      {title:"1 Chronicles 29", desc:"David’s final prayer, offerings for the temple, and his death are recorded."}
+    ]
+  },
+
+  {name:"2 Chronicles", testament:"old", author:"Ezra?", mindset:"Reform & temple focus", context:"Judah’s kings with emphasis on revival, reform, and temple-centered faith", theme:"Repentance & restoration",
+    chapters:[
+      {title:"2 Chronicles 1", desc:"Solomon’s wisdom and wealth are highlighted as he strengthens the kingdom."},
+      {title:"2 Chronicles 2", desc:"Solomon prepares materials and workers for building the temple."},
+      {title:"2 Chronicles 3", desc:"Construction of Solomon’s temple begins with its dimensions and features."},
+      {title:"2 Chronicles 4", desc:"Temple furnishings, bronze sea, and other articles are described."},
+      {title:"2 Chronicles 5", desc:"The ark is brought into the temple amid rejoicing and sacrifices."},
+      {title:"2 Chronicles 6", desc:"Solomon’s dedicatory prayer asks God to hear from his dwelling place."},
+      {title:"2 Chronicles 7", desc:"God’s presence fills the temple and responds to Solomon’s prayer; festivals set."},
+      {title:"2 Chronicles 8", desc:"Solomon’s projects and administration, including cities and officials, are recorded."},
+      {title:"2 Chronicles 9", desc:"Queen of Sheba’s visit and Solomon’s wealth are recounted again."},
+      {title:"2 Chronicles 10", desc:"Kingdom divides after Solomon; Rehoboam’s folly leads to the split."},
+      {title:"2 Chronicles 11", desc:"Rehoboam fortifies Judah; Levites and priests align with him."},
+      {title:"2 Chronicles 12", desc:"Shishak’s invasion and Rehoboam’s humbled response are described."},
+      {title:"2 Chronicles 13", desc:"Abijah’s conflict with Jeroboam and his speech about covenant faithfulness."},
+      {title:"2 Chronicles 14", desc:"Asa’s reforms and peace, along with conflicts with Cushan-Rishathaim, are noted."},
+      {title:"2 Chronicles 15", desc:"Asa’s reformation and call to seek the Lord bring renewal."},
+      {title:"2 Chronicles 16", desc:"Asa’s later reliance on human help leads to conflict and criticism from Hanani."},
+      {title:"2 Chronicles 17", desc:"Jehoshaphat’s reign of justice and strengthening of Judah is summarized."},
+      {title:"2 Chronicles 18", desc:"Jehoshaphat’s alliance with Ahab leads to the ill-fated battle at Ramoth-gilead."},
+      {title:"2 Chronicles 19", desc:"Judicial reforms by Jehoshaphat establish righteousness in the land."},
+      {title:"2 Chronicles 20", desc:"Jehoshaphat’s victory through prayer and faith as God defeats enemies."},
+      {title:"2 Chronicles 21", desc:"Reign of Jehoram and his troubles due to idolatry and alliances."},
+      {title:"2 Chronicles 22", desc:"Ahaziah’s brief reign and the rise of Athaliah’s usurpation are described."},
+      {title:"2 Chronicles 23", desc:"Jehoiada’s coup restores the Davidic line and kills Athaliah."},
+      {title:"2 Chronicles 24", desc:"Jehoram’s reforms undone; Joash later repairs the temple under Jehoiada’s guidance."},
+      {title:"2 Chronicles 25", desc:"Amaziah’s reign with military successes and later prideful downfall."},
+      {title:"2 Chronicles 26", desc:"Uzziah prospers but is judged for entering the temple; leprosy follows."},
+      {title:"2 Chronicles 27", desc:"Jotham’s reign brings stability and building projects in Judah."},
+      {title:"2 Chronicles 28", desc:"Ahaz’s apostasy and Assyrian dependence cause national decline."},
+      {title:"2 Chronicles 29", desc:"Hezekiah’s reforms restore temple worship and religious life in Judah."},
+      {title:"2 Chronicles 30", desc:"Passover celebrated in Hezekiah’s time with people from northern tribes participating."},
+      {title:"2 Chronicles 31", desc:"Hezekiah organizes tithes and temple service as part of religious reform."},
+      {title:"2 Chronicles 32", desc:"Sennacherib’s invasion and Hezekiah’s prayerful deliverance are recounted."},
+      {title:"2 Chronicles 33", desc:"Manasseh’s idolatry, repentance in exile, and restoration are described."},
+      {title:"2 Chronicles 34", desc:"Josiah’s reforms and discovery of the Book of the Law spur major revival."},
+      {title:"2 Chronicles 35", desc:"Passover celebrated under Josiah’s thorough reforms and leadership."},
+      {title:"2 Chronicles 36", desc:"Judah’s final decline, Babylonian exile, and the end of the Davidic-led kingdom."}
+    ]
+  },
+
+  {name:"Ezra", testament:"old", author:"Ezra", mindset:"Restoration & covenant purity", context:"Return from exile and rebuilding of the temple amid opposition", theme:"Spiritual renewal",
+    chapters:[
+      {title:"Ezra 1", desc:"Cyrus’s decree allows exiles to return and rebuild the temple; leaders prepare to return."},
+      {title:"Ezra 2", desc:"List of the returned exiles and their family groups who came back to Jerusalem."},
+      {title:"Ezra 3", desc:"Temple rebuilding begins with sacrifices and laying of the foundation amid mixed reactions."},
+      {title:"Ezra 4", desc:"Opposition halts the work; correspondence leads to a temporary suspension of rebuilding."},
+      {title:"Ezra 5", desc:"Prophets Haggai and Zechariah encourage renewal and rebuilding resumes under Persian permission."},
+      {title:"Ezra 6", desc:"Darius vindicates the work; temple completed and dedicated with celebration."},
+      {title:"Ezra 7", desc:"Ezra’s commission from Artaxerxes to teach the law and lead a later group of returnees."},
+      {title:"Ezra 8", desc:"Ezra’s return with Levites and offerings; fast and safe journey back to Jerusalem."},
+      {title:"Ezra 9", desc:"Ezra mourns intermarriage and calls for covenant renewal and repentance."},
+      {title:"Ezra 10", desc:"Reforms enacted to address intermarriage; vows and separations follow."}
+    ]
+  },
+
+  {name:"Nehemiah", testament:"old", author:"Nehemiah", mindset:"Leadership & rebuilding", context:"Reconstruction of Jerusalem’s walls and social-religious reforms", theme:"Community restoration",
+    chapters:[
+      {title:"Nehemiah 1", desc:"Nehemiah hears of Jerusalem’s ruin, mourns, and prays for God’s help to rebuild."},
+      {title:"Nehemiah 2", desc:"Nehemiah obtains permission from the king to rebuild the walls and surveys the damage."},
+      {title:"Nehemiah 3", desc:"List of those who repaired various sections of Jerusalem’s wall."},
+      {title:"Nehemiah 4", desc:"Opposition and mocking from enemies; people defend and continue rebuilding."},
+      {title:"Nehemiah 5", desc:"Nehemiah reforms economic injustices among the people and secures labor for the wall."},
+      {title:"Nehemiah 6", desc:"Plots to stop the work fail; the wall is completed amid opposition and threats."},
+      {title:"Nehemiah 7", desc:"Census and registration of returnees; resettlement arrangements recorded."},
+      {title:"Nehemiah 8", desc:"Public reading of the Law by Ezra leads to repentance, worship, and the Feast of Booths."},
+      {title:"Nehemiah 9", desc:"A long confession and historical recounting of Israel’s faithfulness and failures."},
+      {title:"Nehemiah 10", desc:"Renewed covenant with commitments to observe the law and support temple service."},
+      {title:"Nehemiah 11", desc:"Resettlement of Jerusalem’s inhabitants and leaders to ensure the city is populated."},
+      {title:"Nehemiah 12", desc:"Priestly and Levitical organization and lists of those who served in the temple."},
+      {title:"Nehemiah 13", desc:"Nehemiah’s reforms on return, addressing mixed marriages, Sabbath neglect, and temple neglect."}
+    ]
+  },
+
+  {name:"Esther", testament:"old", author:"Unknown", mindset:"Providence under pressure", context:"Jewish survival in Persia through hidden divine intervention", theme:"God’s unseen sovereignty",
+    chapters:[
+      {title:"Esther 1", desc:"Queen Vashti deposed; Xerxes seeks a new queen, setting the stage for Esther."},
+      {title:"Esther 2", desc:"Esther chosen as queen; Mordecai uncovers a plot and Esther’s rise begins."},
+      {title:"Esther 3", desc:"Haman rises and plots to destroy the Jews after Mordecai refuses to bow."},
+      {title:"Esther 4", desc:"Mordecai and Esther mourn; Esther resolves to approach the king to save her people."},
+      {title:"Esther 5", desc:"Esther risks approaching the king and invites him and Haman to a banquet."},
+      {title:"Esther 6", desc:"A sleepless king honors Mordecai while Haman’s plans begin to unravel."},
+      {title:"Esther 7", desc:"Esther exposes Haman; he is executed, and Mordecai is promoted."},
+      {title:"Esther 8", desc:"Esther obtains authority to issue a decree allowing Jews to defend themselves."},
+      {title:"Esther 9", desc:"Jews defend themselves against their attackers; Purim established as a festival."},
+      {title:"Esther 10", desc:"Summary of Mordecai’s prominence and the reversal of fortunes for the Jews."}
+    ]
+  },
+
+  {name:"Job", testament:"old", author:"Unknown", mindset:"Suffering & divine mystery", context:"A righteous man’s intense suffering and dialogue on justice and God’s sovereignty", theme:"Faith amidst suffering",
+    chapters:[
+      {title:"Job 1", desc:"Introduction to Job’s prosperity and piety; heavenly scene where Satan challenges Job’s motives, leading to loss of property and children."},
+      {title:"Job 2", desc:"Satan afflicts Job’s health; Job’s wife urges him to curse God, but Job endures; friends arrive to comfort him."},
+      {title:"Job 3", desc:"Job laments his birth in a poetic curse, expressing deep anguish and despair."},
+      {title:"Job 4", desc:"Eliphaz begins the friends’ response, suggesting that suffering follows some sin; calls for Job to consider his ways."},
+      {title:"Job 5", desc:"Eliphaz continues, urging trust in God’s discipline and offering counsel about repentance and restoration."},
+      {title:"Job 6", desc:"Job replies, protesting his suffering and asking why God has made him a target; he rejects simplistic answers."},
+      {title:"Job 7", desc:"Job mourns his hard life and fleeting days, questioning why God pays such attention to him."},
+      {title:"Job 8", desc:"Bildad offers a short speech claiming the wicked do not prosper and urging Job to repent."},
+      {title:"Job 9", desc:"Job acknowledges God’s power and justice but laments the impossibility of arguing his case before God."},
+      {title:"Job 10", desc:"Job pleads his case personally to God, questioning the purpose of his suffering and asking for relief."},
+      {title:"Job 11", desc:"Zophar rebukes Job sharply, insisting Job’s words are empty and urging immediate repentance."},
+      {title:"Job 12", desc:"Job responds with irony, affirming God’s wisdom and sovereignty and criticizing his friends’ shallow answers."},
+      {title:"Job 13", desc:"Job insists on speaking directly to God and demands to present his case rather than accept his friends’ counsel."},
+      {title:"Job 14", desc:"Reflection on human mortality and frailty; Job contemplates hope and the limits of life."},
+      {title:"Job 15", desc:"Eliphaz returns with a harsher speech, accusing Job of undermining piety and repeating conventional wisdom."},
+      {title:"Job 16", desc:"Job laments being treated as God’s enemy; he describes his physical suffering and the failure of his friends to comfort him."},
+      {title:"Job 17", desc:"Job expresses despair, speaks of his failing hope and impending death, and appeals for vindication."},
+      {title:"Job 18", desc:"Bildad describes the fate of the wicked in vivid terms, implying Job must be among them."},
+      {title:"Job 19", desc:"Job famously declares his Redeemer lives, while lamenting his isolation and pleading for a hearing."},
+      {title:"Job 20", desc:"Zophar outlines the swift fate of the wicked and the ultimate futility of worldly success."},
+      {title:"Job 21", desc:"Job counters by observing that many wicked prosper, challenging the friends’ easy equation of suffering with guilt."},
+      {title:"Job 22", desc:"Eliphaz accuses Job directly, listing alleged sins and urging confession and restoration."},
+      {title:"Job 23", desc:"Job longs to find God and present his case; he trusts God’s justice even if he cannot see Him."},
+      {title:"Job 24", desc:"Job points out social injustices and delayed divine retribution, questioning why the wicked go unpunished."},
+      {title:"Job 25", desc:"Bildad briefly asserts God’s absolute sovereignty and human insignificance in contrast."},
+      {title:"Job 26", desc:"Job answers Bildad, extolling God’s power over creation and mocking shallow comfort."},
+      {title:"Job 27", desc:"Job maintains his integrity, speaks of the fate of the wicked, and refuses to recant his protest."},
+      {title:"Job 28", desc:"A profound poem on the hiddenness of wisdom, culminating in the affirmation that fearing God is wisdom."},
+      {title:"Job 29", desc:"Job recalls his former honored position and blessing before his trials; a nostalgic testimony of his past."},
+      {title:"Job 30", desc:"A stark contrast: Job describes current humiliation, suffering, and mockery by the lowly."},
+      {title:"Job 31", desc:"Job presents a long self-defense enumerating ethical integrity and inviting investigation of his life."},
+      {title:"Job 32", desc:"Elihu, a younger bystander, is introduced; he is angry at both Job and the friends for inadequate answers."},
+      {title:"Job 33", desc:"Elihu begins addressing Job, proposing that suffering can be instructive and used by God to teach."},
+      {title:"Job 34", desc:"Elihu (or another speaker) defends God’s justice and criticizes Job’s claims of vindictiveness against God."},
+      {title:"Job 35", desc:"Elihu argues that God’s dealings transcend human complaints and that humans should consider God’s sovereignty."},
+      {title:"Job 36", desc:"Elihu praises God’s greatness and calls for repentance while asserting God’s righteous discipline."},
+      {title:"Job 37", desc:"Elihu concludes by describing God’s majesty in nature and the mystery of His ways in storms and thunder."},
+      {title:"Job 38", desc:"The Lord answers Job from the whirlwind with a majestic series of questions about creation and divine governance."},
+      {title:"Job 39", desc:"God continues interrogating Job about creatures and natural order, emphasizing human ignorance."},
+      {title:"Job 40", desc:"God challenges Job’s presumption; Job acknowledges his insufficiency; God calls for humility."},
+      {title:"Job 41", desc:"God describes Leviathan as an example of unmatchable power, underscoring divine sovereignty."},
+      {title:"Job 42", desc:"Job repents for his questioning; God restores Job’s fortunes, blesses him with a new family, and vindicates him."}
+    ]
+  },
+
+  {name:"Psalms", testament:"old", author:"David & others", mindset:"Worship & emotional theology", context:"Collection of prayers, hymns, laments, and praises expressing the full range of human emotion toward God", theme:"Worship & trust",
+    chapters:[
+      {title:"Psalm 1", desc:"Contrast between the way of the righteous who delight in God’s law and the fate of the wicked."},
+      {title:"Psalm 2", desc:"Royal psalm celebrating God’s anointed king and warning nations against rebelling."},
+      {title:"Psalm 3", desc:"A morning prayer of trust by David fleeing Absalom, recognizing God as shield and deliverer."},
+      {title:"Psalm 4", desc:"Evening prayer calling for right worship, trust in God, and righteous living."},
+      {title:"Psalm 5", desc:"Prayer for guidance and protection against deceitful enemies; God’s hatred of wickedness."},
+      {title:"Psalm 6", desc:"Penitential lament asking for mercy, healing, and deliverance from distress."},
+      {title:"Psalm 7", desc:"Imprecatory psalm where the psalmist seeks vindication and refuge in God’s justice."},
+      {title:"Psalm 8", desc:"Praise of God’s majestic name and the dignity given to humanity within creation."},
+      {title:"Psalm 9", desc:"Thanksgiving for God’s righteous judgment and remembrance of the oppressed."},
+      {title:"Psalm 10", desc:"Complaint about the arrogant who persecute the poor and plea for God’s intervention."},
+      {title:"Psalm 11", desc:"Confidence in God’s righteous reign contrasted with human schemes of violence."},
+      {title:"Psalm 12", desc:"Lament over deceitful speech in society and trust in God’s preserving words."},
+      {title:"Psalm 13", desc:"Short lament asking how long and pleading for God’s saving presence and joy."},
+      {title:"Psalm 14", desc:"Reflection on human folly in denying God and God’s search for the righteous."},
+      {title:"Psalm 15", desc:"Portrait of the person who may dwell with the Lord: integrity and justice."},
+      {title:"Psalm 16", desc:"Trust and joy in God as the portion and refuge, with confident hope in God’s presence."},
+      {title:"Psalm 17", desc:"A righteous plea for vindication, protection from enemies, and sight of God’s face."},
+      {title:"Psalm 18", desc:"A song of deliverance praising God as rock, fortress, and rescuer from enemies."},
+      {title:"Psalm 19", desc:"God’s glory in creation and the perfection of God’s law; delight in divine instruction."},
+      {title:"Psalm 20", desc:"Prayer for the king’s victory in battle and trust in the Lord’s saving power."},
+      {title:"Psalm 21", desc:"Thanksgiving for the king’s victory and the blessings of God upon his reign."},
+      {title:"Psalm 22", desc:"An anguished cry foretelling suffering and vindication—famous opening quoted in New Testament."},
+      {title:"Psalm 23", desc:"The Lord as shepherd who provides, guides, and restores; confident trust in God’s care."},
+      {title:"Psalm 24", desc:"The King of glory enters: themes of God’s sovereignty and the pure who may ascend his hill."},
+      {title:"Psalm 25", desc:"Prayer for guidance, forgiveness, and instruction in the ways of the Lord."},
+      {title:"Psalm 26", desc:"Declaration of integrity and plea not to be joined with the deceitful or wicked."},
+      {title:"Psalm 27", desc:"Confidence in God’s protection and desire to dwell in the house of the Lord."},
+      {title:"Psalm 28", desc:"Prayer for help against foes and thankfulness for God’s strength and salvation."},
+      {title:"Psalm 29", desc:"A thunderous hymn exalting the voice of the Lord over the waters and creation."},
+      {title:"Psalm 30", desc:"A thanksgiving for rescue from near death; turning mourning into dancing and praise."},
+      {title:"Psalm 31", desc:"Shelter in God during distress; trustful prayer and plea for deliverance and mercy."},
+      {title:"Psalm 32", desc:"Blessedness of forgiveness and wisdom about confession and God’s guidance."},
+      {title:"Psalm 33", desc:"Call to rejoice in the Lord whose word and purpose establish the world and his people."},
+      {title:"Psalm 34", desc:"Praise for God’s deliverance; exhortation to seek the Lord and fear him; care for the righteous."},
+      {title:"Psalm 35", desc:"Imprecatory plea for God to contend against malicious adversaries and vindicate the innocent."},
+      {title:"Psalm 36", desc:"Contrast of human wickedness with God’s steadfast love and the security of dwelling in him."},
+      {title:"Psalm 37", desc:"Wisdom psalm urging trust in the Lord, patience, and faithfulness despite the prosperity of the wicked."},
+      {title:"Psalm 38", desc:"A personal lament of guilt and physical suffering with plea for God’s mercy."},
+      {title:"Psalm 39", desc:"Reflection on human frailty, the brevity of life, and trust in God’s discipline."},
+      {title:"Psalm 40", desc:"Thanksgiving for rescue and a prophetic look to the obedient servant who proclaims God’s deliverance."},
+      {title:"Psalm 41", desc:"Prayer for the sick and betrayed; promise of blessing for those who consider the poor."},
+      {title:"Psalm 42", desc:"Longing for God described as a deer panting for water; hope amid deep distress."},
+      {title:"Psalm 43", desc:"Continuation of longing for God’s light and deliverance; appeal for justice and praise."},
+      {title:"Psalm 44", desc:"Communal lament recalling past victories yet experiencing present defeat and plea for God’s help."},
+      {title:"Psalm 45", desc:"A royal wedding song celebrating the king’s beauty, strength, and righteous rule."},
+      {title:"Psalm 46", desc:"God is our refuge and strength; confident trust in God despite nations’ turmoil."},
+      {title:"Psalm 47", desc:"Praise to God as king over the nations; a call to clap and sing for God’s awesome rule."},
+      {title:"Psalm 48", desc:"Praise for Zion’s beauty and God’s presence protecting the city and its kingship."},
+      {title:"Psalm 49", desc:"Reflection on mortality and the futility of trusting in wealth; true riches in God."},
+      {title:"Psalm 50", desc:"God summons his people to true worship, emphasizing thanksgiving over ritual sacrifice."},
+      {title:"Psalm 51", desc:"David’s penitential prayer after sin with Bathsheba; plea for mercy, cleansing, and a renewed heart."},
+      {title:"Psalm 52", desc:"A denunciation of the treacherous and assurance that God’s steadfast love endures."},
+      {title:"Psalm 53", desc:"Echo of Psalm 14: the folly of denying God and the hope for salvation for Israel."},
+      {title:"Psalm 54", desc:"Prayer for rescue from enemies and affirmation of God as helper and vindicator."},
+      {title:"Psalm 55", desc:"Cry for deliverance from treachery and betrayal; trust in God’s help amid fear."},
+      {title:"Psalm 56", desc:"David’s trust in God while pursued by enemies; vow to praise God for his word."},
+      {title:"Psalm 57", desc:"Prayer for mercy under threat; confidence in God’s lovingkindness and exaltation."},
+      {title:"Psalm 58", desc:"Imprecatory poem against unjust rulers; plea for God’s righteous judgment."},
+      {title:"Psalm 59", desc:"Appeal for protection from violent men; confidence God will exalt the faithful."},
+      {title:"Psalm 60", desc:"A communal lament over military defeat with a plea for God’s restoration and victory."},
+      {title:"Psalm 61", desc:"Cry for refuge and a vow of lifelong praise as God hears the soul’s desire."},
+      {title:"Psalm 62", desc:"Silent confidence in God alone as rock and salvation; call to trust and wait for God."},
+      {title:"Psalm 63", desc:"Longing for God in the wilderness; satisfaction and praise for God’s steadfast love."},
+      {title:"Psalm 64", desc:"Plea for protection from conspirators and rejoicing at God’s justice."},
+      {title:"Psalm 65", desc:"Praise for God’s abundant provision, forgiveness, and care for the earth."},
+      {title:"Psalm 66", desc:"Call to worship with thanksgiving for God’s awesome deeds and testing that refines."},
+      {title:"Psalm 67", desc:"Prayer for God’s blessing so that all nations may know his ways and praise him."},
+      {title:"Psalm 68", desc:"Triumphal song celebrating God’s victorious, moving presence and giving to the needy."},
+      {title:"Psalm 69", desc:"A lament of deep distress and reproach, calling for God’s deliverance and vindication."},
+      {title:"Psalm 70", desc:"Short urgent plea for God’s help with quick praise for deliverance."},
+      {title:"Psalm 71", desc:"Prayer for lifelong refuge in God and testimony to God’s faithfulness across generations."},
+      {title:"Psalm 72", desc:"Prayer for the king’s righteous reign, justice for the poor, and global blessing."},
+      {title:"Psalm 73", desc:"Asaph wrestles with the prosperity of the wicked but finds perspective in God’s sanctuary."},
+      {title:"Psalm 74", desc:"Lament over the destruction of the sanctuary and plea for God to remember his covenant."},
+      {title:"Psalm 75", desc:"Thanksgiving for God’s righteous judgment and a warning against proud counsels."},
+      {title:"Psalm 76", desc:"God’s awesome deeds in judgment are celebrated, especially his victory in Zion."},
+      {title:"Psalm 77", desc:"Cry of distress recalling past wonders of God as assurance in present trouble."},
+      {title:"Psalm 78", desc:"Historical psalm recounting Israel’s unfaithfulness and God’s faithful provision."},
+      {title:"Psalm 79", desc:"Lament over foreign attack on Jerusalem and plea for God’s vengeance and mercy."},
+      {title:"Psalm 80", desc:"Prayer for restoration of Israel, pictured as a vine brought back under God’s care."},
+      {title:"Psalm 81", desc:"Call to worship, remembrance of God’s deliverance from Egypt, and warning against disobedience."},
+      {title:"Psalm 82", desc:"God’s judgment of unjust earthly judges called to account for failing the weak."},
+      {title:"Psalm 83", desc:"Imprecatory prayer against surrounding nations plotting Israel’s ruin."},
+      {title:"Psalm 84", desc:"Longing for the courts of the Lord; blessedness of those who dwell in God’s presence."},
+      {title:"Psalm 85", desc:"Prayer for revival: God’s favor, forgiveness, and steadfast love to restore the land."},
+      {title:"Psalm 86", desc:"A personal prayer of David asking for mercy, guidance, and steadfast love."},
+      {title:"Psalm 87", desc:"Celebration of Zion as the foundation of peoples and the city beloved by God."},
+      {title:"Psalm 88", desc:"A dark lament expressing deep despair and feeling abandoned, unique for its unresolved tone."},
+      {title:"Psalm 89", desc:"A meditation on God’s covenant with David, juxtaposing divine promises and present struggles."},
+      {title:"Psalm 90", desc:"Prayer of Moses reflecting on human transience and appeal for wisdom and blessing."},
+      {title:"Psalm 91", desc:"Assurance of God’s protection for those who dwell in his shelter and trust his faithfulness."},
+      {title:"Psalm 92", desc:"A song for the Sabbath praising God’s works and the flourishing of the righteous."},
+      {title:"Psalm 93", desc:"The Lord reigns with majesty over the flood and the world; his throne is established."},
+      {title:"Psalm 94", desc:"Plea for God to act against the wicked who oppress the righteous and pervert justice."},
+      {title:"Psalm 95", desc:"Call to worship and obedience; warning against hardening hearts like at Meribah."},
+      {title:"Psalm 96", desc:"Global call to sing to the Lord, proclaiming his glory among the nations."},
+      {title:"Psalm 97", desc:"The Lord’s kingship brings joy; righteousness and justice are the foundation of his throne."},
+      {title:"Psalm 98", desc:"Joyful song of salvation: God’s victory seen in justice and worldwide praise."},
+      {title:"Psalm 99", desc:"Exaltation of God’s holiness and justice as king on Zion; call for reverent worship."},
+      {title:"Psalm 100", desc:"A brief psalm inviting all the earth to shout joyfully to the Lord with thanksgiving."},
+      {title:"Psalm 101", desc:"David’s pledge to live with integrity, reject evil, and promote faithful leadership."},
+      {title:"Psalm 102", desc:"Prayer of the afflicted seeking God’s restoration with confidence in God’s eternal purposes."},
+      {title:"Psalm 103", desc:"Bless the Lord: a hymn of thanksgiving extolling God’s mercy, forgiveness, and steadfast love."},
+      {title:"Psalm 104", desc:"A majestic hymn celebrating God’s creative providence sustaining all life."},
+      {title:"Psalm 105", desc:"Historical praise recounting God’s faithfulness to the patriarchs and the exodus."},
+      {title:"Psalm 106", desc:"Confession of Israel’s failures and God’s enduring mercy through history."},
+      {title:"Psalm 107", desc:"Thanksgiving for God’s deliverance in various crises and a call to give thanks."},
+      {title:"Psalm 108", desc:"A song combining trust in God and a plea for victorious help against foes."},
+      {title:"Psalm 109", desc:"An imprecatory prayer against deceitful enemies and plea for God’s righteous intervention."},
+      {title:"Psalm 110", desc:"Messianic royal psalm declaring the Lord’s exalted priest-king and eternal rule."},
+      {title:"Psalm 111", desc:"Praise for God’s works and covenant faithfulness; wisdom rooted in reverence for the Lord."},
+      {title:"Psalm 112", desc:"Blessedness of the righteous who fear the Lord: generosity, stability, and legacy."},
+      {title:"Psalm 113", desc:"Praise for God who lifts the poor and acts wondrously on behalf of the lowly."},
+      {title:"Psalm 114", desc:"Exodus imagery celebrates Yahweh’s power to bring Israel out of Egypt and through nature."},
+      {title:"Psalm 115", desc:"Contrast between living God who acts for Israel and lifeless idols; call to trust in Yahweh."},
+      {title:"Psalm 116", desc:"Personal thanksgiving for deliverance from death and vow to offer sacrifices of gratitude."},
+      {title:"Psalm 117", desc:"Shortest psalm: call for all nations to praise the Lord for his steadfast love and faithfulness."},
+      {title:"Psalm 118", desc:"Thanksgiving for God’s steadfast love and the cornerstone imagery celebrated in victory and temple liturgy."},
+      {title:"Psalm 119", desc:"Longest psalm: an extended meditation on the beauty, power, and delight of God’s law and word."},
+      {title:"Psalm 120", desc:"A lament from exile: distress over living among deceitful and hostile people."},
+      {title:"Psalm 121", desc:"Song of ascent affirming God as keeper and protector who watches over travelers."},
+      {title:"Psalm 122", desc:"Joyful pilgrimage psalm celebrating coming to Jerusalem and praying for its peace."},
+      {title:"Psalm 123", desc:"A plea for mercy as servants look to their master for compassion amid contempt."},
+      {title:"Psalm 124", desc:"Thanksgiving acknowledging God’s help in deliverance from hostile foes."},
+      {title:"Psalm 125", desc:"Trust in God’s protection for those who trust in him; security like Mount Zion."},
+      {title:"Psalm 126", desc:"Joyful thanksgiving for restoration like a dream; sowing in tears yields harvest of joy."},
+      {title:"Psalm 127", desc:"Reflection on God’s blessing in family and work; fruitfulness as God-given."},
+      {title:"Psalm 128", desc:"Blessing on those who fear the Lord: prosperity at home and in family life."},
+      {title:"Psalm 129", desc:"Song recalling repeated persecutions of Israel but ultimate vindication by God."},
+      {title:"Psalm 130", desc:"A penitential cry from the depths, trusting in God’s forgiveness and redemption."},
+      {title:"Psalm 131", desc:"Humility and quiet trust in the Lord likened to a weaned child with its mother."},
+      {title:"Psalm 132", desc:"Davidic vow and prayer for the Lord to choose Zion as his dwelling and bless the house of David."},
+      {title:"Psalm 133", desc:"Praise of brotherly unity and the blessing it brings likened to anointing oil."},
+      {title:"Psalm 134", desc:"Short call for night shift worshipers to bless the Lord in the temple."},
+      {title:"Psalm 135", desc:"Praise celebrating God’s mighty acts in Israel’s history and contrast with idols."},
+      {title:"Psalm 136", desc:"Refrain-based thanksgiving listing God’s steadfast love in creation and redemption acts."},
+      {title:"Psalm 137", desc:"Lament from exile by the rivers of Babylon, remembering Zion and expressing deep grief."},
+      {title:"Psalm 138", desc:"Davidic thanksgiving for God’s steadfast love, answered prayer, and exaltation of his name."},
+      {title:"Psalm 139", desc:"Meditation on God’s intimate knowledge of the self and the wonder of God’s presence."},
+      {title:"Psalm 140", desc:"Prayer for protection from violent, wicked men and for God’s righteous defense."},
+      {title:"Psalm 141", desc:"Prayer for protection from evil inclinations and worshipful plea for righteous restraint."},
+      {title:"Psalm 142", desc:"A desperate cry for help from a cave of isolation, trusting God as refuge."},
+      {title:"Psalm 143", desc:"A plea for guidance, mercy, and revival in the face of enemies and personal distress."},
+      {title:"Psalm 144", desc:"Prayer for victory and blessing on the king and the people; God as fortress and deliverer."},
+      {title:"Psalm 145", desc:"An acrostic song of praise extolling God’s greatness, compassion, and kingdom forever."},
+      {title:"Psalm 146", desc:"Call to trust God rather than princes; praise for God who helps the oppressed and needy."},
+      {title:"Psalm 147", desc:"Praise for God’s care in rebuilding Jerusalem, weather, and provision for his people."},
+      {title:"Psalm 148", desc:"Cosmic call to all creation to praise the Lord, from heavens to earthly creatures."},
+      {title:"Psalm 149", desc:"Song of praise and victory for God’s people with a call to rejoice and execute justice."},
+      {title:"Psalm 150", desc:"Final doxology urging everything that breathes to praise the Lord with music and dance."}
+    ]
+  },
+
+  {name:"Proverbs", testament:"old", author:"Solomon", mindset:"Wisdom for living", context:"Practical teachings on morality, discipline, relationships, and reverence for God", theme:"Wisdom & righteousness",
+    chapters:[
+      {title:"Proverbs 1", desc:"Call to wisdom: warnings against folly and encouragement to heed wisdom’s instruction."},
+      {title:"Proverbs 2", desc:"Value of seeking wisdom: protection and understanding come to those who pursue it."},
+      {title:"Proverbs 3", desc:"Trust in the Lord, embrace wisdom, and live honoring God for blessing and healing."},
+      {title:"Proverbs 4", desc:"A father’s exhortation to pursue wisdom and avoid the path of the wicked."},
+      {title:"Proverbs 5", desc:"Warning against adultery and the importance of marital faithfulness and fidelity."},
+      {title:"Proverbs 6", desc:"Warnings against folly, laziness, and deceitful schemes; practical ethical advice."},
+      {title:"Proverbs 7", desc:"A vivid warning illustrating the dangers of the seductress and sexual temptation."},
+      {title:"Proverbs 8", desc:"Wisdom personified calls out; her value is exalted and tied to creation itself."},
+      {title:"Proverbs 9", desc:"Contrast between Wisdom’s feast and Folly’s house, inviting clear choices."},
+      {title:"Proverbs 10", desc:"Solomon’s proverbs on righteous living versus the results of wickedness."},
+      {title:"Proverbs 11", desc:"Sayings about integrity, generosity, and the consequences of dishonest gain."},
+      {title:"Proverbs 12", desc:"Practical contrasts between the righteous and the foolish in speech and conduct."},
+      {title:"Proverbs 13", desc:"Principles of discipline, tongue control, and the rewards of wise living."},
+      {title:"Proverbs 14", desc:"Proverbs on prudence, the fear of the Lord, and social wisdom for communities."},
+      {title:"Proverbs 15", desc:"Teachings on gentle speech, discipline, and the life-giving nature of wisdom."},
+      {title:"Proverbs 16", desc:"God’s sovereignty over plans; advice on humility, justice, and wise counsel."},
+      {title:"Proverbs 17", desc:"Reflections on family, strife, friendship, and the stability of righteous living."},
+      {title:"Proverbs 18", desc:"Warnings about loose talk, pride, and the value of a calm spirit and wise friends."},
+      {title:"Proverbs 19", desc:"Guidance about poverty, diligence, and relationships with parents and rulers."},
+      {title:"Proverbs 20", desc:"Sayings on leadership, integrity in business, and the dangers of drunkenness."},
+      {title:"Proverbs 21", desc:"Observations on the king’s heart, righteousness, and consequences of wicked choices."},
+      {title:"Proverbs 22", desc:"Teachings on wealth, reputation, and the value of training children in wisdom."},
+      {title:"Proverbs 23", desc:"Warnings about gluttony, drunkenness, and advice for discipline and wealth."},
+      {title:"Proverbs 24", desc:"Wisdom for strategic living: building, rescuing, and avoiding envy of wrongdoers."},
+      {title:"Proverbs 25", desc:"Proverbs of Solomon: practical wisdom preserved by Hezekiah’s scribes for rulers."},
+      {title:"Proverbs 26", desc:"Sayings about fools, laziness, and the futility of dealing with senseless people."},
+      {title:"Proverbs 27", desc:"Advice on friendships, planning, praise, and the risks of hasty judgments."},
+      {title:"Proverbs 28", desc:"Contrasts between the wicked and the righteous in law, generosity, and governance."},
+      {title:"Proverbs 29", desc:"Comments on kingship, discipline, and the social impact of righteous leaders."},
+      {title:"Proverbs 30", desc:"Words of Agur: humble observations on God, human limits, and life’s enigmas."},
+      {title:"Proverbs 31", desc:"The ideal wife portrait and final exhortations to give honor to the virtuous."}
+    ]
+  },
+
+  {name:"Ecclesiastes", testament:"old", author:"Solomon?", mindset:"Existential reflection", context:"Philosophical exploration of life’s meaning, vanity, and human limitations", theme:"Meaning under God",
+    chapters:[
+      {title:"Ecclesiastes 1", desc:"The Preacher reflects on the vanity of life and the cycles of nature; pursuit of wisdom feels futile."},
+      {title:"Ecclesiastes 2", desc:"Search for pleasure and achievement yields emptiness; wisdom still better than folly."},
+      {title:"Ecclesiastes 3", desc:"There is a season for every purpose under heaven; divine timing governs life’s events."},
+      {title:"Ecclesiastes 4", desc:"Observations on oppression, toil, and the value of companionship over solitary striving."},
+      {title:"Ecclesiastes 5", desc:"Warnings about vows, worship, and the limits of wealth as satisfaction."},
+      {title:"Ecclesiastes 6", desc:"Reflections on wealth, long life, and unanswered desires; true contentment is rare."},
+      {title:"Ecclesiastes 7", desc:"Wisdom on sorrow, patience, and the paradoxes of moral living and prosperity."},
+      {title:"Ecclesiastes 8", desc:"Thoughts on authority, the mysteries of providence, and the unpredictability of life."},
+      {title:"Ecclesiastes 9", desc:"Reality of death for all; enjoy life’s gifts while fearing God and keeping his commandments."},
+      {title:"Ecclesiastes 10", desc:"Proverbs about fools in office, slippery speech, and practical wisdom for living."},
+      {title:"Ecclesiastes 11", desc:"Encouragement to act in faith amid uncertainty and to rejoice in youthful days."},
+      {title:"Ecclesiastes 12", desc:"Conclusion: remember your Creator in youth; fear God and keep his commandments."}
+    ]
+  },
+
+  {name:"Song of Solomon", testament:"old", author:"Solomon", mindset:"Love & covenant intimacy", context:"Poetic dialogue celebrating marital love and relational beauty", theme:"Love & devotion",
+    chapters:[
+      {title:"Song 1", desc:"Opening exchange of mutual longing and praise between lovers; invitation to enjoy love."},
+      {title:"Song 2", desc:"Expressions of blossoming love using pastoral imagery and a call to arise and love."},
+      {title:"Song 3", desc:"The bride seeks her beloved by night; recollection of love found and celebrated."},
+      {title:"Song 4", desc:"Celebration of the beloved’s beauty and intimate compliments likening love to gardens."},
+      {title:"Song 5", desc:"Night visitation and longing; the beloved’s yearning and reconciliation themes appear."},
+      {title:"Song 6", desc:"Commendations of the beloved’s beauty and the strength of love’s devotion."},
+      {title:"Song 7", desc:"Further poetic praise of the beloved’s form and mutual desire."},
+      {title:"Song 8", desc:"Concluding vows about love’s permanence and a desire for the beloved’s enduring presence."}
+    ]
+  },
+
+  {name:"Isaiah", testament:"old", author:"Isaiah", mindset:"Judgment & messianic hope", context:"Prophecies addressing Judah’s sin, exile, and future restoration through a coming Messiah", theme:"Salvation & holiness",
+    chapters:[
+      {title:"Isaiah 1", desc:"Vision of Judah’s sin and call to repentance; promise of redemption if they return to God."},
+      {title:"Isaiah 2", desc:"Future exaltation of Zion: nations streaming to the mountain of the Lord; call to walk in his ways."},
+      {title:"Isaiah 3", desc:"Judgment on Jerusalem’s leaders and social collapse due to injustice and pride."},
+      {title:"Isaiah 4", desc:"Promise of restoration: glory of the Lord will provide protection and renewal for the remnant."},
+      {title:"Isaiah 5", desc:"Song of the vineyard: judgment on Israel for failing its divine purpose and pronouncement of woes."},
+      {title:"Isaiah 6", desc:"Isaiah’s vision of God’s holiness in the temple and his commission as prophet."},
+      {title:"Isaiah 7", desc:"Prophecy to Ahaz: sign of Immanuel and promises amid Assyrian threat."},
+      {title:"Isaiah 8", desc:"Warning against alliances and prophecy of impending judgment; call to trust God’s word."},
+      {title:"Isaiah 9", desc:"Promise of a child to govern with justice (Messianic hope) and condemnation of oppressors."},
+      {title:"Isaiah 10", desc:"Assyria as God’s instrument for judgment and eventual judgment upon Assyria itself."},
+      {title:"Isaiah 11", desc:"Messianic shoot from Jesse: righteous reign, knowledge of the Lord, and universal peace."},
+      {title:"Isaiah 12", desc:"Song of praise for God’s salvation and strength; thanksgiving for his reign."},
+      {title:"Isaiah 13", desc:"Oracle against Babylon: pronouncement of Babylon’s doom and cosmic imagery of judgment."},
+      {title:"Isaiah 14", desc:"Taunt against the king of Babylon and promise of restoration for Israel."},
+      {title:"Isaiah 15", desc:"Oracle concerning Moab’s lament and coming desolation."},
+      {title:"Isaiah 16", desc:"Moab’s appeal for mercy and prophecy of its eventual restoration and humility."},
+      {title:"Isaiah 17", desc:"Judgment on Damascus and Israel with hope of remnant returning to God."},
+      {title:"Isaiah 18", desc:"Oracle about a land beyond the rivers of Cush and God’s sovereign summons."},
+      {title:"Isaiah 19", desc:"Prophecy concerning Egypt: turmoil, judgment, and future turning to the Lord."},
+      {title:"Isaiah 20", desc:"Symbolic act of Isaiah walking naked and barefoot as a sign against Egypt and Cush."},
+      {title:"Isaiah 21", desc:"Oracles concerning Babylon, Edom, and Arabia—announcing sudden judgment."},
+      {title:"Isaiah 22", desc:"Judgment on Jerusalem’s leaders for failing to trust God; valley of vision rebuked."},
+      {title:"Isaiah 23", desc:"Oracle against Tyre describing its downfall and eventual restoration as a marketplace."},
+      {title:"Isaiah 24", desc:"A cosmic judgment upon the whole earth culminating in the Lord’s exaltation."},
+      {title:"Isaiah 25", desc:"Praise for God’s victory over death and preparation of a feast for all peoples."},
+      {title:"Isaiah 26", desc:"Song of trust in God’s saving work and a plea for him to act as judge and protector."},
+      {title:"Isaiah 27", desc:"Prophecy about Israel’s restoration and God’s care like a gardener pruning the vine."},
+      {title:"Isaiah 28", desc:"Woes to Ephraim and Jerusalem for drunkenness and false security; call for hearing God."},
+      {title:"Isaiah 29", desc:"Siege of Ariel (Jerusalem) parable, spiritual blindness, and future deliverance."},
+      {title:"Isaiah 30", desc:"Warning against relying on Egypt; call to repentance and promise of restoration."},
+      {title:"Isaiah 31", desc:"Condemnation of seeking help from horses and chariots instead of trusting the Lord."},
+      {title:"Isaiah 32", desc:"A kingly figure’s righteous reign brings justice and blessing; call to prepare for restoration."},
+      {title:"Isaiah 33", desc:"Prayer for mercy amid invasion and vision of the Lord’s justice and salvation."},
+      {title:"Isaiah 34", desc:"Judgment on all nations pictured as the Lord’s sword against Edom and the proud."},
+      {title:"Isaiah 35", desc:"Promise of the redeemed’s highway: healing, strength, and return to Zion."},
+      {title:"Isaiah 36", desc:"Assyrian crisis under Sennacherib and Rabshakeh’s taunts against Jerusalem."},
+      {title:"Isaiah 37", desc:"Hezekiah’s prayer and deliverance from Assyria; Sennacherib’s defeat recounted."},
+      {title:"Isaiah 38", desc:"Hezekiah’s illness, prayer, and miraculous recovery; song of thanksgiving."},
+      {title:"Isaiah 39", desc:"Envoys from Babylon visit Hezekiah, prompting prophecy of Babylonian exile."},
+      {title:"Isaiah 40", desc:"Comfort for God’s people: voice crying in the wilderness and the greatness of God."},
+      {title:"Isaiah 41", desc:"Assurance of God’s help to Israel against their adversaries and idols."},
+      {title:"Isaiah 42", desc:"Servant song: the chosen servant brings justice quietly and restores hope to nations."},
+      {title:"Isaiah 43", desc:"God’s redeeming love for Israel and promise to be with them through trials."},
+      {title:"Isaiah 44", desc:"God’s sovereignty contrasted with idolatry; promise to pour out Spirit and restore."},
+      {title:"Isaiah 45", desc:"Cyrus named as God’s instrument for deliverance and a call for nations to know God."},
+      {title:"Isaiah 46", desc:"God’s care contrasted with useless idols; he carries and sustains his people."},
+      {title:"Isaiah 47", desc:"Judgment pronounced on Babylon’s proud self-exaltation and impending humiliation."},
+      {title:"Isaiah 48", desc:"Call to hear God who foretells the future and brings Israel through refinement."},
+      {title:"Isaiah 49", desc:"Servant song continues: mission to restore Israel and be a light to the nations."},
+      {title:"Isaiah 50", desc:"Servant speaks of obedience despite suffering and trusting God amid opposition."},
+      {title:"Isaiah 51", desc:"Comfort and call to righteousness, remembering God’s saving acts for Israel."},
+      {title:"Isaiah 52", desc:"Proclamation of Zion’s deliverance; preparation for the servant’s role and salvation."},
+      {title:"Isaiah 53", desc:"Suffering servant passage: vicarious suffering, atonement, and ultimate vindication."},
+      {title:"Isaiah 54", desc:"Promise of expansion and restoration for the desolate Zion; covenant of peace."},
+      {title:"Isaiah 55", desc:"Invitation to abundant mercy: seek the Lord, delight in his words, and receive life."},
+      {title:"Isaiah 56", desc:"Inclusion of foreigners and eunuchs who keep God’s covenant and Sabbath."},
+      {title:"Isaiah 57", desc:"Condemnation of idolatry and promise of healing for the contrite and humble."},
+      {title:"Isaiah 58", desc:"True fasting described as justice and mercy, leading to restoration and light."},
+      {title:"Isaiah 59", desc:"Confession of sin separated people from God; promise of redemption and the Redeemer."},
+      {title:"Isaiah 60", desc:"Future glory of Zion: nations bringing wealth and the Lord rising with light."},
+      {title:"Isaiah 61", desc:"Good news to the oppressed: anointed servant brings freedom, comfort, and restoration."},
+      {title:"Isaiah 62", desc:"God’s zeal for Zion: she will be named and vindicated; people called to watch."},
+      {title:"Isaiah 63", desc:"God’s vengeance for his people and plea remembering his mercy and mighty acts."},
+      {title:"Isaiah 64", desc:"A communal plea for God’s intervention and confession of need for divine renewal."},
+      {title:"Isaiah 65", desc:"Promise of a new creation for the faithful and judgment for those who rebel."},
+      {title:"Isaiah 66", desc:"The Lord’s final word: universal worship, judgment for the proud, and comfort for the faithful."}
+    ]
+  },
+
+  {name:"Jeremiah", testament:"old", author:"Jeremiah", mindset:"Warning & lament", context:"Prophecies leading up to Jerusalem’s fall and calls for repentance", theme:"Judgment & new covenant",
+    chapters:[
+      {title:"Jeremiah 1", desc:"Jeremiah’s call as prophet: appointed before birth to speak God’s word to nations."},
+      {title:"Jeremiah 2", desc:"Accusation of Israel’s idolatry and unfaithfulness; call to return to the Lord."},
+      {title:"Jeremiah 3", desc:"Promises of restoration for repentant Israel and condemnation for persistent unfaithfulness."},
+      {title:"Jeremiah 4", desc:"Imminent judgment announced and call to repentance; vivid depictions of disaster."},
+      {title:"Jeremiah 5", desc:"Israel’s corruption exposed; God compares the nation unfavorably to nothingness."},
+      {title:"Jeremiah 6", desc:"Warning of Babylonian invasion and the city’s failure to heed prophets’ warnings."},
+      {title:"Jeremiah 7", desc:"Temple sermon: calling out false trust in the temple and urging sincere repentance."},
+      {title:"Jeremiah 8", desc:"Lament over moral decay and false prophets; people do not return to God."},
+      {title:"Jeremiah 9", desc:"Call for mourning and lament; rhythms of confession and exile imagery."},
+      {title:"Jeremiah 10", desc:"Contrast of foolish idolatry and the incomparable Lord who made and rules creation."},
+      {title:"Jeremiah 11", desc:"Covenant breach recounted and divine judgment warned for covenant unfaithfulness."},
+      {title:"Jeremiah 12", desc:"Complaint about prosperity of the wicked and God’s judgment on faithless neighbors."},
+      {title:"Jeremiah 13", desc:"Symbolic acts: loincloth and wineskins representing Judah’s ruin and Babylonian judgment."},
+      {title:"Jeremiah 14", desc:"Famine and drought lament; prayer for mercy amid national collapse."},
+      {title:"Jeremiah 15", desc:"Stubborn people face hard judgment; God’s warning and Jeremiah’s lament intensified."},
+      {title:"Jeremiah 16", desc:"Jeremiah commanded to avoid normal family life; prophecy of exile and future restoration."},
+      {title:"Jeremiah 17", desc:"Trust in the Lord contrasted with trusting man; Sabbath and law violations recounted."},
+      {title:"Jeremiah 18", desc:"Parable of the potter: God reshapes nations according to their response to him."},
+      {title:"Jeremiah 19", desc:"Symbolic act with the broken jar announcing Jerusalem’s impending desolation."},
+      {title:"Jeremiah 20", desc:"Jeremiah’s persecution, complaint, and insistence on proclaiming God’s word."},
+      {title:"Jeremiah 21", desc:"Warnings to the royal house; calls to surrender or face judgment amid siege."},
+      {title:"Jeremiah 22", desc:"Judgments against Judah’s kings for injustice and failures to do what is right."},
+      {title:"Jeremiah 23", desc:"Condemnation of false shepherds and promise of a righteous Branch to arise."},
+      {title:"Jeremiah 24", desc:"Vision of two baskets: the exiles and the remnant, representing judgment and hope."},
+      {title:"Jeremiah 25", desc:"Seventy years declared for Babylonian dominance and a cup of God’s wrath for nations."},
+      {title:"Jeremiah 26", desc:"Jeremiah threatened for prophecy at the temple; his life is spared after elders intercede."},
+      {title:"Jeremiah 27", desc:"Yoke symbolism: submission to Babylon’s rule as God’s judgment and instruction."},
+      {title:"Jeremiah 28", desc:"Conflict with Hananiah the prophet over the yoke; false prophecy and its consequences."},
+      {title:"Jeremiah 29", desc:"Letter to exiles: seek the welfare of Babylon, live faithfully, and hope after seventy years."},
+      {title:"Jeremiah 30", desc:"Promise of restoration and the coming time of Jacob’s trouble with future deliverance."},
+      {title:"Jeremiah 31", desc:"Promise of a new covenant, restoration of Israel, and return from exile."},
+      {title:"Jeremiah 32", desc:"Jeremiah buys a field as a sign of hope; prophecy of restoration amid siege."},
+      {title:"Jeremiah 33", desc:"God promises restoration of fortunes, Davidic line, and future prosperity."},
+      {title:"Jeremiah 34", desc:"Zedekiah’s broken oath and the release of slaves discussed amid political turmoil."},
+      {title:"Jeremiah 35", desc:"The Rechabites praised for obedience and faithfulness contrasted with Judah’s unfaithfulness."},
+      {title:"Jeremiah 36", desc:"Baruch reads Jeremiah’s scroll publicly; king burns it and a new scroll is written."},
+      {title:"Jeremiah 37", desc:"Jeremiah imprisoned during the siege; warnings about trusting Egypt are reiterated."},
+      {title:"Jeremiah 38", desc:"Jeremiah persecuted by officials; he is thrown into a cistern but later rescued by Ebed-melech."},
+      {title:"Jeremiah 39", desc:"Fall of Jerusalem and capture of the king; Jeremiah’s life is spared by Nebuchadnezzar."},
+      {title:"Jeremiah 40", desc:"Jeremiah released to Gedaliah; hope for local leadership under Babylonian oversight."},
+      {title:"Jeremiah 41", desc:"Assassination of Gedaliah and ensuing violence leads survivors to flee to Egypt."},
+      {title:"Jeremiah 42", desc:"False hopes in Egypt: Jeremiah’s counsel to remain in the land is rejected by the refugees."},
+      {title:"Jeremiah 43", desc:"Survivors take Jeremiah to Egypt, disobeying God’s command, leading to further judgment."},
+      {title:"Jeremiah 44", desc:"Judah’s continued idolatry in Egypt is recounted and judgment is pronounced."},
+      {title:"Jeremiah 45", desc:"Message to Baruch about troubled times and the need for personal endurance."},
+      {title:"Jeremiah 46", desc:"Oracles against Egypt describing battles and God’s sovereignty over nations."},
+      {title:"Jeremiah 47", desc:"Oracle concerning Philistia’s coming judgment amid war and desolation."},
+      {title:"Jeremiah 48", desc:"Oracle against Moab with laments and predictions of ruin and future restoration."},
+      {title:"Jeremiah 49", desc:"Oracles against Ammon, Edom, Damascus, Kedar, Hazor, and Elam with judgments announced."},
+      {title:"Jeremiah 50", desc:"Prophecy against Babylon’s downfall and the restoration of Israel following exile."},
+      {title:"Jeremiah 51", desc:"Further oracles declaring Babylon’s judgment and the nations’ role in God’s plan."},
+      {title:"Jeremiah 52", desc:"Historical appendix: fall of Jerusalem, Zedekiah’s fate, deportations, and Jehoiachin’s release."}
+    ]
+  },
+  
+  {name:"Lamentations", testament:"old", author:"Jeremiah", mindset:"Grief & reflection", context:"Poetic laments over Jerusalem’s destruction", theme:"Sorrow & hope",
+    chapters:[
+      {title:"Lamentations 1", desc:"The city mourns in loneliness and desolation after destruction."},
+      {title:"Lamentations 2", desc:"God’s wrath portrayed as bringing ruin; prophet laments the Lord’s actions against Zion."},
+      {title:"Lamentations 3", desc:"A personal lament of suffering that turns to hope in God’s steadfast love."},
+      {title:"Lamentations 4", desc:"Recounting Jerusalem’s fall and the reversal of fortunes for its people and leaders."},
+      {title:"Lamentations 5", desc:"Communal prayer for restoration, remembering past mercies and pleading for renewal."}
+    ]
+  },
+
+  {name:"Ezekiel", testament:"old", author:"Ezekiel", mindset:"Exile & restoration visions", context:"Symbolic visions of judgment and future restoration including a new temple", theme:"God’s glory restored",
+    chapters:[
+      {title:"Ezekiel 1", desc:"Vision of God’s chariot-throne with living creatures and wheels, commissioning Ezekiel."},
+      {title:"Ezekiel 2", desc:"Ezekiel called to be a prophet to rebellious Israel; he eats a symbolic scroll."},
+      {title:"Ezekiel 3", desc:"Mission instructions and vision of the exiles watching for Ezekiel’s message."},
+      {title:"Ezekiel 4", desc:"Dramatic acted prophecies portraying Jerusalem’s siege and judgment."},
+      {title:"Ezekiel 5", desc:"Symbolic shaving and weighing depict judgment, dispersion, and remnant themes."},
+      {title:"Ezekiel 6", desc:"Oracles against idolatry in the high places and the consequences for Israel."},
+      {title:"Ezekiel 7", desc:"Imminent day of the Lord: judgment reaches a climax for the nations."},
+      {title:"Ezekiel 8", desc:"Vision of abominations in the temple and God’s judgment on idolatry."},
+      {title:"Ezekiel 9", desc:"Execution of judgment on the city with a mark for the faithful remnant."},
+      {title:"Ezekiel 10", desc:"The glory of the Lord departs the temple amid accompanying visions."},
+      {title:"Ezekiel 11", desc:"Oracles concerning the leadership of Jerusalem and promise of a new heart for the people."},
+      {title:"Ezekiel 12", desc:"Acts of exile symbolism and prophecies of coming Babylonian exile."},
+      {title:"Ezekiel 13", desc:"Condemnation of false prophets who lead people astray with lies."},
+      {title:"Ezekiel 14", desc:"Individual responsibility emphasized; idols in the heart defile the land."},
+      {title:"Ezekiel 15", desc:"Parable of the vine illustrating Jerusalem’s worthlessness and judgment."},
+      {title:"Ezekiel 16", desc:"Allegory of Jerusalem as an unfaithful wife; recounting God’s past care and her betrayal."},
+      {title:"Ezekiel 17", desc:"Riddle-parable about arrogant leaders and foreign alliances bringing judgment."},
+      {title:"Ezekiel 18", desc:"Debate over justice: the proverb about fathers and children answered with individual responsibility."},
+      {title:"Ezekiel 19", desc:"Lament for the princes of Israel, mourning failed leadership and exile."},
+      {title:"Ezekiel 20", desc:"History sermon recounting Israel’s rebellion and God’s judgments with eventual hope."},
+      {title:"Ezekiel 21", desc:"Sword parable: judgment against the land and leaders with vivid imagery."},
+      {title:"Ezekiel 22", desc:"Accusations of bloodshed, idolatry, and social injustice in Jerusalem."},
+      {title:"Ezekiel 23", desc:"Allegory of two sisters symbolizing Samaria and Jerusalem’s sexual idolatry with nations."},
+      {title:"Ezekiel 24", desc:"Siege of Jerusalem portrayed; Ezekiel’s personal sign-act with the boiling pot."},
+      {title:"Ezekiel 25", desc:"Oracles against Ammon, Moab, Edom, and Philistia for their hostility to Israel."},
+      {title:"Ezekiel 26", desc:"Oracle against Tyre describing its coming devastation by many nations."},
+      {title:"Ezekiel 27", desc:"Lament over Tyre as a great merchant city; poetic description of its fall."},
+      {title:"Ezekiel 28", desc:"Taunt against the prince and king of Tyre with echoes of Edenic imagery for pride."},
+      {title:"Ezekiel 29", desc:"Oracles against Egypt and prophetic timelines for its humiliation."},
+      {title:"Ezekiel 30", desc:"Prophecies of Egypt’s distress and the day of the Lord upon the nations."},
+      {title:"Ezekiel 31", desc:"Egypt compared to Assyria: a cedar cut down for its pride and downfall."},
+      {title:"Ezekiel 32", desc:"Lamentations over Pharaoh and giants of the nations in poetic dirge form."},
+      {title:"Ezekiel 33", desc:"Watchman motif: call to repentance, news of Jerusalem’s fall, and hope for restoration."},
+      {title:"Ezekiel 34", desc:"Shepherds condemned; promise of a true shepherd who will gather the flock."},
+      {title:"Ezekiel 35", desc:"Judgment pronounced against Mount Seir (Edom) for its enmity toward Israel."},
+      {title:"Ezekiel 36", desc:"Promise of Israel’s restoration: new heart, Spirit, and renewed land blessing."},
+      {title:"Ezekiel 37", desc:"Valley of dry bones and reunification of Israel; vision of a restored people."},
+      {title:"Ezekiel 38", desc:"Gog and Magog prophecy: future invasion and God’s decisive intervention."},
+      {title:"Ezekiel 39", desc:"Defeat of Gog and cleansing of the land; sacrificial restoration described."},
+      {title:"Ezekiel 40", desc:"Visions of a future temple complex with detailed measurements and arrangements."},
+      {title:"Ezekiel 41", desc:"Temple interior and design details continue in the visionary description."},
+      {title:"Ezekiel 42", desc:"Temple side chambers and priestly areas described in the visionary plan."},
+      {title:"Ezekiel 43", desc:"The glory of the Lord returns to the temple in a powerful vision of restoration."},
+      {title:"Ezekiel 44", desc:"Regulations for priestly service in the restored temple and holy ordinances."},
+      {title:"Ezekiel 45", desc:"Land allotments, offerings, and portions for ministers in the restored order."},
+      {title:"Ezekiel 46", desc:"Temple regulations for offerings, holy days, and the prince’s responsibilities."},
+      {title:"Ezekiel 47", desc:"Life-giving river flows from the temple, bringing abundance and healing to the land."},
+      {title:"Ezekiel 48", desc:"Final chapter with division of the land among the tribes and concluding vision."}
+    ]
+  },
+
+  {name:"Daniel", testament:"old", author:"Daniel", mindset:"Faith under empire", context:"Narratives and apocalyptic visions during Babylonian and Persian rule", theme:"God’s sovereignty over kingdoms",
+    chapters:[
+      {title:"Daniel 1", desc:"Daniel and friends taken to Babylon, refuse defiling food and are blessed with wisdom."},
+      {title:"Daniel 2", desc:"Nebuchadnezzar’s dream of a statue; Daniel interprets the succession of world kingdoms."},
+      {title:"Daniel 3", desc:"Shadrach, Meshach, and Abednego in the fiery furnace are miraculously preserved."},
+      {title:"Daniel 4", desc:"Nebuchadnezzar’s pride, humbling madness, and eventual praise of God’s sovereignty."},
+      {title:"Daniel 5", desc:"Belshazzar’s feast and the handwriting on the wall announce Babylon’s fall."},
+      {title:"Daniel 6", desc:"Daniel in the lions’ den for praying to God; God rescues him and vindicates faith."},
+      {title:"Daniel 7", desc:"Daniel’s vision of four beasts and the coming of the Son of Man and everlasting kingdom."},
+      {title:"Daniel 8", desc:"Vision of a ram and goat symbolizing Medo-Persia and Greece with prophetic detail."},
+      {title:"Daniel 9", desc:"Daniel’s prayer for the people and Gabriel’s revelation of the seventy weeks prophecy."},
+      {title:"Daniel 10", desc:"Vision of a heavenly figure and revelation of spiritual conflicts preceding prophecies."},
+      {title:"Daniel 11", desc:"Extended prophecy describing historical conflicts among kings and nations."},
+      {title:"Daniel 12", desc:"Final visions of end-times, resurrection, and the sealing of prophetic words."}
+    ]
+  },
+
+  {name:"Hosea", testament:"old", author:"Hosea", mindset:"Covenant love & betrayal", context:"Prophetic message illustrated through marital unfaithfulness", theme:"God’s steadfast love",
+    chapters:[
+      {title:"Hosea 1", desc:"Hosea’s marriage to Gomer symbolizes Israel’s unfaithfulness; children’s symbolic names explained."},
+      {title:"Hosea 2", desc:"Israel’s adultery depicted; promise of future restoration and renewed covenant."},
+      {title:"Hosea 3", desc:"Hosea’s redeeming action toward Gomer symbolizes God’s steadfast love and restoration."},
+      {title:"Hosea 4", desc:"Charges against Israel: lack of knowledge, idolatry, and social corruption."},
+      {title:"Hosea 5", desc:"Judgment announced for Israel and Judah but with an underlying call to repentance."},
+      {title:"Hosea 6", desc:"Call to return to the Lord; acknowledgement that genuine repentance is required."},
+      {title:"Hosea 7", desc:"Israel’s political and moral instability described; leaders’ failures criticized."},
+      {title:"Hosea 8", desc:"Accusations of idolatry and false reliance on alliances rather than God."},
+      {title:"Hosea 9", desc:"Warnings of exile and consequences for Israel’s festivals and unfaithfulness."},
+      {title:"Hosea 10", desc:"Israel’s sin likened to a vine producing idolatry; judgment for stubbornness."},
+      {title:"Hosea 11", desc:"God’s tender recollection of Israel’s past love and paternal care contrasted with rebellion."},
+      {title:"Hosea 12", desc:"Historical reminder of Jacob’s story and a charge against deceit and injustice."},
+      {title:"Hosea 13", desc:"Judgment for idolatry and a promise of ultimate deliverance and restoration."},
+      {title:"Hosea 14", desc:"A final call to repentance and promise of healing and restoration when Israel returns."}
+    ]
+  },
+
+  {name:"Joel", testament:"old", author:"Joel", mindset:"Crisis & repentance", context:"Locust plague as symbol of judgment and future outpouring of the Spirit", theme:"Day of the Lord",
+    chapters:[
+      {title:"Joel 1", desc:"Locust devastation and a call to lament and call for communal repentance."},
+      {title:"Joel 2", desc:"The day of the Lord described as a mighty army; call to return and promise of restoration and Spirit outpouring."},
+      {title:"Joel 3", desc:"Judgment on nations and promise of God’s blessing and restoration for Judah and Jerusalem."}
+    ]
+  },
+
+  {name:"Amos", testament:"old", author:"Amos", mindset:"Justice & righteousness", context:"Condemnation of social injustice in Israel", theme:"Justice over ritual",
+    chapters:[
+      {title:"Amos 1", desc:"Oracles against neighboring nations for violence and transgression."},
+      {title:"Amos 2", desc:"Judgment pronounced on Judah and Israel for their transgressions."},
+      {title:"Amos 3", desc:"Prophetic indictment: disaster comes from the Lord; call to hear God’s word."},
+      {title:"Amos 4", desc:"Call to repentance amid judgments and Israel’s failure to return to God."},
+      {title:"Amos 5", desc:"A lament and call for justice; warning that religious ritual cannot replace righteousness."},
+      {title:"Amos 6", desc:"Condemnation of complacency among Israel’s elite and coming exile warnings."},
+      {title:"Amos 7", desc:"Visions of locusts, fire, and a plumb line; Amaziah opposes Amos."},
+      {title:"Amos 8", desc:"Coming famine of hearing God’s word and injustice at markets condemned."},
+      {title:"Amos 9", desc:"Final judgment and promise of restoration for the remnant and Davidic restoration imagery."}
+    ]
+  },
+
+  {name:"Obadiah", testament:"old", author:"Obadiah", mindset:"Judgment on pride", context:"Prophecy against Edom for its arrogance and violence", theme:"Divine justice",
+    chapters:[
+      {title:"Obadiah 1", desc:"Oracle condemning Edom for violence against Jacob and promise of the day of the Lord."}
+    ]
+  },
+
+  {name:"Jonah", testament:"old", author:"Jonah", mindset:"Reluctant mission & mercy", context:"Prophet sent to Nineveh demonstrating God’s compassion for nations", theme:"Mercy & repentance",
+    chapters:[
+      {title:"Jonah 1", desc:"Jonah flees God’s call to Nineveh and is swallowed by a great fish after being thrown overboard."},
+      {title:"Jonah 2", desc:"Jonah’s prayer from the fish and God’s deliverance leading to repentance."},
+      {title:"Jonah 3", desc:"Jonah proclaims judgment; Nineveh repents and God relents from destruction."},
+      {title:"Jonah 4", desc:"Jonah’s anger at God’s mercy and a lesson about compassion and perspective."}
+    ]
+  },
+
+  {name:"Micah", testament:"old", author:"Micah", mindset:"Judgment & hope", context:"Warnings to leaders and promise of a coming ruler from Bethlehem", theme:"Justice & restoration",
+    chapters:[
+      {title:"Micah 1", desc:"Judgment against Samaria and Jerusalem for idolatry and injustice."},
+      {title:"Micah 2", desc:"Condemnation of covetousness and deceit with call to covenant faithfulness."},
+      {title:"Micah 3", desc:"Woe to leaders who oppress; promise that a righteous ruler will arise."},
+      {title:"Micah 4", desc:"Future restoration and peace centered on Zion’s exaltation."},
+      {title:"Micah 5", desc:"Prophecy of a ruler from Bethlehem who will shepherd Israel."},
+      {title:"Micah 6", desc:"God’s case against Israel: he requires justice, mercy, and humility."},
+      {title:"Micah 7", desc:"Lament over corruption but hope in God’s steadfast love and final restoration."}
+    ]
+  },
+
+  {name:"Nahum", testament:"old", author:"Nahum", mindset:"Judgment fulfilled", context:"Fall of Nineveh as divine justice", theme:"God’s vengeance",
+    chapters:[
+      {title:"Nahum 1", desc:"God’s wrath and power displayed; comfort for Judah amid oppression."},
+      {title:"Nahum 2", desc:"Graphic depiction of Nineveh’s siege and downfall described as a ruthless conquest."},
+      {title:"Nahum 3", desc:"Taunt against Nineveh’s wealth, violence, and ultimate humiliation."}
+    ]
+  },
+
+  {name:"Habakkuk", testament:"old", author:"Habakkuk", mindset:"Questioning & faith", context:"Dialogue with God about injustice and faith in uncertainty", theme:"The righteous live by faith",
+    chapters:[
+      {title:"Habakkuk 1", desc:"Habakkuk questions God about injustice and receives a surprising answer about Babylon."},
+      {title:"Habakkuk 2", desc:"God’s response: vision of the proud’s downfall and exhortation to wait in faith."},
+      {title:"Habakkuk 3", desc:"Prayerful psalm of revival, recalling God’s mighty acts and pleading for mercy."}
+    ]
+  },
+
+  {name:"Zephaniah", testament:"old", author:"Zephaniah", mindset:"Judgment & purification", context:"Day of the Lord bringing both destruction and restoration", theme:"Purification",
+    chapters:[
+      {title:"Zephaniah 1", desc:"Announcement of the coming day of the Lord and call to humble repentance."},
+      {title:"Zephaniah 2", desc:"Judgment on surrounding nations and exhortation for Jerusalem to seek humility."},
+      {title:"Zephaniah 3", desc:"Promise of restoration for a humble remnant and rejoicing over God’s people."}
+    ]
+  },
+
+  {name:"Haggai", testament:"old", author:"Haggai", mindset:"Renewed priorities", context:"Encouragement to rebuild the temple after exile", theme:"God first",
+    chapters:[
+      {title:"Haggai 1", desc:"Call to rebuild the temple and rebuke for misplaced priorities following the return from exile."},
+      {title:"Haggai 2", desc:"Encouragement that God’s glory will fill the new temple and promise of future blessing."}
+    ]
+  },
+
+  {name:"Zechariah", testament:"old", author:"Zechariah", mindset:"Vision & messianic hope", context:"Apocalyptic visions encouraging restoration and pointing to Messiah", theme:"Future glory",
+    chapters:[
+      {title:"Zechariah 1", desc:"Call to return to the Lord and initial visions promising restoration."},
+      {title:"Zechariah 2", desc:"Vision of a measuring line for Jerusalem and promise of God’s protection."},
+      {title:"Zechariah 3", desc:"Cleansing of the high priest Joshua and promise of a coming servant leader."},
+      {title:"Zechariah 4", desc:"Vision of the lampstand and two olive trees symbolizing God’s empowering presence."},
+      {title:"Zechariah 5", desc:"Visions of judgment symbolized by a flying scroll and a woman in a basket."},
+      {title:"Zechariah 6", desc:"Metalwork visions and coronation imagery pointing toward Messianic hope."},
+      {title:"Zechariah 7", desc:"Question about fasting leads to instruction on justice and mercy as true worship."},
+      {title:"Zechariah 8", desc:"Promises of restored Jerusalem, true worship, and many people seeking the Lord."},
+      {title:"Zechariah 9", desc:"Oracles of judgment on Israel’s enemies and future triumph of Zion’s king."},
+      {title:"Zechariah 10", desc:"Promise of shepherding and restoration for Israel with a coming Davidic leader."},
+      {title:"Zechariah 11", desc:"Shepherd imagery with critique of false leaders and prophetic enactments."},
+      {title:"Zechariah 12", desc:"The siege of Jerusalem and the future turning of the people to the Lord."},
+      {title:"Zechariah 13", desc:"Cleansing from false prophecy and the removal of impurity from the land."},
+      {title:"Zechariah 14", desc:"The day of the Lord bringing final victory, restoration, and worship centered on Jerusalem."}
+    ]
+  },
+
+  {name:"Malachi", testament:"old", author:"Malachi", mindset:"Covenant accountability", context:"Final prophetic call addressing spiritual apathy before 400 years of silence", theme:"Faithfulness",
+    chapters:[
+      {title:"Malachi 1", desc:"God’s love questioned; priests rebuked for profane offerings and contempt for the covenant."},
+      {title:"Malachi 2", desc:"Priestly unfaithfulness and social injustices condemned; call to covenant faithfulness."},
+      {title:"Malachi 3", desc:"Promise of a refining messenger and call to repentance with the promise of restoration."},
+      {title:"Malachi 4", desc:"Final admonition about the coming day and reminder to remember the law of Moses."}
+    ]
+  },
+
+  
+  {name:"Matthew", testament:"new", author:"Matthew", mindset:"Messianic fulfillment", context:"Structured presentation of Jesus as the promised King to a Jewish audience", theme:"Jesus as King",
+    chapters:[
+      {title:"Matthew 1", desc:"Genealogy of Jesus and the nativity narrative establishing his Davidic lineage."},
+      {title:"Matthew 2", desc:"Magi visit, Herod’s threat, and the family’s flight to Egypt; return to Nazareth."},
+      {title:"Matthew 3", desc:"John the Baptist ministers and Jesus is baptized, inaugurating his public ministry."},
+      {title:"Matthew 4", desc:"Temptation of Jesus and the beginning of his Galilean ministry calling disciples."},
+      {title:"Matthew 5", desc:"Sermon on the Mount begins: beatitudes and ethical teachings of the kingdom."},
+      {title:"Matthew 6", desc:"Teachings on prayer (Lord’s Prayer), treasure in heaven, and trust in God."},
+      {title:"Matthew 7", desc:"Concluding sermon material: judgments, the narrow gate, and building on the rock."},
+      {title:"Matthew 8", desc:"Miracles demonstrating Jesus’ authority over sickness, storms, and demons."},
+      {title:"Matthew 9", desc:"More healings, calling of Matthew, and discussions about discipleship and mission."},
+      {title:"Matthew 10", desc:"Commissioning of the twelve with instructions for mission and warnings of persecution."},
+      {title:"Matthew 11", desc:"Teachings on John the Baptist, rest for the weary, and denunciations of unrepentant towns."},
+      {title:"Matthew 12", desc:"Controversies over Sabbath, and Jesus’ teachings about blasphemy and family of faith."},
+      {title:"Matthew 13", desc:"Parables of the kingdom: sower, weeds, mustard seed, and hidden treasure explained."},
+      {title:"Matthew 14", desc:"Feeding of the five thousand, Peter walking on water, and miracles of provision."},
+      {title:"Matthew 15", desc:"Teachings on purity, faith of the Canaanite woman, and more healings."},
+      {title:"Matthew 16", desc:"Peter’s confession of Christ and Jesus predicts his death and resurrection."},
+      {title:"Matthew 17", desc:"Transfiguration, healing, and further teaching about suffering and service."},
+      {title:"Matthew 18", desc:"Teachings on humility, forgiveness, and church discipline among believers."},
+      {title:"Matthew 19", desc:"Teachings on marriage, children, and the challenge of riches for entering the kingdom."},
+      {title:"Matthew 20", desc:"Parables of laborers, prediction of suffering, and lessons on servanthood."},
+      {title:"Matthew 21", desc:"Triumphal entry into Jerusalem, temple cleansing, and authority questioned."},
+      {title:"Matthew 22", desc:"Parables and debates with leaders about taxes, resurrection, and greatest commandment."},
+      {title:"Matthew 23", desc:"Woes against scribes and Pharisees and calls for justice and humility."},
+      {title:"Matthew 24", desc:"Olivet Discourse: signs of the end, persecution, and need for watchfulness."},
+      {title:"Matthew 25", desc:"Parables of preparedness: ten virgins, talents, and final judgment of nations."},
+      {title:"Matthew 26", desc:"Last supper, Gethsemane, betrayal, and Jesus’ arrest leading to trial."},
+      {title:"Matthew 27", desc:"Trial before Pilate, crucifixion, and burial of Jesus."},
+      {title:"Matthew 28", desc:"Resurrection, Great Commission, and the risen Lord’s commission to disciple nations."}
+    ]
+  },
+
+  {name:"Mark", testament:"new", author:"Mark", mindset:"Action & suffering", context:"Fast-paced narrative emphasizing Jesus’ deeds and suffering servant role", theme:"Servant Christ",
+    chapters:[
+      {title:"Mark 1", desc:"John the Baptist, Jesus’ baptism, temptation, and early ministry with healings."},
+      {title:"Mark 2", desc:"Healing of a paralytic, calling of Levi, and disputes over fasting and Sabbath."},
+      {title:"Mark 3", desc:"Crowds gather, Jesus appoints the twelve, and controversies escalate."},
+      {title:"Mark 4", desc:"Parables of the kingdom and Jesus calms the storm demonstrating authority."},
+      {title:"Mark 5", desc:"Deliverance of demon-possessed man, healing of a woman, and raising Jairus’s daughter."},
+      {title:"Mark 6", desc:"Rejection at Nazareth, sending of the twelve, and feeding of the five thousand."},
+      {title:"Mark 7", desc:"Teachings on purity of the heart and healing of the Syrophoenician woman’s daughter."},
+      {title:"Mark 8", desc:"Feeding of the four thousand, Peter’s confession, and first prediction of the cross."},
+      {title:"Mark 9", desc:"Transfiguration, teachings on humility, and exorcism restored by faith."},
+      {title:"Mark 10", desc:"Teachings on divorce, blessing children, and rich young ruler; prediction of passion."},
+      {title:"Mark 11", desc:"Triumphal entry, temple cleansing, and teachings on faith and prayer."},
+      {title:"Mark 12", desc:"Parables, confrontations with religious leaders, and the greatest commandment."},
+      {title:"Mark 13", desc:"Eschatological warnings about destruction, tribulation, and watchfulness."},
+      {title:"Mark 14", desc:"Last supper, Gethsemane, betrayal, and Jesus arrested and tried."},
+      {title:"Mark 15", desc:"Trial before Pilate, crucifixion, death, and burial of Jesus."},
+      {title:"Mark 16", desc:"Resurrection appearances and commissioning; varying manuscript endings noted."}
+    ]
+  },
+
+  {name:"Luke", testament:"new", author:"Luke", mindset:"Historical & inclusive", context:"Carefully researched account highlighting Jesus’ compassion for all people", theme:"Universal salvation",
+    chapters:[
+      {title:"Luke 1", desc:"Birth narratives of John the Baptist and Jesus, and prophetic songs of praise."},
+      {title:"Luke 2", desc:"Nativity, shepherds, presentation at the temple, and Jesus as a boy in the temple."},
+      {title:"Luke 3", desc:"John’s ministry, genealogy of Jesus, and baptism leading into ministry."},
+      {title:"Luke 4", desc:"Temptation, Nazareth rejection, and early Galilean ministry demonstrations."},
+      {title:"Luke 5", desc:"Call of the first disciples, healings, and controversies about fasting."},
+      {title:"Luke 6", desc:"Sermon on the Plain with beatitudes and ethical commands."},
+      {title:"Luke 7", desc:"Miracles and teachings including centurion’s faith and calling of a sinful woman."},
+      {title:"Luke 8", desc:"Parables of the kingdom, calming the storm, and healing ministry."},
+      {title:"Luke 9", desc:"Sending of the seventy, feeding, transfiguration, and journey predictions."},
+      {title:"Luke 10", desc:"Seventy sent, Good Samaritan parable, and teaching on prayer and ministry."},
+      {title:"Luke 11", desc:"Teachings on prayer, Beelzebul controversy, and calls to repentance."},
+      {title:"Luke 12", desc:"Warnings against hypocrisy, trust in God, and readiness for the master."},
+      {title:"Luke 13", desc:"Calls to repentance, parables of the kingdom, and healing on the Sabbath."},
+      {title:"Luke 14", desc:"Teachings on humility, cost of discipleship, and the king’s banquet parable."},
+      {title:"Luke 15", desc:"Parables of lostness: lost sheep, coin, and prodigal son emphasizing God’s mercy."},
+      {title:"Luke 16", desc:"Teachings on stewardship and the rich man and Lazarus parable."},
+      {title:"Luke 17", desc:"Teachings on faith, forgiveness, and coming of the kingdom."},
+      {title:"Luke 18", desc:"Parables about prayer, persistence, and warnings about riches; Zacchaeus."},
+      {title:"Luke 19", desc:"Zacchaeus, triumphal entry, and woes against unfruitful leaders."},
+      {title:"Luke 20", desc:"Controversies with religious leaders and parables exposing their motives."},
+      {title:"Luke 21", desc:"Eschatological teachings about the temple, signs, and the need for watchfulness."},
+      {title:"Luke 22", desc:"Last supper, arrest, denial, and Jesus’ trial before the council."},
+      {title:"Luke 23", desc:"Trial before Pilate, crucifixion, and burial of Jesus."},
+      {title:"Luke 24", desc:"Resurrection appearances, road to Emmaus, and ascension of Jesus."}
+    ]
+  },
+
+  {name:"John", testament:"new", author:"John", mindset:"Theological depth", context:"Reflective gospel emphasizing Jesus’ divine identity through signs and discourse", theme:"Divinity of Christ",
+    chapters:[
+      {title:"John 1", desc:"The Word made flesh: prologue, John the Baptist, and calling of the first disciples."},
+      {title:"John 2", desc:"Wedding at Cana and Jesus cleanses the temple signaling a new order."},
+      {title:"John 3", desc:"Nicodemus dialogue and the famous teaching about being born again."},
+      {title:"John 4", desc:"Jesus and the Samaritan woman; teachings on living water and harvest of souls."},
+      {title:"John 5", desc:"Healing at Bethesda and debates about Jesus’ authority and relation to the Father."},
+      {title:"John 6", desc:"Feeding five thousand, walking on water, and discourse about the bread of life."},
+      {title:"John 7", desc:"Teaching at the Festival of Tabernacles and division over Jesus’ identity."},
+      {title:"John 8", desc:"Teaching on light of the world, freedom, and conflicts with Jewish leaders."},
+      {title:"John 9", desc:"Healing a man born blind and discussion about spiritual sight and blindness."},
+      {title:"John 10", desc:"Jesus as the Good Shepherd and conflict over his claims to deity."},
+      {title:"John 11", desc:"Raising Lazarus and escalating steps toward Jesus’ death."},
+      {title:"John 12", desc:"Triumphal entry, anointing at Bethany, and prediction of death and judgment."},
+      {title:"John 13", desc:"Washing the disciples’ feet and new commandment of love during the last supper."},
+      {title:"John 14", desc:"Comforting discourse promising the Spirit and the way to the Father."},
+      {title:"John 15", desc:"Vine and branches metaphor emphasizing abiding in Christ and love."},
+      {title:"John 16", desc:"Teaching on the Spirit, grief turning to joy, and Jesus’ return to the Father."},
+      {title:"John 17", desc:"High priestly prayer for unity, protection, and sanctification of believers."},
+      {title:"John 18", desc:"Arrest, trials before Jewish and Roman authorities, and Peter’s denial."},
+      {title:"John 19", desc:"Trial before Pilate, crucifixion, death, and burial of Jesus."},
+      {title:"John 20", desc:"Resurrection appearances and commissioning of the disciples."},
+      {title:"John 21", desc:"Post-resurrection appearance by the sea, restoration of Peter, and final commissioning."}
+    ]
+  },
+
+  {name:"Acts", testament:"new", author:"Luke", mindset:"Expansion & mission", context:"Growth of the early church through the Holy Spirit from Jerusalem to Rome", theme:"Church & Spirit",
+    chapters:[
+      {title:"Acts 1", desc:"Ascension of Jesus, choosing of Matthias, and promise of the Holy Spirit."},
+      {title:"Acts 2", desc:"Pentecost: outpouring of the Spirit and the birth of the church with Peter’s sermon."},
+      {title:"Acts 3", desc:"Healing at the temple gate and Peter’s preaching about repentance and restoration."},
+      {title:"Acts 4", desc:"Early opposition, boldness of apostles, and sharing among believers."},
+      {title:"Acts 5", desc:"Ananias and Sapphira, apostles’ signs, and increasing persecution and growth."},
+      {title:"Acts 6", desc:"Appointment of the seven deacons and Stephen’s ministry begins."},
+      {title:"Acts 7", desc:"Stephen’s speech and martyrdom, unleashing wider persecution."},
+      {title:"Acts 8", desc:"Scattering of believers, Philip’s mission, and conversion of the Ethiopian eunuch."},
+      {title:"Acts 9", desc:"Conversion of Saul (Paul) and early ministry beginnings among the disciples."},
+      {title:"Acts 10", desc:"Cornelius’ conversion and the gospel reaching Gentiles through Peter’s vision."},
+      {title:"Acts 11", desc:"Church in Antioch grows as Gentile mission takes root and Barnabas joins Paul."},
+      {title:"Acts 12", desc:"Persecution under Herod and miraculous deliverance of Peter."},
+      {title:"Acts 13", desc:"Paul’s first missionary journey begins with proclamation to Gentiles."},
+      {title:"Acts 14", desc:"Paul and Barnabas face opposition and establish churches on their first journey."},
+      {title:"Acts 15", desc:"Jerusalem Council addresses Gentile inclusion and doctrinal unity."},
+      {title:"Acts 16", desc:"Paul’s second journey, Philippi conversion, and prison deliverance."},
+      {title:"Acts 17", desc:"Missionary work in Thessalonica, Berea, and Athens with cultural engagement."},
+      {title:"Acts 18", desc:"Paul’s ministry in Corinth and return to Antioch establishing continued mission."},
+      {title:"Acts 19", desc:"Paul in Ephesus with significant ministry, confrontations, and revival."},
+      {title:"Acts 20", desc:"Paul’s farewell to the Ephesian elders and testimony to his ministry."},
+      {title:"Acts 21", desc:"Paul’s journey to Jerusalem and warnings about upcoming hardships."},
+      {title:"Acts 22", desc:"Paul defends himself, recounts conversion, and appeals to Roman rights."},
+      {title:"Acts 23", desc:"Paul before the Sanhedrin and plot to transfer him to Caesarea for safety."},
+      {title:"Acts 24", desc:"Paul’s trial before Felix with charges and continued witness."},
+      {title:"Acts 25", desc:"Paul’s appeal to Caesar and imprisonment proceedings before Festus."},
+      {title:"Acts 26", desc:"Paul’s defense before King Agrippa recounting his conversion and mission."},
+      {title:"Acts 27", desc:"Paul’s perilous voyage to Rome with shipwreck and providential survival."},
+      {title:"Acts 28", desc:"Paul’s arrival in Rome, ministry under house arrest, and continued proclamation."}
+    ]
+  },
+
+  {name:"Romans", testament:"new", author:"Paul", mindset:"Doctrinal foundation", context:"Comprehensive theological explanation of sin, grace, and salvation", theme:"Justification by faith",
+    chapters:[
+      {title:"Romans 1", desc:"Introduction and exposition of human unrighteousness and need for God’s righteousness."},
+      {title:"Romans 2", desc:"God’s righteous judgment and impartiality toward Jews and Gentiles alike."},
+      {title:"Romans 3", desc:"Universal sinfulness and the doctrine of justification by faith through Christ."},
+      {title:"Romans 4", desc:"Abraham as example of justification by faith and promise to his offspring."},
+      {title:"Romans 5", desc:"Peace with God through Christ and the contrast between Adam and Christ."},
+      {title:"Romans 6", desc:"Union with Christ in death and resurrection leading to freedom from sin."},
+      {title:"Romans 7", desc:"Struggle with sin and the law, leading to deliverance through Christ."},
+      {title:"Romans 8", desc:"Life in the Spirit, assurance of God’s love, and future glory for believers."},
+      {title:"Romans 9", desc:"God’s sovereignty in election and the unfolding of his purposes with Israel."},
+      {title:"Romans 10", desc:"Message of salvation by faith proclaimed to all who call on the Lord."},
+      {title:"Romans 11", desc:"Olive tree metaphor: Israel’s future, mercy, and the mystery of God’s plan."},
+      {title:"Romans 12", desc:"Practical exhortations for Christian living, service, and love in the body."},
+      {title:"Romans 13", desc:"Submission to governing authorities and love fulfilling the law."},
+      {title:"Romans 14", desc:"Conscience issues: disputes over disputable matters and mutual forbearance."},
+      {title:"Romans 15", desc:"Paul’s mission strategy, unity between Jews and Gentiles, and missionary plans."},
+      {title:"Romans 16", desc:"Personal greetings, commendations, and final exhortations and benediction."}
+    ]
+  },
+
+  {name:"1 Corinthians", testament:"new", author:"Paul", mindset:"Correction & unity", context:"Addressing division, immorality, and misuse of spiritual gifts", theme:"Unity in Christ"},
+  {name:"1 Corinthians", testament:"new", author:"Paul", mindset:"Correction & unity", context:"Addressing division, immorality, and misuse of spiritual gifts", theme:"Unity in Christ",
+    chapters:[
+      {title:"1 Corinthians 1", desc:"Appeal for unity and proclamation of Christ crucified as the power of God."},
+      {title:"1 Corinthians 2", desc:"Wisdom of God revealed by the Spirit contrasted with worldly wisdom."},
+      {title:"1 Corinthians 3", desc:"Foundations, immaturity in the church, and warning against worldly boasting."},
+      {title:"1 Corinthians 4", desc:"Paul’s defense of his apostleship and call to faithful stewardship."},
+      {title:"1 Corinthians 5", desc:"Addressing sexual immorality and the need for church discipline."},
+      {title:"1 Corinthians 6", desc:"Lawsuits among believers and teaching on sexual purity."},
+      {title:"1 Corinthians 7", desc:"Instructions on marriage, singleness, and related pastoral guidance."},
+      {title:"1 Corinthians 8", desc:"Guidance on food offered to idols and the conscience of weaker believers."},
+      {title:"1 Corinthians 9", desc:"Paul’s defense of his apostolic rights and example of self-discipline for the gospel."},
+      {title:"1 Corinthians 10", desc:"Warnings from Israel’s history and guidance for Christian liberty and worship."},
+      {title:"1 Corinthians 11", desc:"Order in worship, head coverings, and the Lord’s Supper corrected."},
+      {title:"1 Corinthians 12", desc:"Spiritual gifts and the unity and diversity of the body of Christ."},
+      {title:"1 Corinthians 13", desc:"The supremacy of love as the defining mark of Christian life and gifts."},
+      {title:"1 Corinthians 14", desc:"Proper exercise of gifts, especially prophecy and tongues, for edification."},
+      {title:"1 Corinthians 15", desc:"Resurrection of Christ and the future resurrection of believers explained."},
+      {title:"1 Corinthians 16", desc:"Final instructions, collection for the saints, travel plans, and farewell."}
+    ]
+  },
+
+  {name:"2 Corinthians", testament:"new", author:"Paul", mindset:"Defense & weakness", context:"Paul’s defense of his apostleship and theology of weakness", theme:"Strength in weakness",
+    chapters:[
+      {title:"2 Corinthians 1", desc:"Comfort in affliction and explanation of Paul’s changed travel plans."},
+      {title:"2 Corinthians 2", desc:"Forgiveness for a repentant offender and Paul’s care for the church."},
+      {title:"2 Corinthians 3", desc:"Ministry of the new covenant contrasted with the old, with glory of the Spirit."},
+      {title:"2 Corinthians 4", desc:"Treasure in jars of clay: Paul’s suffering and hope in resurrection life."},
+      {title:"2 Corinthians 5", desc:"Ministry of reconciliation and living by faith, not sight."},
+      {title:"2 Corinthians 6", desc:"Paul’s hardships and appeal to live as God’s servants with holiness."},
+      {title:"2 Corinthians 7", desc:"Joy over repentance and reconciliation among the Corinthians."},
+      {title:"2 Corinthians 8", desc:"Collection for the saints and example of generous giving from Macedonians."},
+      {title:"2 Corinthians 9", desc:"Encouragement for generous giving and its spiritual benefits."},
+      {title:"2 Corinthians 10", desc:"Paul defends his authority and warns against false apostles and boasting."},
+      {title:"2 Corinthians 11", desc:"Paul’s credentials and sufferings; critique of super-apostles."},
+      {title:"2 Corinthians 12", desc:"Paul’s thorn in the flesh and boasting in weakness for Christ’s power."},
+      {title:"2 Corinthians 13", desc:"Final warnings, self-examination, and apostolic benediction."}
+    ]
+  },
+
+  {name:"Galatians", testament:"new", author:"Paul", mindset:"Freedom & grace", context:"Opposition to legalism and affirmation of justification by faith", theme:"Grace over law",
+    chapters:[
+      {title:"Galatians 1", desc:"Paul defends his apostolic gospel received by revelation, not men."},
+      {title:"Galatians 2", desc:"Paul recounts confrontation with Peter and justification by faith affirmed."},
+      {title:"Galatians 3", desc:"Abrahamic promise and law’s temporary role leading to faith in Christ."},
+      {title:"Galatians 4", desc:"Childhood allegory and transition from law to sonship in Christ."},
+      {title:"Galatians 5", desc:"Freedom in the Spirit contrasted with works of the flesh; fruit of the Spirit."},
+      {title:"Galatians 6", desc:"Practical exhortations: bearing burdens, sowing to the Spirit, and final warnings."}
+    ]
+  },
+
+  {name:"Ephesians", testament:"new", author:"Paul", mindset:"Identity & unity", context:"The believer’s position in Christ and unity of the church", theme:"Spiritual blessings",
+    chapters:[
+      {title:"Ephesians 1", desc:"Spiritual blessings in Christ, election, and prayer for wisdom."},
+      {title:"Ephesians 2", desc:"From death to life by grace through faith; unity of Jews and Gentiles."},
+      {title:"Ephesians 3", desc:"Mystery of Christ revealed and Paul’s ministry to the Gentiles."},
+      {title:"Ephesians 4", desc:"Unity and maturity in the body of Christ through gifts and truth."},
+      {title:"Ephesians 5", desc:"Walking in love, instructions for household relationships and holiness."},
+      {title:"Ephesians 6", desc:"Armor of God, spiritual warfare, and final exhortations and greetings."}
+    ]
+  },
+
+  {name:"Philippians", testament:"new", author:"Paul", mindset:"Joy in hardship", context:"Encouragement written from prison emphasizing joy and humility", theme:"Joy in Christ",
+    chapters:[
+      {title:"Philippians 1", desc:"Paul’s imprisonment, partnership in the gospel, and prayer for progress of the gospel."},
+      {title:"Philippians 2", desc:"Christ’s humility and call to unity, humility, and shining as lights."},
+      {title:"Philippians 3", desc:"Warning against confidence in the flesh and pursuit of knowing Christ."},
+      {title:"Philippians 4", desc:"Final exhortations on rejoicing, contentment, and thanksgiving."}
+    ]
+  },
+
+  {name:"Colossians", testament:"new", author:"Paul", mindset:"Supremacy of Christ", context:"Combatting false teachings by exalting Christ’s authority", theme:"Christ above all",
+    chapters:[
+      {title:"Colossians 1", desc:"Supremacy of Christ, Paul’s prayer, and gospel progress."},
+      {title:"Colossians 2", desc:"Warning against deceptive philosophy and fullness in Christ."},
+      {title:"Colossians 3", desc:"Put on the new self: rules for Christian households and virtues."},
+      {title:"Colossians 4", desc:"Final instructions, prayer requests, and greetings."}
+    ]
+  },
+
+  {name:"1 Thessalonians", testament:"new", author:"Paul", mindset:"Hope & readiness", context:"Encouragement regarding Christ’s return", theme:"Second coming",
+    chapters:[
+      {title:"1 Thessalonians 1", desc:"Commendation of the church’s faith, work, and example."},
+      {title:"1 Thessalonians 2", desc:"Paul’s ministry among them and integrity in proclamation."},
+      {title:"1 Thessalonians 3", desc:"Paul’s concern, Timothy’s encouraging report, and prayer for steadfastness."},
+      {title:"1 Thessalonians 4", desc:"Instructions on holy living and teaching about the coming of the Lord."},
+      {title:"1 Thessalonians 5", desc:"Further exhortations about readiness, mutual care, and final benediction."}
+    ]
+  },
+
+  {name:"2 Thessalonians", testament:"new", author:"Paul", mindset:"Clarification & perseverance", context:"Correcting misunderstandings about the Day of the Lord", theme:"End-times clarity",
+    chapters:[
+      {title:"2 Thessalonians 1", desc:"Perseverance in persecution and God’s righteous judgment promised."},
+      {title:"2 Thessalonians 2", desc:"Clarification about the man of lawlessness and events preceding the Lord’s return."},
+      {title:"2 Thessalonians 3", desc:"Exhortations to work faithfully and avoid idleness; final instructions."}
+    ]
+  },
+
+  {name:"1 Timothy", testament:"new", author:"Paul", mindset:"Church order", context:"Guidance for leadership, doctrine, and conduct", theme:"Sound teaching",
+    chapters:[
+      {title:"1 Timothy 1", desc:"Warning against false teaching and the purpose of the law for order."},
+      {title:"1 Timothy 2", desc:"Instructions for prayer, worship, and appropriate conduct in worship."},
+      {title:"1 Timothy 3", desc:"Qualifications for overseers and deacons and household leadership."},
+      {title:"1 Timothy 4", desc:"Warnings against false asceticism and encouragement to train in godliness."},
+      {title:"1 Timothy 5", desc:"Pastoral care for elders, widows, and instructions for church order."},
+      {title:"1 Timothy 6", desc:"Warnings about wealth, pursuit of godliness, and final charge to Timothy."}
+    ]
+  },
+
+  {name:"2 Timothy", testament:"new", author:"Paul", mindset:"Endurance & legacy", context:"Final exhortation to remain faithful amid hardship", theme:"Faithfulness",
+    chapters:[
+      {title:"2 Timothy 1", desc:"Encouragement to be bold in faith, remembering Paul’s example and suffering."},
+      {title:"2 Timothy 2", desc:"Instructions for faithful ministry, endurance, and sound teaching."},
+      {title:"2 Timothy 3", desc:"Warnings about last days’ peril and the value of Scripture for training."},
+      {title:"2 Timothy 4", desc:"Paul’s charge to preach the word, personal reflections, and final greetings."}
+    ]
+  },
+
+  {name:"Titus", testament:"new", author:"Paul", mindset:"Practical leadership", context:"Instruction for establishing order in churches", theme:"Good works",
+    chapters:[
+      {title:"Titus 1", desc:"Qualifications for elders and rebuke of false teachers."},
+      {title:"Titus 2", desc:"Teaching for different groups in the church about godly living."},
+      {title:"Titus 3", desc:"Reminders about God’s mercy, good works, and proper relations with authorities."}
+    ]
+  },
+
+  {name:"Philemon", testament:"new", author:"Paul", mindset:"Reconciliation", context:"Personal appeal regarding a runaway slave", theme:"Forgiveness",
+    chapters:[
+      {title:"Philemon 1", desc:"Paul’s personal plea for Onesimus, urging reconciliation and restoration."}
+    ]
+  },
+
+  {name:"Hebrews", testament:"new", author:"Unknown", mindset:"Christ as fulfillment", context:"Jesus as superior to Old Covenant systems", theme:"New covenant superiority",
+    chapters:[
+      {title:"Hebrews 1", desc:"Supremacy of the Son over angels and revelation of God’s final word in Christ."},
+      {title:"Hebrews 2", desc:"Warning to pay attention to salvation and Christ’s identification with humanity."},
+      {title:"Hebrews 3", desc:"Warning from Israel’s failure and call to hold firm to faith in Christ."},
+      {title:"Hebrews 4", desc:"Promise of rest and the Word’s power to judge hearts; Christ as high priest."},
+      {title:"Hebrews 5", desc:"Christ as high priest in the order of Melchizedek and call to maturity."},
+      {title:"Hebrews 6", desc:"Warning against falling away and the hope of God’s promises illustrated by Abraham."},
+      {title:"Hebrews 7", desc:"Melchizedek’s priesthood and Christ’s superior, eternal priesthood explained."},
+      {title:"Hebrews 8", desc:"New covenant ministry of Christ contrasted with the old covenant priests."},
+      {title:"Hebrews 9", desc:"Earthly and heavenly sanctuaries, atonement, and Christ’s once-for-all sacrifice."},
+      {title:"Hebrews 10", desc:"Urging perseverance based on Christ’s perfect sacrifice and warning against willful sin."},
+      {title:"Hebrews 11", desc:"Hall of faith: examples of patriarchs who trusted God despite trials."},
+      {title:"Hebrews 12", desc:"Discipline of the Lord and encouragement to run the race with endurance."},
+      {title:"Hebrews 13", desc:"Practical final exhortations on love, hospitality, leadership, and benediction."}
+    ]
+  },
+
+  {name:"James", testament:"new", author:"James", mindset:"Practical faith", context:"Ethical instruction emphasizing action", theme:"Faith in action",
+    chapters:[
+      {title:"James 1", desc:"Trials, perseverance, and the testing of faith producing maturity."},
+      {title:"James 2", desc:"Faith and works: living faith evidenced by deeds and impartiality."},
+      {title:"James 3", desc:"Taming the tongue and wisdom contrasted with earthly passions."},
+      {title:"James 4", desc:"Warning against worldliness, quarrels, and dependence on the Lord’s will."},
+      {title:"James 5", desc:"Patience amid suffering, prayer, and warnings for the rich and a call to repentance."}
+    ]
+  },
+
+  {name:"1 Peter", testament:"new", author:"Peter", mindset:"Suffering & hope", context:"Encouragement to persecuted believers", theme:"Endurance",
+    chapters:[
+      {title:"1 Peter 1", desc:"Living hope, holiness, and preparation for trials through faith."},
+      {title:"1 Peter 2", desc:"Living stones, royal priesthood, and proper conduct toward authorities."},
+      {title:"1 Peter 3", desc:"Suffering for righteousness, household codes, and Christ’s example."},
+      {title:"1 Peter 4", desc:"Living for God amid suffering and using gifts to serve others."},
+      {title:"1 Peter 5", desc:"Exhortations to elders and young men, humility, and final encouragements."}
+    ]
+  },
+
+  {name:"2 Peter", testament:"new", author:"Peter", mindset:"Warning & vigilance", context:"Warnings against false teachers", theme:"Truth vs error",
+    chapters:[
+      {title:"2 Peter 1", desc:"Call to growth in virtue and assurance through God’s promises."},
+      {title:"2 Peter 2", desc:"Strong denunciation of false teachers and their destructive influence."},
+      {title:"2 Peter 3", desc:"Promise of the Lord’s return, warning against scoffers, and call to holy living."}
+    ]
+  },
+
+  {name:"1 John", testament:"new", author:"John", mindset:"Assurance & love", context:"Tests of genuine faith and emphasis on love", theme:"God is love",
+    chapters:[
+      {title:"1 John 1", desc:"Proclamation of fellowship with God and call to walk in the light."},
+      {title:"1 John 2", desc:"Warning against antichrists, living by Jesus’ example, and obedience."},
+      {title:"1 John 3", desc:"Love as proof of being God’s children and warnings about sin."},
+      {title:"1 John 4", desc:"Testing spirits, love’s origin in God, and perfect love casting out fear."},
+      {title:"1 John 5", desc:"Faith overcomes the world and closing exhortations about assurance and prayer."}
+    ]
+  },
+
+  {name:"2 John", testament:"new", author:"John", mindset:"Truth & boundaries", context:"Warning against false teachers", theme:"Walk in truth",
+    chapters:[
+      {title:"2 John 1", desc:"Brief letter emphasizing truth, love, and caution against deceivers."}
+    ]
+  },
+
+  {name:"3 John", testament:"new", author:"John", mindset:"Support & integrity", context:"Encouragement of faithful service", theme:"Faithful living",
+    chapters:[
+      {title:"3 John 1", desc:"Personal letter commending hospitality and warning against domineering leaders."}
+    ]
+  },
+
+  {name:"Jude", testament:"new", author:"Jude", mindset:"Contending for faith", context:"Strong warning against corruption and apostasy", theme:"Defend the faith",
+    chapters:[
+      {title:"Jude 1", desc:"Warning against ungodly intruders and exhortation to contend for the faith."}
+    ]
+  },
+
+  {name:"Revelation", testament:"new", author:"John", mindset:"Apocalyptic victory", context:"Symbolic visions of cosmic conflict and ultimate triumph of God", theme:"Final victory",
+    chapters:[
+      {title:"Revelation 1", desc:"Prologue and vision of the risen Christ among the lampstands; messages begin."},
+      {title:"Revelation 2", desc:"Letters to Ephesus, Smyrna, Pergamum, and Thyatira addressing faithfulness and compromise."},
+      {title:"Revelation 3", desc:"Letters to Sardis, Philadelphia, and Laodicea with calls to repentance and perseverance."},
+      {title:"Revelation 4", desc:"Heavenly throne scene with worship of the Creator and anticipation of judgment."},
+      {title:"Revelation 5", desc:"Lamb worthy to open the scroll and initiate God’s redemptive plan."},
+      {title:"Revelation 6", desc:"Seal judgments begin, revealing cosmic disturbance and earth’s suffering."},
+      {title:"Revelation 7", desc:"Sealing of the 144,000 and multitude from every nation praising God."},
+      {title:"Revelation 8", desc:"Trumpet judgments commence with ecological and cosmic woes."},
+      {title:"Revelation 9", desc:"Further trumpet woes with demonic-like locusts and intensified judgment."},
+      {title:"Revelation 10", desc:"Mighty angel and little scroll: interlude of prophecy and sweetness/bitterness."},
+      {title:"Revelation 11", desc:"Two witnesses, seventh trumpet, and God’s kingship proclaimed amid conflict."},
+      {title:"Revelation 12", desc:"Woman, dragon, and cosmic conflict symbolizing spiritual war and protection of the remnant."},
+      {title:"Revelation 13", desc:"Beast from the sea and the earth introduce persecution and idolatrous power."},
+      {title:"Revelation 14", desc:"Lamb’s victory, harvest imagery, and messages of judgment and blessing."},
+      {title:"Revelation 15", desc:"Preparation for bowl judgments and the song of Moses and the Lamb."},
+      {title:"Revelation 16", desc:"Bowl judgments poured out bringing final plagues and cosmic upheaval."},
+      {title:"Revelation 17", desc:"Vision of Babylon the great and its moral and economic corruption exposed."},
+      {title:"Revelation 18", desc:"Fall of Babylon lamented and call to separate from her sins."},
+      {title:"Revelation 19", desc:"Heavenly rejoicing, Christ’s rider imagery, and victory over beasts."},
+      {title:"Revelation 20", desc:"Millennial imagery, final judgment of Satan, and the great white throne judgment."},
+      {title:"Revelation 21", desc:"New heaven and new earth: the New Jerusalem and God dwelling with his people."},
+      {title:"Revelation 22", desc:"Final exhortations, river of life, and benediction closing the revelation."}
+    ]
+  },
+
+
+];
+
+function render(list){
+  oldEl.innerHTML="";
+  newEl.innerHTML="";
+
+  list.forEach(b=>{
+    const el=document.createElement("div");
+    el.className="book";
+    el.innerText=b.name;
+    el.onclick=()=>show(b);
+
+    (b.testament==="old"?oldEl:newEl).appendChild(el);
+  });
+}
+
+// Generate a simple list of chapters with short descriptions.
+function generateChapters(book){
+  const count = book.chapters?.length || (book.testament === 'old' ? 12 : 10);
+  const chapters = [];
+  for(let i=1;i<=count;i++){
+    const title = `Chapter ${i}`;
+    const desc = book.chapters && book.chapters[i-1] && book.chapters[i-1].desc
+      ? book.chapters[i-1].desc
+      : `${book.name} — ${book.context.split('.')[0] || book.theme}. Overview and key points for chapter ${i}.`;
+    chapters.push({title, desc});
+  }
+  return chapters;
+}
+
+function filterBooks(q){
+  render(books.filter(b=>b.name.toLowerCase().includes(q.toLowerCase())));
+}
+
+function show(b){
+  const chapters = generateChapters(b);
+
+  contentEl.innerHTML=`
+    <div class="content-card">
+      <h2>${b.name}</h2>
+      <div class="meta"><b>Author:</b> ${b.author}</div>
+      <div class="meta"><b>Mindset:</b> ${b.mindset}</div>
+      <div class="meta"><b>Context:</b> ${b.context}</div>
+      <div class="meta"><b>Theme:</b> ${b.theme}</div>
+
+      <div class="meta"><b>Chapters</b></div>
+      <div id="chapters">
+        ${chapters.map(c=>`
+          <details class="chapter">
+            <summary>${c.title}</summary>
+            <p>${c.desc}</p>
+          </details>
+        `).join('')}
+      </div>
+    </div>
+  `;
+
+  if(window.innerWidth < 900){
+    switchTab('content');
+  }
+}
+
+function toggleTheme(){
+  document.documentElement.dataset.theme =
+    document.documentElement.dataset.theme==="dark"?"light":"dark";
+}
+
+function switchTab(id){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+  document.querySelector(`[data-tab="${id}"]`).classList.add('active');
+}
+
+render(books);
+</script>
+
+</body>
+</html>
