@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revelation Study Portal</title>
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --accent: #f59e0b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #475569;
+            --radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* App Layout */
+        .sidebar {
+            width: 300px;
+            background-color: var(--bg-secondary);
+            border-right: 1px solid var(--border);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .main-content {
+            margin-left: 300px;
+            flex: 1;
+            padding: 3rem;
+            max-width: 1000px;
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        /* Navigation Links */
+        .nav-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .nav-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .nav-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius);
+            transition: var(--transition);
+            font-size: 0.95rem;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background-color: var(--bg-tertiary);
+            color: var(--text-main);
+        }
+
+        /* Cards & Content Blocks */
+        .card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .section-block {
+            display: none;
+        }
+
+        .section-block.active {
+            display: block;
+        }
+
+        /* Interactive Question Layout */
+        .question-item {
+            border-bottom: 1px solid var(--border);
+            padding: 1.25rem 0;
+        }
+
+        .question-item:last-child {
+            border-bottom: none;
+        }
+
+        .question-text {
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .question-number {
+            color: var(--accent);
+        }
+
+        .answer-text {
+            color: var(--text-muted);
+            padding-left: 1.75rem;
+            font-size: 0.95rem;
+        }
+
+        /* Accordion Style for Terms */
+        .accordion-item {
+            background-color: var(--bg-tertiary);
+            border-radius: var(--radius);
+            margin-bottom: 0.75rem;
+            overflow: hidden;
+        }
+
+        .accordion-header {
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            transition: var(--transition);
+        }
+
+        .accordion-header:hover {
+            background-color: #475569;
+        }
+
+        .accordion-content {
+            padding: 0 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .accordion-item.open .accordion-content {
+            padding: 1rem 1.5rem;
+            max-height: 1000px; /* Arbitrary large number to allow expansion */
+            border-top: 1px solid var(--border);
+            background-color: rgba(15, 23, 42, 0.3);
+        }
+
+        .accordion-header::after {
+            content: '+';
+            color: var(--accent);
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+
+        .accordion-item.open .accordion-header::after {
+            content: '−';
+            transform: rotate(180deg);
+        }
+
+        /* Badges for Cross References */
+        .reference-tag {
+            display: inline-block;
+            background-color: rgba(245, 158, 11, 0.1);
+            color: var(--accent);
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        /* Mobile Responsive adjustments */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 1.5rem;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div>
+            <h1>Revelation Study</h1>
+            <p class="subtitle">Interactive Companion Guide</p>
+        </div>
+        
+        <div class="nav-group">
+            <span class="nav-label">Discussion Modules</span>
+            <a href="#" class="nav-link active" onclick="switchSection('churches')">The 7 Churches (Ch. 2-3)</a>
+            <a href="#" class="nav-link" onclick="switchSection('overview')">Core Themes & Timeline</a>
+            <a href="#" class="nav-link" onclick="switchSection('terms')">Scriptural Term Glossary</a>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        
+        <!-- SECTION 1: THE 7 CHURCHES -->
+        <div id="churches" class="section-block active">
+            <h2>In-Person Discussion: Revelation Chapters 2-3</h2>
+            <div class="card">
+                <!-- Question 1 -->
+                <div class="question-item">
+                    <div class="question-text"><span class="question-number">1.</span> Who are they?</div>
+                    <div class="answer-text">
+                        The seven literal historical churches located in Asia Minor (modern-day Turkey): Ephesus, Smyrna, Pergamum, Thyatira, Sardis, Philadelphia, and Laodicea. They also represent universal church types throughout history.
+                    </div>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="question-item">
+                    <div class="question-text"><span class="question-number">2.</span> What is the good of each church?</div>
+                    <div class="answer-text">
+                        Each church (except Laodicea) receives praise for its strengths—such as Ephesus for its endurance and testing of false apostles, and Smyrna for rich faith amidst physical poverty and tribulation.
+                    </div>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="question-item">
+                    <div class="question-text"><span class="question-number">3.</span> What is the problem of each church?</div>
+                    <div class="answer-text">
+                        Most face critical rebukes—Ephesus left its first love; Pergamum tolerated false teachers (Balaam/Nicolaitans); Thyatira tolerated Jezebel; Sardis was spiritually dead; Laodicea was completely lukewarm. (Smyrna and Philadelphia receive no rebuke).
+                    </div>
+                </div>
+
+                <!-- Question 4 -->
+                <div class="question-item">
+                    <div class="question-text"><span class="question-number">4.</span> What is the blessing for each church?</div>
+                    <div class="answer-text">
+                        Promises given to "him who overcomes," including eating from the tree of life, hidden manna, the morning star, white garments, and sitting with Christ on His throne.
+                    </div>
+                </div>
+
+                <!-- Question 5 -->
+                <div class="question-item">
+                    <div class="question-text"><span class="question-number">5.</span> What is the warning for each church?</div>
+                    <div class="answer-text">
+                        Severe spiritual consequences if they refuse to repent: removal of their lampstand, Christ fighting them with the sword of His mouth, coming like a thief, or being spit out of His mouth.
+                    </div>
+                </div>
+
+                <!-- Question 6 -->
+                <div class="question-item">
+                    <div class="question-text"><span class="question-number">6.</span> What are the 2 words Jesus Christ says to each church? What do they mean?</div>
+                    <div class="answer-text">
+                        <strong>"I know..."</strong> (specifically followed by "your works" or "your tribulations"). 
+                        <br><br>
+                        <em>Personal & Church Application:</em> It serves as a reminder of Christ’s absolute omniscience. He sees both hidden sacrifices and hidden compromises perfectly, leaving no room for pretense.
+                    </div>
+                </div>
+
+                <!-- Question 7 -->
+                <div class="question-item">
+                    <div class="question-text"><span class="question-number">7.</span> How do you relate the 7 churches to the 10 virgins? Why must Jesus speak to them?</div>
+                    <div class="answer-text">
+                        Both passages emphasize readiness, internal spiritual reality over external religious appearance, and the danger of losing your oil (Holy Spirit/spiritual vitality). Jesus speaks directly to correct course before the door closes.
+                    </div>
+                </div>
+
+                <!-- Question 8 -->
+                <div class="question-item">
+                    <div class="question-text"><span class="question-number">8.</span> What is your faith and hope based on the teachings of the 7 churches?</div>
+                    <div class="answer-text">
+                        Hope rests on the reality that Christ remains walking directly in the midst of His churches, offering grace to repent and concrete eternal rewards to those who endure.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 2: CORE THEMES & TIMELINE -->
+        <div id="overview" class="section-block">
+            <h2>Weekly Readings: Revelation 1-5, 21-22</h2>
+            
+            <div class="card">
+                <h3>1. Christ-Centered Focus</h3>
+                <p class="answer-text" style="padding-left:0; margin-top:0.5rem;">
+                    Shifting the interpretive paradigm away from merely seeking cryptic end-times timeline signs, and grounding the text intentionally as the ultimate unveiling of the character, absolute sovereignty, and victory of Jesus Christ.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>2. Prophesied Return of Christ Cross-References</h3>
+                <div class="answer-text" style="padding-left:0; margin-top:0.5rem;">
+                    <span class="reference-tag">Daniel 7:13</span> - The Son of Man coming with the clouds of heaven. <br>
+                    <span class="reference-tag">Matthew 24:30</span> - All tribes of the earth mourn seeing the Son of Man coming on clouds with power.
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>3. The New Heaven Cross-References</h3>
+                <div class="answer-text" style="padding-left:0; margin-top:0.5rem;">
+                    <span class="reference-tag">Isaiah 65:17</span> - "For behold, I create new heavens and a new earth; and the former shall not be remembered." <br>
+                    <span class="reference-tag">2 Peter 3:13</span> - Looking forward to a new heaven and earth where righteousness dwells.
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>4. Purpose of John's Writing (Chapter 1)</h3>
+                <p class="answer-text" style="padding-left:0; margin-top:0.5rem;">
+                    To deliver the testimony of Jesus Christ to His servants, showing them "the things which must shortly take place," and blessing those who hear and keep the prophecy.
+                </p>
+            </div>
+        </div>
+
+        <!-- SECTION 3: SCRIPTURAL GLOSSARY -->
+        <div id="terms" class="section-block">
+            <h2>Scriptural Term Identification</h2>
+            <p class="subtitle">Definitions derived exclusively from biblical cross-references and internal scriptural contexts.</p>
+            
+            <!-- Accordion Container -->
+            <div>
+                <!-- Term 1 -->
+                <div class="accordion-item">
+                    <div class="accordion-header">7 Churches</div>
+                    <div class="accordion-content">
+                        Literal congregations in Asia Minor (Rev 1:11) structurally representing the complete global body of believers under Christ's direct oversight.
+                    </div>
+                </div>
+
+                <!-- Term 2 -->
+                <div class="accordion-item">
+                    <div class="accordion-header">The Alpha and the Omega</div>
+                    <div class="accordion-content">
+                        The first and last letters of the Greek alphabet. Reflects God's eternal nature, all-encompassing sovereignty, and absolute authority over both the beginning and ultimate completion of creation (Isa 44:6).
+                    </div>
+                </div>
+
+                <!-- Term 3 -->
+                <div class="accordion-item">
+                    <div class="accordion-header">Hair white like wool</div>
+                    <div class="accordion-content">
+                        Signifies divine wisdom, absolute purity, and timeless antiquity. Corresponds directly to the description of the Ancient of Days found in Daniel 7:9.
+                    </div>
+                </div>
+
+                <!-- Term 4 -->
+                <div class="accordion-item">
+                    <div class="accordion-header">Eyes like a flame of fire</div>
+                    <div class="accordion-content">
+                        Represents all-penetrating holy discernment, infallible judgment, and perfect clarity. Nothing can remain hidden from His sight (Hebrews 4:13).
+                    </div>
+                </div>
+
+                <!-- Term 5 -->
+                <div class="accordion-item">
+                    <div class="accordion-header">Brass / Bronze</div>
+                    <div class="accordion-content">
+                        Symbolic of strength, endurance, and divine judgment refined in the furnace. Mirrors the construction elements of the Old Testament sacrificial altar and the feet of figures in Ezekiel 1.
+                    </div>
+                </div>
+
+                <!-- Term 6 -->
+                <div class="accordion-item">
+                    <div class="accordion-header">The sound of many waters</div>
+                    <div class="accordion-content">
+                        Represents a voice carrying immense authority, majesty, and overwhelming power. Parallels the voice of the Almighty described in Ezekiel 43:2.
+                    </div>
+                </div>
+
+                <!-- Term 7 -->
+                <div class="accordion-item">
+                    <div class="accordion-header">7 Stars</div>
+                    <div class="accordion-content">
+                        Scripturally defined explicitly in Revelation 1:20 as the messengers or angels charged with watching over the spiritual state of the seven churches.
+                    </div>
+                </div>
+
+                <!-- Term 8 -->
+                <div class="accordion-item">
+                    <div class="accordion-header">7 Lampstands</div>
+                    <div class="accordion-content">
+                        Explicitly defined in Revelation 1:20 as representing the seven churches themselves, tasked with holding up and bearing Christ's light to a dark world.
+                    </div>
+                </div>
+
+                <!-- Term 9 -->
+                <div class="accordion-item">
+                    <div class="accordion-header">Sharp two-edged sword</div>
+                    <div class="accordion-content">
+                        Represents the active, piercing power of the Word of God executing truth and judgment (Hebrews 4:12, Ephesians 6:17).
+                    </div>
+                </div>
+
+                <!-- Term 10 -->
+                <div class="accordion-item">
+                    <div class="accordion-header">Hades</div>
+                    <div class="accordion-content">
+                        The temporary realm of the dead. In Revelation 1:18, Christ demonstrates absolute victory over death by holding its physical keys.
+                    </div>
+                </div>
+
+                <!-- Term 11 -->
+                <div class="accordion-item">
+                    <div class="accordion-header">White Robes</div>
+                    <div class="accordion-content">
+                        Symbolizes righteousness, clean standing, and ultimate justification granted through the blood of Christ (Revelation 7:14, 19:8).
+                    </div>
+                </div>
+
+                <!-- Term 12 -->
+                <div class="accordion-item">
+                    <div class="accordion-header">4 Living Creatures</div>
+                    <div class="accordion-content">
+                        Exalted heavenly beings leading continuous worship around God's throne, sharing distinct symbolic features with the cherubim and seraphim seen in Ezekiel 1 and Isaiah 6.
+                    </div>
+                </div>
+
+                <!-- Term 13 -->
+                <div class="accordion-item">
+                    <div class="accordion-header">The Scroll</div>
+                    <div class="accordion-content">
+                        The document containing God's cosmic decree of judgment and ultimate inheritance plan for the earth, which only the Lamb is worthy to open.
+                    </div>
+                </div>
+
+                <!-- Term 14 -->
+                <div class="accordion-item">
+                    <div class="accordion-header">The New Heaven</div>
+                    <div class="accordion-content">
+                        The complete renewal and restoration of the spiritual cosmos, entirely purged of sin, decay, and separation from God's immediate presence.
+                    </div>
+                </div>
+
+                <!-- Term 15 -->
+                <div class="accordion-item">
+                    <div class="accordion-header">Tribulation</div>
+                    <div class="accordion-content">
+                        The deep spiritual and physical pressing, testing, and persecution endured by believers in a hostile world, building endurance and separating true faith from superficial pretense.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- JavaScript for Interactivity -->
+    <script>
+        // Section Switching functionality
+        function switchSection(sectionId) {
+            // Remove active classes from all links and sections
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            document.querySelectorAll('.section-block').forEach(block => block.classList.remove('active'));
+            
+            // Add active class to clicked target elements
+            const activeLink = Array.from(document.querySelectorAll('.nav-link')).find(link => link.getAttribute('onclick').includes(sectionId));
+            if(activeLink) activeLink.classList.add('active');
+            
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Scroll to top on mobile viewports
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+
+        // Accordion functionality for terms
+        document.querySelectorAll('.accordion-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const item = header.parentElement;
+                item.classList.toggle('open');
+            });
+        });
+    </script>
+</body>
+</html>
