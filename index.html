@@ -5,296 +5,336 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Jesus – Content</title>
 
-  <!-- Optional: reuse your shared CSS file -->
-  <link rel="stylesheet" href="flashcards-responsive.css" />
-
   <style>
     :root {
       --bg1: #071426;
       --bg2: #0e2a4f;
       --accent: #7dd3fc;
       --accent-2: #60a5fa;
-      --glass: rgba(255, 255, 255, 0.06);
-      --muted: rgba(255, 255, 255, 0.75);
-      --card-width: min(880px, 86vw);
+      --glass: rgba(255, 255, 255, 0.04);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --muted: rgba(255, 255, 255, 0.7);
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
         Roboto, "Helvetica Neue", Arial, sans-serif;
     }
 
-    html,
-    body {
+    html, body {
       height: 100%;
+      margin: 0;
+      overflow-x: hidden;
     }
 
     body {
-      margin: 0;
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       background:
-        radial-gradient(1200px 600px at 10% 10%, rgba(96, 165, 250, 0.06), transparent 80%),
+        radial-gradient(1000px 600px at 50% 10%, rgba(96, 165, 250, 0.12), transparent 80%),
         linear-gradient(180deg, var(--bg1), var(--bg2));
       color: #f8fafc;
       -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      padding: 32px;
+      padding: 16px;
+      box-sizing: border-box;
     }
 
     .app {
-      width: var(--card-width);
-      max-width: 100%;
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent);
-      border-radius: 18px;
-      box-shadow:
-        0 18px 40px rgba(2, 6, 23, 0.8),
-        inset 0 1px 0 rgba(255, 255, 255, 0.04);
-      padding: 24px 22px 26px;
+      width: 100%;
+      max-width: 480px;
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 20px;
     }
 
     .header {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-
-    .brand {
-      display: flex;
       align-items: center;
       gap: 14px;
+      padding: 0 8px;
     }
 
     .logo {
-      width: 52px;
-      height: 52px;
-      border-radius: 14px;
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
       background: linear-gradient(135deg, var(--accent), var(--accent-2));
       display: grid;
       place-items: center;
       font-weight: 800;
       color: #02101f;
-      box-shadow: 0 12px 26px rgba(15, 23, 42, 0.7);
+      box-shadow: 0 8px 20px rgba(125, 211, 252, 0.2);
       letter-spacing: 0.04em;
-    }
-
-    .title-block {
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
     }
 
     .title-block h1 {
       margin: 0;
-      font-size: 1.6rem;
-      letter-spacing: 0.02em;
+      font-size: 1.4rem;
+      letter-spacing: 0.01em;
+      font-weight: 700;
     }
 
     .title-block p {
-      margin: 0;
-      font-size: 0.9rem;
+      margin: 2px 0 0 0;
+      font-size: 0.85rem;
       color: var(--muted);
     }
 
-    .header-actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
+    /* Slider Desktop Wrapper Positioner */
+    .slider-wrapper {
+      position: relative;
+      width: 100%;
     }
 
-    .btn {
-      background: var(--glass);
-      color: var(--muted);
-      border: none;
-      padding: 9px 14px;
-      border-radius: 999px;
+    /* Desktop Navigation Arrows */
+    .nav-arrow {
+      display: none; /* Hidden on mobile by default */
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #fff;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
       cursor: pointer;
-      min-width: 44px;
-      display: inline-flex;
+      z-index: 10;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      font-weight: 600;
-      font-size: 0.85rem;
-      transition:
-        transform 0.16s ease-out,
-        box-shadow 0.16s ease-out,
-        background 0.16s ease-out;
-      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.6);
-      text-decoration: none;
+      transition: all 0.2s ease;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      font-size: 1.1rem;
     }
 
-    .btn.primary {
-      background: linear-gradient(90deg, var(--accent), var(--accent-2));
-      color: #031124;
-      box-shadow: 0 10px 28px rgba(37, 99, 235, 0.35);
+    .nav-arrow:hover {
+      background: var(--accent);
+      color: #02101f;
+      box-shadow: 0 0 15px rgba(125, 211, 252, 0.4);
     }
 
-    .btn.ghost {
-      background: transparent;
-      border: 1px solid rgba(148, 163, 184, 0.45);
-      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.6);
+    .nav-arrow:active {
+      transform: translateY(-50%) scale(0.95);
     }
 
-    .btn:hover {
-      transform: translateY(-2px);
+    .nav-arrow.prev { left: -60px; }
+    .nav-arrow.next { right: -60px; }
+
+    /* Expose desktop controls when screen space allows */
+    @media (min-width: 620px) {
+      .nav-arrow { display: flex; }
     }
 
-    .btn:focus-visible {
-      outline: 3px solid rgba(125, 211, 252, 0.8);
-      outline-offset: 3px;
+    /* Native Horizontal Swipe Deck Wrapper */
+    .slider-container {
+      width: 100%;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      display: flex;
+      gap: 16px;
+      padding: 12px 4px 24px;
+      box-sizing: border-box;
+      scrollbar-width: none; /* Hide scrollbars Chrome/Firefox */
     }
 
-    /* Big empty area for future buttons */
-    .subject-area {
-      border-radius: 16px;
-      padding: 20px;
-      border: 1px dashed rgba(148, 163, 184, 0.4);
-      background: linear-gradient(180deg, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.85));
-      min-height: 260px;
+    .slider-container::-webkit-scrollbar {
+      display: none; /* Hide scrollbars Safari */
+    }
+
+    /* Premium Sliding Deck Individual Cards */
+    .slide-card {
+      flex: 0 0 100%;
+      scroll-snap-align: center;
+      box-sizing: border-box;
+      border-radius: 24px;
+      padding: 24px;
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+      border: 1px solid var(--glass-border);
+      box-shadow: 
+        0 24px 48px -12px rgba(2, 6, 23, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       display: flex;
       flex-direction: column;
-      gap: 18px;
+      gap: 20px;
+      min-height: 290px;
     }
 
-    .subject-area-header {
+    .card-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      padding-bottom: 12px;
     }
 
-    .subject-area-title {
+    .card-title {
       font-size: 1rem;
       font-weight: 600;
-      color: #e5e7eb;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: var(--accent);
     }
 
-    .subject-area-subtitle {
-      font-size: 0.85rem;
+    .card-badge {
+      font-size: 0.75rem;
+      background: var(--glass);
+      padding: 4px 10px;
+      border-radius: 99px;
       color: var(--muted);
+      border: 1px solid rgba(255, 255, 255, 0.04);
     }
 
-    .subject-grid {
-      margin-top: 8px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 14px;
-    }
-
-    .subject-button {
-      width: 100%;
+    .grid-layout {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex-grow: 1;
       justify-content: center;
     }
 
-    @media (max-width: 720px) {
-      body {
-        padding: 20px;
-      }
-      .app {
-        padding: 18px 16px 20px;
-      }
-      .title-block h1 {
-        font-size: 1.4rem;
-      }
-      .subject-grid {
-       grid-template-columns: 1fr; /* Stacks buttons on top of each other */
-       gap: 12px;                  /* Keeps clean, tight spacing */
-      }
-      .btn {
-      padding: 14px 20px; /* Expands height and touch surface */
-      font-size: 0.95rem;  /* Slightly increases text legibility */
-      }
+    /* Tactile Premium Anchor Buttons */
+    .action-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(15, 23, 42, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 16px 20px;
+      border-radius: 14px;
+      color: #f1f5f9;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    /* Ensure buttons can shrink and fill container on small screens */
-    .btn { min-width: 0; box-sizing: border-box; }
-    .subject-button { width: 100%; }
-    @media (max-width: 720px) {
-      .subject-grid { grid-template-columns: 1fr; }
-      .subject-button, .subject-grid .btn { width: 100%; }
+
+    .action-btn::after {
+      content: '→';
+      font-size: 1.1rem;
+      color: var(--accent);
+      transition: transform 0.2s ease;
+    }
+
+    .action-btn:hover {
+      background: rgba(15, 23, 42, 0.6);
+      border-color: rgba(125, 211, 252, 0.2);
+    }
+
+    .action-btn:hover::after {
+      transform: translateX(4px);
+    }
+
+    .action-btn:active {
+      transform: scale(0.98);
+      background: rgba(15, 23, 42, 0.8);
+    }
+
+    /* Swipe Indicator Dots UI */
+    .pagination-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: -8px;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .dot.active {
+      width: 18px;
+      background: var(--accent);
+      border-radius: 3px;
     }
   </style>
 </head>
 <body>
-  <main class="app" role="main" aria-label="JavaScript page">
+
+  <main class="app" role="main">
     <header class="header">
-      <div class="brand">
-        <div class="logo" aria-hidden="true">JC</div>
-        <div class="title-block">
-          <h1>Christian Page</h1>
-          <p>Links to sites. Please edit prayer list</p>
-        </div>
+      <div class="logo" aria-hidden="true">JC</div>
+      <div class="title-block">
+        <h1>Christian Page</h1>
+        <p>Swipe or use side arrows to navigate</p>
       </div>
-      
     </header>
 
-    <section class="subject-area" aria-label="JavaScript study options">
-      <div class="subject-area-header">
-        <div>
-          <div class="subject-area-title">Sources</div>
-          <div class="subject-area-subtitle">
+    <div class="slider-wrapper">
+      <!-- Desktop Interactive Arrows -->
+      <button class="nav-arrow prev" onclick="moveSlider(-1)" aria-label="Previous slide">←</button>
+      <button class="nav-arrow next" onclick="moveSlider(1)" aria-label="Next slide">→</button>
+
+      <!-- Native Horizontal Swipe Deck -->
+      <div class="slider-container" id="deckSlider">
+        
+        <!-- CARD 1: Core Resources -->
+        <section class="slide-card">
+          <div class="card-header">
+            <span class="card-title">General Resources</span>
+            <span class="card-badge">1 of 2</span>
           </div>
-        </div>
+          <div class="grid-layout">
+            <a href="./context-bible.html" class="action-btn">context bible</a>
+            <a href="./character.html" class="action-btn">Personas</a>
+            <a href="https://jcabrera702.github.io/daily/?group=group-ho1csh" rel="noopener noreferrer" class="action-btn">Monday Men Prayer List</a>
+          </div>
+        </section>
+
+        <!-- CARD 2: Service Rotations -->
+        <section class="slide-card">
+          <div class="card-header">
+            <span class="card-title">Weekly Gatherings</span>
+            <span class="card-badge">2 of 2</span>
+          </div>
+          <div class="grid-layout">
+            <a href="./Sunday/sunday-home.html" rel="noopener noreferrer" class="action-btn">Sunday</a>
+            <a href="./Wednesday/wed-home.html" rel="noopener noreferrer" class="action-btn">Wednesday</a>
+          </div>
+        </section>
+
       </div>
+    </div>
 
-     <div class="subject-grid">
-  <!-- First button: Fixed path, semantic anchor tag, and properly closed elements -->
-  <a 
-    href="./context-bible.html" 
-    class="btn primary subject-button"
-    role="button"
-  >
-    context bible
-  </a>
-    <a 
-    href="./character.html" 
-    class="btn primary subject-button"
-    role="button"
-  >
-    Personas
-  </a>
-  <a 
-    href="https://jcabrera702.github.io/daily/?group=group-ho1csh" rel="noopener noreferrer"
-    class="btn primary subject-button"
-    role="button"
-  >
-    Monday Men Prayer List
-  </a>
-  <a 
-    href="./Sunday/sunday-home.html" rel="noopener noreferrer"
-    class="btn primary subject-button"
-    role="button"
-  >
-    Sunday
-  </a>
-   <a 
-    href="./Wednesday/wed-home.html" rel="noopener noreferrer"
-    class="btn primary subject-button"
-    role="button"
-  >
-    Wednesday
-  </a>
-
- 
-
-  <!-- EXAMPLE: later you can copy this block and change the text -->
-  <!--
-  <a 
-    href="./MCAT/02.html" 
-    class="btn subject-button"
-    role="button"
-  >
-    New Subject
-  </a>
-  -->
-</div>
-    </section>
+    <!-- Pagination Track Elements -->
+    <div class="pagination-dots">
+      <div class="dot active" id="dot1"></div>
+      <div class="dot" id="dot2"></div>
+    </div>
   </main>
+
+  <script>
+    const slider = document.getElementById('deckSlider');
+    const dot1 = document.getElementById('dot1');
+    const dot2 = document.getElementById('dot2');
+
+    // Dynamically update pagination dots based on actual scroll viewport track position
+    slider.addEventListener('scroll', () => {
+      const scrollIndex = Math.round(slider.scrollLeft / slider.offsetWidth);
+      if (scrollIndex === 0) {
+        dot1.classList.add('active');
+        dot2.classList.remove('active');
+      } else {
+        dot2.classList.add('active');
+        dot1.classList.remove('active');
+      }
+    });
+
+    // Desktop Click-to-Scroll translation utility
+    function moveSlider(direction) {
+      const cardWidth = slider.offsetWidth;
+      slider.scrollBy({
+        left: direction * cardWidth,
+        behavior: 'smooth'
+      });
+    }
+  </script>
+
 </body>
 </html>
