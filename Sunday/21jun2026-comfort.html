@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOPE to Comfort // Sermon Companion</title>
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --accent: #ef4444;
+            --accent-hover: #dc2626;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --radius-lg: 16px;
+            --radius-md: 8px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding-bottom: 80px; /* Space for bottom nav */
+        }
+
+        header {
+            background: linear-gradient(180deg, rgba(239, 68, 68, 0.2) 0%, rgba(15, 23, 42, 0) 100%);
+            padding: 40px 20px 24px 20px;
+            text-align: center;
+        }
+
+        .series-badge {
+            background-color: var(--accent);
+            color: white;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding: 4px 12px;
+            border-radius: var(--radius-md);
+            font-size: 0.75rem;
+            display: inline-block;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 14px rgba(239, 68, 68, 0.4);
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 4px;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        main {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background-color: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title .icon {
+            color: var(--accent);
+        }
+
+        /* Big Idea Callout */
+        .big-idea-box {
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, #1e1b4b 100%);
+            border-left: 4px solid var(--accent);
+        }
+
+        .quote-text {
+            font-size: 1.4rem;
+            font-weight: 700;
+            font-style: italic;
+            color: var(--text-main);
+            line-height: 1.4;
+        }
+
+        /* Pillar List Layout */
+        .pillar-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .pillar-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .pillar-number {
+            background-color: var(--bg-tertiary);
+            color: var(--text-main);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        .pillar-title {
+            font-weight: 700;
+            font-size: 1.05rem;
+            margin-bottom: 4px;
+        }
+
+        .pillar-desc {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Prayer Interactive Section */
+        .prayer-container {
+            text-align: center;
+            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+            border: 1px dashed var(--bg-tertiary);
+        }
+
+        .prayer-text {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--text-main);
+            letter-spacing: 0.5px;
+            margin: 12px 0;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.02);
+            border-radius: var(--radius-md);
+        }
+
+        /* User Reflection Action Area */
+        .input-group {
+            margin-top: 16px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            background-color: var(--bg-primary);
+            border: 1px solid var(--bg-tertiary);
+            border-radius: var(--radius-md);
+            padding: 12px;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            resize: none;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        textarea:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+        }
+
+        button {
+            width: 100%;
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: var(--radius-md);
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: var(--transition);
+        }
+
+        button:hover, button:active {
+            background-color: var(--accent-hover);
+        }
+
+        /* Navigation Bar Bottom Fix */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(30, 41, 59, 0.95);
+            backdrop-filter: blur(12px);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .nav-item.active {
+            color: var(--accent);
+        }
+
+        .nav-icon {
+            font-size: 1.25rem;
+            margin-bottom: 2px;
+        }
+
+        /* Views management toggle */
+        .app-view {
+            display: none;
+        }
+
+        .app-view.active {
+            display: block;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .history-item {
+            background-color: rgba(255, 255, 255, 0.02);
+            padding: 12px;
+            border-radius: var(--radius-md);
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            border-left: 2px solid var(--accent);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <span class="series-badge">Sermon Series: NOPE</span>
+        <h1>Week 1: To Comfort</h1>
+        <div class="subtitle">Based on the Book of James</div>
+    </header>
+
+    <main>
+        <!-- MESSAGE VIEW -->
+        <div id="view-message" class="app-view active">
+            <!-- Big Idea Box -->
+            <div class="card big-idea-box">
+                <div class="card-title">
+                    <span class="icon">🎯</span> Core Principle
+                </div>
+                <div class="quote-text">"Pain is the pathway to growth."</div>
+            </div>
+
+            <!-- Core Pillars Structure -->
+            <div class="card">
+                <div class="card-title">
+                    <span class="icon">⚡</span> Three Core Learnings
+                </div>
+                <div id="pillars-container">
+                    <!-- Extensible JavaScript generated items go here -->
+                </div>
+            </div>
+
+            <!-- Interactive Practice Block -->
+            <div class="card prayer-container">
+                <div class="card-title" style="justify-content: center;">
+                    <span class="icon">🙏</span> Daily Anchor Prayer
+                </div>
+                <div class="prayer-text">"God, grant me wisdom. Increase my faith."</div>
+                <p class="pillar-desc">Pray this intentionally when navigating tension or discomfort.</p>
+            </div>
+        </div>
+
+        <!-- JOURNAL / ACTION VIEW -->
+        <div id="view-journal" class="app-view">
+            <div class="card">
+                <div class="card-title">
+                    <span class="icon">✍️</span> Reflection Log
+                </div>
+                <p class="pillar-desc" style="margin-bottom: 12px;">What area of discomfort or trial are you working through today? Refuse to avoid it—commit it to wisdom.</p>
+                <div class="input-group">
+                    <textarea id="journal-input" placeholder="Type your thoughts, prayers, or next steps here..."></textarea>
+                    <button onclick="saveReflection()">Log Reflection</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">📜 Saved Reflections</div>
+                <div id="history-container">
+                    <p class="pillar-desc" id="empty-state">No reflections saved yet. Capture your thoughts above.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Fixed Bottom Sticky Context Navigation Menu -->
+    <nav class="bottom-nav">
+        <a href="#" class="nav-item active" onclick="switchView(event, 'view-message')">
+            <span class="nav-icon">📖</span>
+            <span>Message</span>
+        </a>
+        <a href="#" class="nav-item" onclick="switchView(event, 'view-journal')">
+            <span class="nav-icon">📝</span>
+            <span>Journal</span>
+        </a>
+    </nav>
+
+   <script>
+    // Comprehensive data model incorporating all sermon elements for scalable rendering
+    const sermonPillars = [
+        {
+            number: 1,
+            title: "Persevere",
+            desc: "Remain firmly directly under the pressure. Do not run, look for shortcuts, or quit. Trust that God is using the friction of the dynamic to actively chip away impurities to reveal Jesus' reflection inside you."
+        },
+        {
+            number: 2,
+            title: "Prayer over 'Why'",
+            desc: "Shift your posture immediately from requesting 'Why is this happening?' to asking 'What are you teaching me, God?'. Pursue raw wisdom directly over comfort, and he will generously supply it."
+        },
+        {
+            number: 3,
+            title: "No Compare",
+            desc: "Reject the false facade of human comparison and airbrushed lifestyles. Your unique assignment is solely to lock eyes with Jesus, trust your course, and confidently follow Him step-by-step."
+        },
+        {
+            number: 4,
+            title: "Historical Context",
+            desc: "Written by James, a servant of God (who only believed after witnessing the resurrection of his brother, Jesus). He addressed Jewish Christians driven from their homes, facing severe persecution, and scattered among the nations."
+        },
+        {
+            number: 5,
+            title: "Beware the 3 Pitfalls",
+            desc: "When facing trials, watch out for: <strong>Quitting</strong> (walking away from faith), <strong>Doubt</strong> (double-mindedness, treating faith like a mutual fund to hedge your bets), and <strong>Comparison</strong> (getting jealous of the airbrushed lives of others)."
+        },
+        {
+            number: 6,
+            title: "The Chipping Process",
+            desc: "Like a silversmith purifying silver under fire until his reflection shows, or Michelangelo carving away everything from the marble that was not David—God uses trials to chip away whatever does not resemble Jesus."
+        }
+    ];
+
+    // Renders content structural components natively on launch
+    function initApp() {
+        const container = document.getElementById('pillars-container');
+        if (container) {
+            container.innerHTML = sermonPillars.map(pillar => `
+                <div class="pillar-item">
+                    <div class="pillar-number">${pillar.number}</div>
+                    <div>
+                        <div class="pillar-title">${pillar.title}</div>
+                        <div class="pillar-desc">${pillar.desc}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        loadReflections();
+    }
+
+    // Handle navigation switches smoothly
+    function switchView(event, viewId) {
+        event.preventDefault();
+        document.querySelectorAll('.app-view').forEach(view => view.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+        
+        document.getElementById(viewId).classList.add('active');
+        event.currentTarget.classList.add('active');
+    }
+
+    // Logic framework for persistent interactive text tracking
+    function saveReflection() {
+        const input = document.getElementById('journal-input');
+        const noteText = input.value.trim();
+        if(!noteText) return;
+
+        let logs = JSON.parse(localStorage.getItem('sermon_logs') || '[]');
+        logs.unshift({
+            text: noteText,
+            date: new Date().toLocaleDateString()
+        });
+        
+        localStorage.setItem('sermon_logs', JSON.stringify(logs));
+        input.value = '';
+        loadReflections();
+    }
+
+    // Removes a targeted reflection element cleanly by its list index
+    function deleteReflection(index) {
+        let logs = JSON.parse(localStorage.getItem('sermon_logs') || '[]');
+        logs.splice(index, 1); // Removes the exact item clicked
+        localStorage.setItem('sermon_logs', JSON.stringify(logs));
+        loadReflections();
+    }
+
+    function loadReflections() {
+        const historyContainer = document.getElementById('history-container');
+        if (!historyContainer) return;
+        
+        let logs = JSON.parse(localStorage.getItem('sermon_logs') || '[]');
+        const emptyState = document.getElementById('empty-state');
+        
+        if(logs.length === 0) {
+            if (emptyState) emptyState.style.display = 'block';
+            historyContainer.innerHTML = '';
+            return;
+        }
+        
+        if (emptyState) emptyState.style.display = 'none';
+        historyContainer.innerHTML = logs.map((log, index) => `
+            <div class="history-item" style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;">
+                <div>
+                    <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:4px;">${log.date}</div>
+                    <div>${log.text}</div>
+                </div>
+                <button onclick="deleteReflection(${index})" style="width: auto; background: transparent; color: var(--text-muted); padding: 4px 8px; margin: 0; font-size: 0.9rem; cursor: pointer;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text-muted)'">
+                    ✕
+                </button>
+            </div>
+        `).join('');
+    }
+
+    window.onload = initApp;
+</script>
+</body>
+</html>

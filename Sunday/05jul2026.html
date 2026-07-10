@@ -342,6 +342,14 @@
             renderLogs();
         }
 
+        // Removes a targeted reflection element cleanly by its list index position
+        function deleteLog(index) {
+            let existingLogs = JSON.parse(localStorage.getItem('soul_sync_logs')) || [];
+            existingLogs.splice(index, 1);
+            localStorage.setItem('soul_sync_logs', JSON.stringify(existingLogs));
+            renderLogs();
+        }
+
         function renderLogs() {
             const logsAnchor = document.getElementById('logs-anchor');
             let existingLogs = JSON.parse(localStorage.getItem('soul_sync_logs')) || [];
@@ -354,11 +362,16 @@
                 return;
             }
 
-            logsAnchor.innerHTML = existingLogs.map(log => `
+            logsAnchor.innerHTML = existingLogs.map((log, index) => `
                 <div class="p-3.5 rounded-xl bg-gray-900/40 border border-gray-800 shadow-inner flex flex-col space-y-2">
                     <div class="flex justify-between items-center text-[10px]">
                         <span class="font-bold text-orange-400 tracking-wide uppercase bg-orange-500/5 px-2 py-0.5 rounded border border-orange-500/10">${log.tag}</span>
-                        <span class="text-gray-500 font-medium">${log.timestamp}</span>
+                        <div class="flex items-center space-x-2.5">
+                            <span class="text-gray-500 font-medium">${log.timestamp}</span>
+                            <button onclick="deleteLog(${index})" class="text-gray-500 hover:text-red-400 cursor-pointer text-xs p-1 transition-colors" title="Delete Log">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
                     </div>
                     <p class="text-xs text-gray-300 leading-relaxed whitespace-pre-wrap">${log.text}</p>
                 </div>
