@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Crossing Church - Sermon Companion</title>
+    <!-- Tailwind CSS for modern premium styling -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-amber-500 selection:text-slate-950">
+
+    <!-- Top Premium Navbar -->
+    <header class="sticky top-0 z-50 bg-slate-900/80 backdrop-blur-md border-b border-slate-800 px-4 py-3">
+        <div class="max-w-md mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-amber-500 to-amber-300 flex items-center justify-center text-slate-950 font-bold text-sm">C</div>
+                <div>
+                    <h1 class="text-xs font-semibold tracking-wider text-amber-400 uppercase">The Crossing</h1>
+                    <p class="text-sm font-bold text-slate-200" id="series-title">Loading Series...</p>
+                </div>
+            </div>
+            <button class="p-2 text-slate-400 hover:text-slate-100 transition" aria-label="Menu">
+                <i data-lucide="menu" class="w-5 h-5"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content App Container -->
+    <main class="flex-1 max-w-md w-full mx-auto p-4 space-y-6 pb-24">
+        
+        <!-- Video Meta Hero Card -->
+        <div class="bg-gradient-to-b from-slate-900 to-slate-950 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-3">
+            <div class="flex items-center gap-2 text-xs font-medium text-slate-400">
+                <span class="px-2 py-0.5 bg-slate-800 rounded-full border border-slate-700" id="sermon-speaker">Speaker</span>
+                <span id="sermon-date">Date</span>
+            </div>
+            <h2 class="text-xl font-bold tracking-tight text-white" id="sermon-title">Sermon Title</h2>
+            <p class="text-sm text-slate-400 leading-relaxed" id="sermon-desc">Description loading...</p>
+        </div>
+
+        <!-- Interactive Formula Section -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 text-center space-y-3">
+            <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-400">The James Framework</h3>
+            <div class="flex items-center justify-center gap-2 text-sm font-bold">
+                <span class="px-3 py-1.5 bg-slate-800 rounded-xl border border-slate-700">Event</span>
+                <span class="text-amber-400 text-lg">+</span>
+                <span class="px-3 py-1.5 bg-amber-500/10 text-amber-400 rounded-xl border border-amber-500/20 shadow-sm" id="formula-variable">Response</span>
+                <span class="text-amber-400 text-lg">=</span>
+                <span class="px-3 py-1.5 bg-slate-800 rounded-xl border border-slate-700" id="formula-outcome">Outcome</span>
+            </div>
+        </div>
+
+        <!-- Section Toggles / Tabs -->
+        <div class="grid grid-cols-2 gap-2 p-1 bg-slate-900 rounded-xl border border-slate-800">
+            <button onclick="switchTab('insights')" id="tab-insights" class="py-2 text-sm font-medium rounded-lg transition active-tab bg-slate-800 text-white shadow">
+                Core Insights
+            </button>
+            <button onclick="switchTab('scriptures')" id="tab-scriptures" class="py-2 text-sm font-medium rounded-lg transition text-slate-400 hover:text-slate-200">
+                Scripture & Reflection
+            </button>
+        </div>
+
+        <!-- Tab Content Container -->
+        <div id="content-insights" class="space-y-4">
+            <!-- Dynamically Rendered Cards Go Here -->
+        </div>
+
+        <div id="content-scriptures" class="space-y-4 hidden">
+            <!-- Dynamically Rendered Scripture Blocks Go Here -->
+        </div>
+        <!-- Expansion: Kids Quotes Card -->
+<div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3">
+    <div class="flex items-center gap-2 text-amber-400">
+        <i data-lucide="laugh" class="w-4 h-4"></i>
+        <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-200">The Impulse Test: Kids Quotes</h3>
+    </div>
+    <ul id="kids-stories-list" class="space-y-2 text-xs text-slate-400 list-disc list-inside bg-slate-950/40 p-3 rounded-xl border border-slate-800/60">
+        <!-- Dynamically injected -->
+    </ul>
+</div>
+
+<!-- Expansion: Pastoral Confession Card -->
+<div class="bg-gradient-to-r from-slate-900 to-amber-950/20 border border-slate-800 rounded-2xl p-4 space-y-2">
+    <div class="flex items-center gap-2 text-rose-400">
+        <i data-lucide="shield-alert" class="w-4 h-4"></i>
+        <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-200">Real Talk: The Confession</h3>
+    </div>
+    <div id="confession-block" class="text-xs text-slate-400 leading-relaxed space-y-1">
+        <!-- Dynamically injected -->
+    </div>
+</div>
+
+
+
+    </main>
+
+    <!-- Bottom Action Sheet / Quick Access -->
+    <div class="fixed bottom-0 left-0 right-0 bg-slate-900/90 backdrop-blur-lg border-t border-slate-800 p-3">
+        <div class="max-w-md mx-auto flex gap-3">
+            <a href="https://thecrossinglv.com/decision" target="_blank" class="flex-1 bg-amber-500 hover:bg-amber-400 text-slate-950 font-semibold text-center py-2.5 rounded-xl text-sm transition shadow-lg shadow-amber-500/10 flex items-center justify-center gap-1.5">
+                Take Next Step <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Application Controller Logic -->
+    <script>
+        // 1. DATA LAYER (Easily add more content objects to this array later)
+        const sermonData = {
+            series: "Note",
+            title: "NOPE To Impulsiveness",
+            speaker: "Jeff Kiwanuka",
+            date: "June 29, 2026",
+            description: "Following Jesus means learning to say 'nope' to impulsiveness and 'yes' to a better way of living. Your first reaction is not always your best response.",
+            formula: {
+                initial: { response: "Human Reaction", outcome: "Default Outcome" },
+                elevated: { response: "Responding like Jesus", outcome: "Best Outcome" }
+            },
+            insights: [
+                {
+                    time: "04:48",
+                    title: "The Mechanics of Impulse",
+                    body: "Impulsiveness spikes dangerously when we become slow to listen, lightning-fast to speak, and immediate to default to hot anger.",
+                    icon: "zap"
+                },
+                {
+                    time: "11:02",
+                    title: "The Word is Not a Lecture",
+                    body: "Scripture isn't a board meeting presentation or a college syllabus meant for notebook margins. It is living insight constructed explicitly to be applied and lived.",
+                    icon: "book-open"
+                },
+                {
+                    time: "13:11",
+                    title: "The Mirror Test",
+                    body: "God's word functions perfectly as a mirror reflecting the authentic landscape of your soul. Walking away without changing is identical to seeing a flaw in a glass mirror and instantly forgetting what you look like.",
+                    icon: "eye"
+                },
+                
+            ],
+            scriptures: [
+                {
+                    reference: "James 1:19",
+                    text: "My dear brothers and sisters, take note of this: Everyone should be quick to listen, slow to speak and slow to become angry.",
+                    reflection: "Where do you need to intentionally introduce a conversational pause this week?"
+                },
+                {
+                    reference: "Psalm 119:103",
+                    text: "How sweet your words taste to me. They are sweeter than honey.",
+                    reflection: "Are you treating the framework of Scripture like medicinal broccoli or like life-giving honey?"
+                }
+            ],
+            // Add these inside the main sermonData object
+openingStories: [
+    { text: "Tessa (Age 4) looking at her mom's custom enchilada pizza: 'That's puke.'" },
+    { text: "Walking down a store aisle, pointing at a stranger: 'Daddy, that's a witch!'" },
+    { text: "Looking at her dad's torso: 'Dad, how come you can't grow muscles?'" },
+    { text: "Lifting up her dad's shirt: 'Daddy, why do you have stripes?' Pastor Jeff: 'Tessa, those are rules.'" }
+],
+confessions: [
+    {
+        topic: "The Illusion of Having It Figured Out",
+        detail: "Pastor Jeff admitted that despite 15 years as a Christian, God radically wrecked his static views on politics, race relations, sexuality, and parenting by showing him he was trying to 'act like the church' instead of actually loving people as Jesus loved."
+    }
+]
+        };
+
+        // 2. RENDERING ENGINE
+        function initApp() {
+            // Meta assignments
+            document.getElementById('series-title').innerText = `Series: ${sermonData.series}`;
+            document.getElementById('sermon-title').innerText = sermonData.title;
+            document.getElementById('sermon-speaker').innerText = sermonData.speaker;
+            document.getElementById('sermon-date').innerText = sermonData.date;
+            document.getElementById('sermon-desc').innerText = sermonData.description;
+
+            // Setup variables for framework view
+            let isElevated = false;
+            const variableEl = document.getElementById('formula-variable');
+            const outcomeEl = document.getElementById('formula-outcome');
+            
+            setInterval(() => {
+                isElevated = !isElevated;
+                const mode = isElevated ? 'elevated' : 'initial';
+                variableEl.innerText = sermonData.formula[mode].response;
+                outcomeEl.innerText = sermonData.formula[mode].outcome;
+                if(isElevated) {
+                    variableEl.className = "px-3 py-1.5 bg-emerald-500/10 text-emerald-400 rounded-xl border border-emerald-500/20 shadow-sm transition-all duration-500";
+                } else {
+                    variableEl.className = "px-3 py-1.5 bg-amber-500/10 text-amber-400 rounded-xl border border-amber-500/20 shadow-sm transition-all duration-500";
+                }
+            }, 3000);
+
+            // Render Core Insights Cards
+            const insightsContainer = document.getElementById('content-insights');
+            insightsContainer.innerHTML = sermonData.insights.map(item => `
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-2 relative overflow-hidden group hover:border-slate-700 transition">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2 text-amber-400">
+                            <i data-lucide="${item.icon}" class="w-4 h-4"></i>
+                            <h4 class="font-semibold text-sm text-slate-200">${item.title}</h4>
+                        </div>
+                        <span class="text-xs font-mono px-2 py-0.5 bg-slate-800 text-slate-400 rounded-md">${item.time}</span>
+                    </div>
+                    <p class="text-xs text-slate-400 leading-relaxed">${item.body}</p>
+                </div>
+            `).join('');
+
+            // Render Scripture / Reflection Blocks
+            const scriptureContainer = document.getElementById('content-scriptures');
+            scriptureContainer.innerHTML = sermonData.scriptures.map(item => `
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-3">
+                    <div class="border-l-2 border-amber-500 pl-3">
+                        <span class="block text-xs font-bold uppercase tracking-wider text-amber-400 mb-1">${item.reference}</span>
+                        <p class="text-sm italic text-slate-300 leading-relaxed">"${item.text}"</p>
+                    </div>
+                    <div class="bg-slate-950/60 p-3 rounded-lg border border-slate-800/80">
+                        <span class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Reflection Prompt</span>
+                        <p class="text-xs text-slate-400">${item.reflection}</p>
+                    </div>
+                </div>
+            `).join('');
+            // Render Expansion: Kids Stories
+document.getElementById('kids-stories-list').innerHTML = sermonData.openingStories.map(story => `
+    <li class="leading-relaxed"><span class="text-slate-300">${story.text}</span></li>
+`).join('');
+
+// Render Expansion: Confessions
+document.getElementById('confession-block').innerHTML = sermonData.confessions.map(c => `
+    <p class="font-medium text-slate-300 mb-1">${c.topic}</p>
+    <p>${c.detail}</p>
+`).join('');
+            
+
+            // Initialize Icons
+            lucide.createIcons();
+        }
+
+        // 3. TAB CONTROLLER
+        function switchTab(tabName) {
+            const tabs = ['insights', 'scriptures'];
+            tabs.forEach(t => {
+                const btn = document.getElementById(`tab-${t}`);
+                const content = document.getElementById(`content-${t}`);
+                if (t === tabName) {
+                    btn.className = "py-2 text-sm font-medium rounded-lg transition bg-slate-800 text-white shadow";
+                    content.classList.remove('hidden');
+                } else {
+                    btn.className = "py-2 text-sm font-medium rounded-lg transition text-slate-400 hover:text-slate-200";
+                    content.classList.add('hidden');
+                }
+            });
+        }
+
+        // Run application setup
+        window.onload = initApp;
+    </script>
+</body>
+</html>
