@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unshakable Faith - Premium Devotional Experience</title>
+    
+    <!-- Tailwind CSS for modern, rapid styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter for clean interface, Playfair Display for premium serif headlines -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <!-- Lucide Icons for clean, minimalist premium iconography -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        gold: {
+                            50: '#fdfaf2',
+                            100: '#fbf3e3',
+                            500: '#d99738', // Premium warm bronze/gold
+                            600: '#c27e2b',
+                            900: '#40290f',
+                        },
+                        stone: {
+                            900: '#141413', // Deep rich charcoal background
+                            800: '#1e1e1c', // Card backgrounds
+                            700: '#2b2b28',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Premium custom scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #141413;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c27e2b;
+            border-radius: 10px;
+        }
+        
+        /* Smooth transitions for interactive elements */
+        .interactive-transition {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+    </style>
+</head>
+<body class="bg-stone-900 text-stone-100 font-sans antialiased min-h-screen pb-12 selection:bg-gold-500 selection:text-stone-900">
+
+    <!-- =========================================================================
+         HEADER / NAVIGATION
+         Designed with a modern translucent glassmorphic look suited for high-end apps.
+         ========================================================================= -->
+    <header class="sticky top-0 z-50 bg-stone-900/80 backdrop-blur-md border-b border-stone-800/80 px-4 py-4 md:px-8">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="p-2 bg-gold-900/40 rounded-lg border border-gold-500/20">
+                    <i data-lucide="shield-alert" class="w-6 h-6 text-gold-500"></i>
+                </div>
+                <div>
+                    <span class="font-serif italic text-lg tracking-wider block leading-none">Unshakable</span>
+                    <span class="text-[10px] uppercase tracking-[0.2em] text-stone-400 block mt-1">Faith Activation App</span>
+                </div>
+            </div>
+            
+            <nav class="hidden md:flex space-x-8 text-sm font-medium tracking-wide">
+                <a href="#mountain-mover" class="text-stone-300 hover:text-gold-500 transition-colors">Command Center</a>
+                <a href="#focus-dashboard" class="text-stone-300 hover:text-gold-500 transition-colors">Peter's Walk</a>
+                <a href="#faith-builder" class="text-stone-300 hover:text-gold-500 transition-colors">Daily Training</a>
+            </nav>
+
+            <button class="bg-gold-500 hover:bg-gold-600 text-stone-900 px-4 py-2 rounded-full text-xs font-semibold tracking-wider uppercase transition-colors duration-300 shadow-[0_4px_20px_rgba(217,151,56,0.15)]">
+                Share App
+            </button>
+        </div>
+    </header>
+
+    <!-- =========================================================================
+         HERO SECTION
+         Focuses on premium, spacious, editorial typography. Sets a serious yet empowering tone.
+         ========================================================================= -->
+    <section class="relative px-4 py-16 md:py-24 max-w-4xl mx-auto text-center">
+        <!-- Accent decorative light behind title -->
+        <div class="absolute -top-10 left-1/2 -translate-x-1/2 w-72 h-72 bg-gold-500/5 rounded-full blur-[100px] pointer-events-none"></div>
+
+        <span class="text-xs uppercase tracking-[0.3em] text-gold-500 font-semibold mb-3 block">Breakthrough is Not Passive</span>
+        <h1 class="font-serif text-4xl md:text-6xl text-stone-100 font-bold leading-tight mb-6">
+            Activate the Power <br class="hidden md:block"> <span class="italic text-gold-500">Refined in the Fire</span>
+        </h1>
+        <p class="text-stone-400 max-w-2xl mx-auto text-base md:text-lg leading-relaxed font-light mb-8">
+            There are moments when everything inside you screams "impossible." But faith is not passive wishful thinking—it is a supernatural command that shifts reality.
+        </p>
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a href="#mountain-mover" class="w-full sm:w-auto bg-stone-800 hover:bg-stone-700 text-stone-100 border border-stone-700/80 px-6 py-3 rounded-xl text-sm font-medium tracking-wide transition-all duration-300 flex items-center justify-center gap-2">
+                Begin Activation
+                <i data-lucide="arrow-right" class="w-4 h-4 text-gold-500"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- =========================================================================
+         MAIN APPLICATION INTERACTION WRAPPER
+         ========================================================================= -->
+    <main class="max-w-6xl mx-auto px-4 space-y-12">
+
+        <!-- ---------------------------------------------------------------------
+             UX MODULE 1: THE MOUNTAIN MOVER
+             Lets the user choose or write a mountain and dynamically generates a personalized
+             "Active Decree" based on Biblical laws of authority mentioned in the video.
+             --------------------------------------------------------------------- -->
+        <section id="mountain-mover" class="bg-stone-800/50 border border-stone-800 rounded-3xl p-6 md:p-10 shadow-xl relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-gold-500/5 rounded-full blur-3xl"></div>
+            
+            <div class="max-w-3xl">
+                <div class="flex items-center space-x-2 text-gold-500 mb-4">
+                    <i data-lucide="mountain" class="w-5 h-5"></i>
+                    <span class="text-xs uppercase tracking-widest font-semibold">Command Center</span>
+                </div>
+                <h2 class="font-serif text-2xl md:text-3xl font-bold mb-3">Speak to Your Mountain</h2>
+                <p class="text-stone-400 text-sm md:text-base mb-8">
+                    Jesus said: "If you have faith as small as a mustard seed, you can say to this mountain, 'Move from here to there' and it will move." Do not pray hoping it shifts; command it to go.
+                </p>
+
+                <!-- Input Step Flow -->
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-xs uppercase tracking-wider text-stone-400 font-medium mb-3">Identify Your Mountain</label>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                            <!-- Easy presets that automatically configure custom outputs -->
+                            <button onclick="selectPreset('Financial Crisis', 'Supply & Abundance', 'Deuteronomy 28:13', 'Every financial chain is broken. My God shall supply all my needs according to His riches in glory.')" class="preset-btn px-4 py-3 rounded-xl border border-stone-700 bg-stone-800/80 text-xs font-medium tracking-wide hover:border-gold-500/50 hover:bg-stone-700/50 text-stone-300 transition-all text-left">
+                                Financial Trial
+                            </button>
+                            <button onclick="selectPreset('Sickness & Disease', 'Divine Healing', 'Luke 8:48', 'By His stripes I am healed. I release supernatural restoration over every cell in my body.')" class="preset-btn px-4 py-3 rounded-xl border border-stone-700 bg-stone-800/80 text-xs font-medium tracking-wide hover:border-gold-500/50 hover:bg-stone-700/50 text-stone-300 transition-all text-left">
+                                Sickness / Health
+                            </button>
+                            <button onclick="selectPreset('Fear & Anxiety', 'Sound Mind', '2 Timothy 1:7', 'God has not given me a spirit of fear, but of power, love, and a sound mind. Peace, be still.')" class="preset-btn px-4 py-3 rounded-xl border border-stone-700 bg-stone-800/80 text-xs font-medium tracking-wide hover:border-gold-500/50 hover:bg-stone-700/50 text-stone-300 transition-all text-left">
+                                Fear & Anxiety
+                            </button>
+                            <button onclick="selectPreset('Broken Relationship', 'Restoration & Peace', 'Matthew 18:18', 'I bind division and loose reconciliation. Hearts will soften and align with God\'s peace.')" class="preset-btn px-4 py-3 rounded-xl border border-stone-700 bg-stone-800/80 text-xs font-medium tracking-wide hover:border-gold-500/50 hover:bg-stone-700/50 text-stone-300 transition-all text-left">
+                                Broken Connection
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Custom Mountain Input for extreme personalization -->
+                    <div class="relative">
+                        <label class="block text-xs uppercase tracking-wider text-stone-400 font-medium mb-2">Or describe it in your own words</label>
+                        <div class="flex gap-2">
+                            <input id="custom-mountain" type="text" placeholder="e.g., Hopeless situation at work..." class="w-full bg-stone-900 border border-stone-700 rounded-xl px-4 py-3 text-sm text-stone-100 placeholder-stone-500 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition-all">
+                            <button onclick="generateCustomDecree()" class="bg-gold-500 hover:bg-gold-600 text-stone-900 px-6 py-3 rounded-xl text-sm font-semibold tracking-wide transition-colors whitespace-nowrap">
+                                Decree
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Output Card (Dynamic Render Area) -->
+                    <div id="decree-card" class="hidden interactive-transition bg-stone-900 border border-gold-500/20 rounded-2xl p-6 relative">
+                        <div class="absolute top-4 right-4 flex space-x-2">
+                            <button onclick="copyDecree()" class="p-2 text-stone-400 hover:text-gold-500 transition-colors" title="Copy Decree">
+                                <i data-lucide="copy" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                        <span id="decree-tag" class="inline-block text-[10px] font-bold uppercase tracking-widest text-gold-500 bg-gold-900/30 px-3 py-1 rounded-full mb-4">ACTIVE COMMAND</span>
+                        <blockquote id="decree-quote" class="font-serif text-lg md:text-xl text-stone-200 italic leading-relaxed mb-4">
+                            "Therefore I tell you, whatever you ask for in prayer, believe that you have received it, and it will be yours."
+                        </blockquote>
+                        <div class="flex items-center space-x-2 text-xs text-stone-400">
+                            <i data-lucide="book-open" class="w-4 h-4 text-gold-500"></i>
+                            <span id="decree-reference">Mark 11:24</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ---------------------------------------------------------------------
+             UX MODULE 2: PETER'S FOCUS DASHBOARD
+             Visualizing focus metrics (Looking at waves causes sinking, looking at Jesus unlocks walking on water).
+             This gamifies the mental aspect of focus mentioned in scripture.
+             --------------------------------------------------------------------- -->
+        <section id="focus-dashboard" class="bg-stone-800/50 border border-stone-800 rounded-3xl p-6 md:p-10 shadow-xl">
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
+                <div>
+                    <div class="flex items-center space-x-2 text-gold-500 mb-2">
+                        <i data-lucide="compass" class="w-5 h-5"></i>
+                        <span class="text-xs uppercase tracking-widest font-semibold">Focus & State Simulator</span>
+                    </div>
+                    <h2 class="font-serif text-2xl md:text-3xl font-bold mb-1">The Peter Metric</h2>
+                    <p class="text-stone-400 text-sm">Adjust the slider to shift focus from the storm to the Savior and see the state change.</p>
+                </div>
+                
+                <!-- Display Badge representing state of the simulated user -->
+                <div id="focus-status" class="bg-gold-900/40 border border-gold-500/20 text-gold-500 px-4 py-2 rounded-xl flex items-center space-x-2">
+                    <i data-lucide="sparkles" class="w-4 h-4"></i>
+                    <span class="text-sm font-semibold uppercase tracking-wider">Walking on Supernatural Power</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+                
+                <!-- Left Control: Interactive Slider -->
+                <div class="md:col-span-1 bg-stone-900 p-6 rounded-2xl border border-stone-700/80 space-y-6">
+                    <div>
+                        <div class="flex justify-between text-xs uppercase tracking-wider font-semibold mb-3">
+                            <span class="text-stone-500">The Storm (Waves)</span>
+                            <span class="text-gold-500">The Word (Jesus)</span>
+                        </div>
+                        <!-- Slider controls percentage of focus -->
+                        <input id="focus-range" type="range" min="0" max="100" value="85" oninput="updateFocus(this.value)" class="w-full h-2 bg-stone-800 rounded-lg appearance-none cursor-pointer accent-gold-500">
+                    </div>
+
+                    <div class="space-y-3">
+                        <div class="flex justify-between text-xs">
+                            <span class="text-stone-400">Current Focus:</span>
+                            <span id="focus-val" class="font-bold text-gold-500">85% Christ</span>
+                        </div>
+                        <div class="flex justify-between text-xs">
+                            <span class="text-stone-400">Spiritual State:</span>
+                            <span id="state-val" class="font-semibold text-stone-200">Defying Gravity</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right visual: Graphical rendering of the state based on the interactive focus slider -->
+                <div class="md:col-span-2 bg-stone-950 rounded-2xl p-6 border border-stone-800 relative h-64 overflow-hidden flex flex-col justify-end">
+                    
+                    <!-- Simulating environment waves based on value -->
+                    <div id="storm-backdrop" class="absolute inset-0 bg-gradient-to-t from-stone-950 to-stone-900/40 z-0 transition-colors duration-500"></div>
+                    
+                    <!-- Dynamic Graphic Status Text & Icon inside simulated sea -->
+                    <div class="relative z-10 text-center mb-8 space-y-4">
+                        <div class="inline-flex p-4 bg-stone-900/90 rounded-full border border-stone-800 shadow-xl" id="avatar-container">
+                            <i id="state-icon" data-lucide="chevrons-up" class="w-8 h-8 text-gold-500 transition-all duration-300"></i>
+                        </div>
+                        <div>
+                            <p id="state-quote" class="font-serif italic text-stone-300 text-base md:text-lg">"Peter stepped out of the boat and walked on the water..."</p>
+                            <p id="state-detail" class="text-xs text-stone-500 mt-1">Keep your eyes off the circumstances. Reality must align with your focus.</p>
+                        </div>
+                    </div>
+
+                    <!-- Visual Water/Wave Line Graphic -->
+                    <div id="wave-line" class="w-full h-2 bg-gold-500/20 absolute bottom-0 left-0 transition-all duration-500" style="height: 15%;"></div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- ---------------------------------------------------------------------
+             UX MODULE 3: THE DAILY FAITH CHECKLIST
+             Helps users active their faith muscles on a daily basis with dynamic progress metric.
+             --------------------------------------------------------------------- -->
+        <section id="faith-builder" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            
+            <div class="md:col-span-2 bg-stone-800/50 border border-stone-800 rounded-3xl p-6 md:p-8">
+                <div class="flex items-center space-x-2 text-gold-500 mb-2">
+                    <i data-lucide="dumbbell" class="w-5 h-5"></i>
+                    <span class="text-xs uppercase tracking-widest font-semibold">Activation Habits</span>
+                </div>
+                <h3 class="font-serif text-2xl font-bold mb-2">Feed the Muscle Daily</h3>
+                <p class="text-stone-400 text-sm mb-6">Faith is not an emotion; it must be built, fed, and actioned daily. Track your spiritual steps.</p>
+                
+                <div class="space-y-4">
+                    <!-- Daily checklist items that feed the progress UI visually -->
+                    <div class="flex items-start space-x-3 p-4 bg-stone-900 rounded-xl border border-stone-800">
+                        <input type="checkbox" onchange="calculateProgress()" class="faith-check mt-1 w-4 h-4 rounded text-gold-500 bg-stone-800 border-stone-700 focus:ring-gold-500 accent-gold-500">
+                        <div>
+                            <p class="text-sm font-semibold text-stone-200">The Word Feed (Romans 10:17)</p>
+                            <p class="text-xs text-stone-400 mt-0.5">Immerse yourself in Scriptures instead of worries or negative news reports today.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-3 p-4 bg-stone-900 rounded-xl border border-stone-800">
+                        <input type="checkbox" onchange="calculateProgress()" class="faith-check mt-1 w-4 h-4 rounded text-gold-500 bg-stone-800 border-stone-700 focus:ring-gold-500 accent-gold-500">
+                        <div>
+                            <p class="text-sm font-semibold text-stone-200">Speak the Command (Mark 11:23)</p>
+                            <p class="text-xs text-stone-400 mt-0.5">Verbally decree God's promises over your situation out loud instead of complaining.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start space-x-3 p-4 bg-stone-900 rounded-xl border border-stone-800">
+                        <input type="checkbox" onchange="calculateProgress()" class="faith-check mt-1 w-4 h-4 rounded text-gold-500 bg-stone-800 border-stone-700 focus:ring-gold-500 accent-gold-500">
+                        <div>
+                            <p class="text-sm font-semibold text-stone-200">Step Out of Comfort (James 2:26)</p>
+                            <p class="text-xs text-stone-400 mt-0.5">Take one physical, practical action toward your goal despite lingering feelings of fear.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start space-x-3 p-4 bg-stone-900 rounded-xl border border-stone-800">
+                        <input type="checkbox" onchange="calculateProgress()" class="faith-check mt-1 w-4 h-4 rounded text-gold-500 bg-stone-800 border-stone-700 focus:ring-gold-500 accent-gold-500">
+                        <div>
+                            <p class="text-sm font-semibold text-stone-200">Persist in Prayer (Elijah's Cloud)</p>
+                            <p class="text-xs text-stone-400 mt-0.5">Even if nothing changed immediately, press in and check the horizon again.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard status displaying state derived from checklist actions -->
+            <div class="bg-stone-800/50 border border-stone-800 rounded-3xl p-6 md:p-8 flex flex-col justify-between">
+                <div>
+                    <span class="text-xs uppercase tracking-widest text-stone-400 font-semibold block mb-2">Metrics Analysis</span>
+                    <h4 class="font-serif text-xl font-bold mb-4">Activation Status</h4>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between text-xs mb-2">
+                                <span class="text-stone-400">Faith Strength Score</span>
+                                <span id="progress-val" class="font-bold text-gold-500">0%</span>
+                            </div>
+                            <div class="w-full bg-stone-900 h-3 rounded-full overflow-hidden border border-stone-800">
+                                <div id="progress-bar" class="bg-gold-500 h-full w-0 transition-all duration-500"></div>
+                            </div>
+                        </div>
+
+                        <div id="activation-insight" class="bg-stone-900 border border-stone-800 p-4 rounded-xl text-xs text-stone-400 leading-relaxed">
+                            Complete daily actions to ignite active faith. Currently, your spiritual state is in danger of falling into passiveness.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border-t border-stone-800 pt-6 mt-6">
+                    <p class="text-[10px] uppercase tracking-wider text-stone-500">Daily Wisdom</p>
+                    <p class="text-xs text-gold-500/80 italic mt-1 leading-relaxed">"Without faith it is impossible to please God." — Hebrews 11:6</p>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- =========================================================================
+         FOOTER
+         ========================================================================= -->
+    <footer class="max-w-6xl mx-auto px-4 mt-24 pt-8 border-t border-stone-800/80 flex flex-col md:flex-row items-center justify-between text-xs text-stone-500 gap-4">
+        <div>
+            <p>&copy; 2026 Unshakable Faith App. Formulated for bold believers.</p>
+        </div>
+        <div class="flex space-x-6">
+            <a href="#mountain-mover" class="hover:text-gold-500 transition-colors">Decree Center</a>
+            <a href="#focus-dashboard" class="hover:text-gold-500 transition-colors">Peter Metric</a>
+            <a href="#faith-builder" class="hover:text-gold-500 transition-colors">Action checklist</a>
+        </div>
+    </footer>
+
+    <!-- =========================================================================
+         INTERACTIVE ENGINE & LOGIC (ES6 JS)
+         Simple, powerful, and easy to scale later with custom APIs or deep stores.
+         ========================================================================= -->
+    <script>
+        // Initialize Lucide Icons in DOM
+        lucide.createIcons();
+
+        // Preset collection mapping inputs to direct decrees based on video context
+        function selectPreset(mountainType, outcome, scriptureRef, customText) {
+            document.getElementById('custom-mountain').value = mountainType;
+            showDecree(mountainType, customText, scriptureRef);
+            
+            // Highlight active selection indicator UI
+            const buttons = document.querySelectorAll('.preset-btn');
+            buttons.forEach(btn => {
+                if(btn.innerText.includes(mountainType.split(' ')[0])) {
+                    btn.classList.add('border-gold-500', 'bg-gold-900/10', 'text-gold-500');
+                } else {
+                    btn.classList.remove('border-gold-500', 'bg-gold-900/10', 'text-gold-500');
+                }
+            });
+        }
+
+        // Custom inputs allow the user to generate decrees on any raw context
+        function generateCustomDecree() {
+            const inputVal = document.getElementById('custom-mountain').value.trim();
+            if(!inputVal) {
+                alert("Please select or describe a mountain first.");
+                return;
+            }
+            // Generate customized authoritative decree using template strings
+            const generatedDecree = `I command this mountain of '${inputVal}' to be thrown into the sea. I hold fast to God's promise, refusing to doubt in my heart. Reality must shift according to His word.`;
+            showDecree(inputVal, generatedDecree, "Mark 11:23");
+        }
+
+        // Render Decree UI dynamically with sleek transitional states
+        function showDecree(title, text, reference) {
+            const card = document.getElementById('decree-card');
+            const quoteEl = document.getElementById('decree-quote');
+            const refEl = document.getElementById('decree-reference');
+            
+            card.classList.remove('hidden');
+            quoteEl.innerHTML = `"${text}"`;
+            refEl.innerHTML = reference;
+            
+            // Smooth scroll anchor to target interactive area on small screens
+            card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Utility to copy decrees for simple text sharing
+        function copyDecree() {
+            const text = document.getElementById('decree-quote').innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                alert("Faith Decree copied to clipboard!");
+            });
+        }
+
+        // Interactive simulation calculating your environment based on emotional focus
+        function updateFocus(value) {
+            const statusEl = document.getElementById('focus-status');
+            const focusValEl = document.getElementById('focus-val');
+            const stateValEl = document.getElementById('state-val');
+            const quoteEl = document.getElementById('state-quote');
+            const backdrop = document.getElementById('storm-backdrop');
+            const icon = document.getElementById('state-icon');
+            const wave = document.getElementById('wave-line');
+
+            const wavesFocus = 100 - value;
+            focusValEl.innerText = `${value}% Word / ${wavesFocus}% Storm`;
+
+            // State changes matching Peter's trajectory:
+            if (value >= 75) {
+                statusEl.innerHTML = `<i data-lucide="sparkles" class="w-4 h-4"></i><span class="text-xs font-semibold uppercase tracking-wider">Walking on Water</span>`;
+                statusEl.className = "bg-gold-900/40 border border-gold-500/20 text-gold-500 px-4 py-2 rounded-xl flex items-center space-x-2";
+                stateValEl.innerText = "Defying Gravity";
+                quoteEl.innerText = `"Lord, if it's You, tell me to come." — Peter walked on the water.`;
+                backdrop.className = "absolute inset-0 bg-gradient-to-t from-stone-950 to-gold-950/20 z-0 transition-all duration-500";
+                icon.setAttribute('data-lucide', 'chevrons-up');
+                icon.className = "w-8 h-8 text-gold-500 transition-all";
+                wave.style.height = "15%";
+            } else if (value >= 40 && value < 75) {
+                statusEl.innerHTML = `<i data-lucide="wind" class="w-4 h-4"></i><span class="text-xs font-semibold uppercase tracking-wider">Wavering Focus</span>`;
+                statusEl.className = "bg-amber-900/30 border border-amber-500/20 text-amber-500 px-4 py-2 rounded-xl flex items-center space-x-2";
+                stateValEl.innerText = "Sinking Slightly";
+                quoteEl.innerText = `"When he saw the wind, he was afraid..."`;
+                backdrop.className = "absolute inset-0 bg-gradient-to-t from-stone-950 to-amber-950/20 z-0 transition-all duration-500";
+                icon.setAttribute('data-lucide', 'alert-circle');
+                icon.className = "w-8 h-8 text-amber-500 transition-all";
+                wave.style.height = "40%";
+            } else {
+                statusEl.innerHTML = `<i data-lucide="droplet" class="w-4 h-4"></i><span class="text-xs font-semibold uppercase tracking-wider">Sinking In The Storm</span>`;
+                statusEl.className = "bg-red-950/40 border border-red-500/20 text-red-400 px-4 py-2 rounded-xl flex items-center space-x-2";
+                stateValEl.innerText = "Overwhelmed by Circumstances";
+                quoteEl.innerText = `"Lord, save me!" — Immediately Jesus reached out His hand.`;
+                backdrop.className = "absolute inset-0 bg-gradient-to-t from-stone-950 to-red-950/20 z-0 transition-all duration-500";
+                icon.setAttribute('data-lucide', 'anchor');
+                icon.className = "w-8 h-8 text-red-500 transition-all";
+                wave.style.height = "70%";
+            }
+            lucide.createIcons();
+        }
+
+        // Checklist progression engine modeling progress indicators
+        function calculateProgress() {
+            const checkboxes = document.querySelectorAll('.faith-check');
+            const checkedCount = Array.from(checkboxes).filter(c => c.checked).length;
+            const progressPercent = Math.round((checkedCount / checkboxes.length) * 100);
+            
+            document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+            document.getElementById('progress-val').innerText = `${progressPercent}%`;
+
+            const insightEl = document.getElementById('activation-insight');
+
+            if (progressPercent === 0) {
+                insightEl.innerHTML = "Complete daily actions to ignite active faith. Currently, your spiritual state is in danger of falling into passiveness.";
+                insightEl.className = "bg-stone-900 border border-stone-800 p-4 rounded-xl text-xs text-stone-400 leading-relaxed";
+            } else if (progressPercent > 0 && progressPercent < 100) {
+                insightEl.innerHTML = "You are beginning to train your faith muscle. Keep pushing. Remember: faith without physical actions is dead.";
+                insightEl.className = "bg-stone-900 border border-gold-500/10 p-4 rounded-xl text-xs text-stone-300 leading-relaxed";
+            } else {
+                insightEl.innerHTML = "Perfect activation. Your mind is aligned with active authority. You are speaking, moving, and defying external conditions.";
+                insightEl.className = "bg-gold-900/20 border border-gold-500/20 p-4 rounded-xl text-xs text-gold-500 leading-relaxed";
+            }
+        }
+    </script>
+</body>
+</html>
