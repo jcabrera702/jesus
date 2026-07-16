@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOPE to Pride | Interactive Study Guide</title>
+    <!-- Tailwind CSS for rapid, modern utility styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter for UI, Playfair Display for elegant headings -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- Lucide Icons for premium visual cues -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        // Custom Tailwind configurations to match a premium "warm spiritual" aesthetic
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        stone: {
+                            950: '#0c0a09',
+                        },
+                        amber: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Smooth transitions for interactive state changes */
+        .transition-all-custom {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+</head>
+<body class="bg-stone-950 text-stone-100 font-sans antialiased min-h-screen selection:bg-amber-500 selection:text-stone-950">
+
+    <!-- Premium Glow Backgrounds -->
+    <div class="fixed top-0 left-1/4 w-96 h-96 bg-amber-500/5 rounded-full blur-[120px] pointer-events-none"></div>
+    <div class="fixed bottom-10 right-1/4 w-96 h-96 bg-stone-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+
+    <!-- MAIN HEADER -->
+    <header class="border-b border-stone-800/60 sticky top-0 bg-stone-950/80 backdrop-blur-md z-50">
+        <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <span class="w-8 h-8 rounded-full bg-gradient-to-tr from-amber-500 to-amber-300 flex items-center justify-center text-stone-950 font-bold text-sm tracking-wider">JC</span>
+                <span class="font-semibold text-stone-300 tracking-wide text-sm md:text-base">12JUL2026</span>
+            </div>
+            <a href="https://www.youtube.com/watch?v=tS94Cgu1raQ" target="_blank" rel="noopener" class="flex items-center gap-1.5 text-xs md:text-sm text-stone-400 hover:text-amber-400 transition-colors">
+                <span>Watch Video</span>
+                <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+            </a>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 py-8 md:py-16 space-y-12">
+
+        <!-- HERO SECTION -->
+        <section class="text-center space-y-4">
+            <span class="px-3 py-1 text-xs font-semibold tracking-widest text-amber-500 uppercase bg-amber-500/10 rounded-full">Sermon Series: NOPE</span>
+            <h1 class="text-4xl md:text-6xl font-serif text-stone-100 tracking-tight leading-tight">
+                Saying NOPE to Pride
+            </h1>
+            <p class="text-stone-400 max-w-xl mx-auto text-sm md:text-base leading-relaxed">
+                An interactive study app inspired by Jake Musselman's message on moving away from the "you first" lens of pride and embracing the countercultural path of humility.
+            </p>
+        </section>
+
+        <!-- THE STORY/HOOK: Kindergarten Pickup Line -->
+        <section class="bg-stone-900/40 border border-stone-800/80 rounded-2xl p-6 md:p-8 space-y-4 relative overflow-hidden">
+            <div class="absolute -right-8 -bottom-8 text-stone-800/20 pointer-events-none">
+                <i data-lucide="car" class="w-40 h-40"></i>
+            </div>
+            <div class="flex items-center gap-2 text-amber-500">
+                <i data-lucide="info" class="w-5 h-5"></i>
+                <h3 class="text-xs font-semibold uppercase tracking-wider">The Sandbox of Life</h3>
+            </div>
+            <h2 class="text-xl md:text-2xl font-serif text-stone-200">The Kindergarten Pickup Line</h2>
+            <p class="text-stone-300 text-sm md:text-base leading-relaxed max-w-2xl">
+                "We’re all clearly there to pick up children because no sane person would be waiting in this line..." Pride subtly manifests when we act as if our immediate schedule, comfort, and preferences are the center of the universe—even in the daily mundane spaces like a school parking loop.
+            </p>
+        </section>
+
+        <!-- PORTABLE REFLECTION SECTION -->
+        <section class="space-y-6">
+            <div class="flex items-center justify-between border-b border-stone-800 pb-2">
+                <h3 class="font-serif text-lg md:text-xl text-stone-200">Core Concepts</h3>
+                <span class="text-xs text-stone-500">Click panels to expand details</span>
+            </div>
+
+            <!-- Interactive Accordion Container -->
+            <div class="space-y-3">
+
+                <!-- CARD 1: THE PROBLEM -->
+                <div class="bg-stone-900/30 border border-stone-800 rounded-xl overflow-hidden transition-all-custom hover:border-stone-700">
+                    <button onclick="toggleAccordion('panel1', 'icon1')" class="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none">
+                        <div class="flex items-center gap-3">
+                            <div class="p-2 bg-red-500/10 text-red-400 rounded-lg">
+                                <i data-lucide="alert-triangle" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-stone-200 text-sm md:text-base">The Nature of Pride</h4>
+                                <p class="text-xs text-stone-400">Hyperfixation on self and using others as tools.</p>
+                            </div>
+                        </div>
+                        <i id="icon1" data-lucide="chevron-down" class="w-5 h-5 text-stone-500 transition-transform duration-300"></i>
+                    </button>
+                    <!-- Expandable content div (hidden initially) -->
+                    <div id="panel1" class="hidden px-6 pb-6 border-t border-stone-800/50 pt-4 space-y-3 text-stone-300 text-sm md:text-base">
+                        <p><strong>"Pride sees culture, others, and God as tools for our self-fulfillment."</strong></p>
+                        <ul class="list-disc list-inside space-y-1.5 text-stone-400">
+                            <li>We often protect our deep fear of humiliation by arming ourselves with pride (status, material wealth, loudness).</li>
+                            <li>When we use people as tools, we fail to feel bad because "tools are made to be used" — a destructive illusion that started with the first lie in the garden.</li>
+                            <li>James connects spiritual pride directly with unfaithfulness ("You adulterous people").</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- CARD 2: THE SOLUTION (THREE W'S) -->
+                <div class="bg-stone-900/30 border border-stone-800 rounded-xl overflow-hidden transition-all-custom hover:border-stone-700">
+                    <button onclick="toggleAccordion('panel2', 'icon2')" class="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none">
+                        <div class="flex items-center gap-3">
+                            <div class="p-2 bg-amber-500/10 text-amber-400 rounded-lg">
+                                <i data-lucide="shield" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-stone-200 text-sm md:text-base">The Three Distinctives of Humility</h4>
+                                <p class="text-xs text-stone-400">Worth, Willing, and World.</p>
+                            </div>
+                        </div>
+                        <i id="icon2" data-lucide="chevron-down" class="w-5 h-5 text-stone-500 transition-transform duration-300"></i>
+                    </button>
+                    <!-- Expandable content div (hidden initially) -->
+                    <div id="panel2" class="hidden px-6 pb-6 border-t border-stone-800/50 pt-4 space-y-4 text-stone-300 text-sm">
+                        <div class="grid md:grid-cols-3 gap-4">
+                            <div class="bg-stone-950/50 p-4 rounded-lg border border-stone-800/80 space-y-2">
+                                <h5 class="font-semibold text-amber-400">1. Worth</h5>
+                                <p class="text-stone-400 text-xs">Humility is not self-deprecation. True humility requires recognizing your God-given worth, gifts, and status, then willingly choosing to direct them outward.</p>
+                            </div>
+                            <div class="bg-stone-950/50 p-4 rounded-lg border border-stone-800/80 space-y-2">
+                                <h5 class="font-semibold text-amber-400">2. Willing</h5>
+                                <p class="text-stone-400 text-xs">Humiliation is forced upon you, but humility is a daily choice. It is the active submission to God’s rhythm over our immediate convenience.</p>
+                            </div>
+                            <div class="bg-stone-950/50 p-4 rounded-lg border border-stone-800/80 space-y-2">
+                                <h5 class="font-semibold text-amber-400">3. World</h5>
+                                <p class="text-stone-400 text-xs">Not an abstract space, but "your" immediate world. It is redirecting your real power, resources, and attention for the tangible benefit of the people in your life.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD 3: APPLICATION -->
+                <div class="bg-stone-900/30 border border-stone-800 rounded-xl overflow-hidden transition-all-custom hover:border-stone-700">
+                    <button onclick="toggleAccordion('panel3', 'icon3')" class="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none">
+                        <div class="flex items-center gap-3">
+                            <div class="p-2 bg-emerald-500/10 text-emerald-400 rounded-lg">
+                                <i data-lucide="check-square" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-stone-200 text-sm md:text-base">Daily Practice: How to Say Nope</h4>
+                                <p class="text-xs text-stone-400">Moving from thoughts into practical action.</p>
+                            </div>
+                        </div>
+                        <i id="icon3" data-lucide="chevron-down" class="w-5 h-5 text-stone-500 transition-transform duration-300"></i>
+                    </button>
+                    <!-- Expandable content div (hidden initially) -->
+                    <div id="panel3" class="hidden px-6 pb-6 border-t border-stone-800/50 pt-4 space-y-3 text-stone-300 text-sm md:text-base">
+                        <p><strong>"It's not really a small thing when in small things we resist self."</strong> — Thomas à Kempis</p>
+                        <p class="text-stone-400">
+                            Saying "Nope" to pride starts in the unsung, quiet moments: holding your tongue when someone cuts you off in conversation, giving up a premium parking space, listening before offering a louder counterargument, and using your unique professional influence to champion co-workers rather than out-climb them.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- REFLECTION JOURNAL & INTERACTION (Scalable for future details/storage) -->
+        <section class="bg-stone-900/20 border border-stone-800/80 rounded-2xl p-6 md:p-8 space-y-6">
+            <div class="space-y-1">
+                <h3 class="font-serif text-xl text-stone-200">Interactive Journal</h3>
+                <p class="text-stone-400 text-xs">Write your private thoughts here to reflect. This is stored instantly in your browser.</p>
+            </div>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-stone-400 mb-2">
+                        In what area of your direct world (commute, home, office) is pride currently tempting you to act "you-first"?
+                    </label>
+                    <textarea id="journalText" oninput="saveJournal()" placeholder="Type your reflection here..." class="w-full h-32 bg-stone-950 border border-stone-850 rounded-xl p-4 text-stone-200 text-sm focus:outline-none focus:ring-1 focus:ring-amber-500 placeholder-stone-600 transition-all"></textarea>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span id="savedIndicator" class="text-xs text-stone-500 flex items-center gap-1 opacity-0 transition-opacity duration-300">
+                        <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500"></i> Saved to local browser storage
+                    </span>
+                    <button onclick="clearJournal()" class="text-xs text-stone-500 hover:text-red-400 transition-colors">Clear Reflection</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCRIPTURE BAR -->
+        <section class="border-t border-b border-stone-900 py-8 text-center space-y-3">
+            <p class="font-serif italic text-stone-300 text-lg md:text-xl">
+                "God opposes the proud, but he shows favor to the humble."
+            </p>
+            <p class="text-xs uppercase tracking-wider text-stone-500">James 4:6 & Proverbs 3:34</p>
+        </section>
+
+    </main>
+
+    <!-- PREMIUM FOOTER -->
+    <footer class="border-t border-stone-900 bg-stone-950 py-12 text-center text-xs text-stone-600">
+        <div class="max-w-4xl mx-auto px-4 space-y-2">
+            <p>&copy; 2026 Justin's apps.</p>
+            <p class="text-[10px] text-stone-700 max-w-md mx-auto">
+                Sermons to apps
+            </p>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVE JAVASCRIPT -->
+    <script>
+        // Load Lucide SVG Icons after page DOM initializes
+        lucide.createIcons();
+
+        // Load saved local storage journal entries if they exist
+        document.addEventListener("DOMContentLoaded", () => {
+            const savedText = localStorage.getItem("nope_to_pride_journal");
+            if (savedText) {
+                document.getElementById("journalText").value = savedText;
+            }
+        });
+
+        // Simple accordion open/close logic with smooth animations
+        function toggleAccordion(panelId, iconId) {
+            const panel = document.getElementById(panelId);
+            const icon = document.getElementById(iconId);
+            
+            if (panel.classList.contains('hidden')) {
+                panel.classList.remove('hidden');
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                panel.classList.add('hidden');
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // Real-time autosave logic for the user's reflection text
+        let debounceTimer;
+        function saveJournal() {
+            const textValue = document.getElementById("journalText").value;
+            localStorage.setItem("nope_to_pride_journal", textValue);
+            
+            const indicator = document.getElementById("savedIndicator");
+            indicator.classList.remove('opacity-0');
+            
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                indicator.classList.add('opacity-0');
+            }, 2500);
+        }
+
+        // Clear button utility
+        function clearJournal() {
+            if (confirm("Are you sure you want to delete your reflection draft?")) {
+                document.getElementById("journalText").value = "";
+                localStorage.removeItem("nope_to_pride_journal");
+            }
+        }
+    </script>
+</body>
+</html>
