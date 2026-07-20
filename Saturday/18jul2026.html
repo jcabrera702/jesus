@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Identity in Christ | Men's Study</title>
+    <!-- Tailwind CSS for sleek, modern UI styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter for premium typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Premium off-white background */
+        }
+        /* Smooth transition for active navigation items */
+        .nav-btn transition {
+            transition: all 0.2s ease-in-out;
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col">
+
+    <!-- Premium Header -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm backdrop-blur-md bg-white/90">
+        <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div>
+                <span class="text-xs font-semibold uppercase tracking-wider text-indigo-600 block mb-0.5">Men's Bible Study</span>
+                <h1 class="text-xl font-bold tracking-tight text-slate-900">Who Do You Say That I Am?</h1>
+            </div>
+            <div class="text-xs text-slate-400 font-medium hidden sm:block" id="study-date">July 18, 2026</div>
+        </div>
+    </header>
+
+    <!-- Main Dynamic Content Area -->
+    <main class="flex-grow max-w-4xl w-full mx-auto px-4 py-6 md:py-8 mb-20 md:mb-8">
+        
+        <!-- Summary Dashboard Component -->
+        <section id="overview-card" class="bg-gradient-to-br from-slate-900 to-indigo-950 text-white rounded-2xl p-6 shadow-xl mb-8">
+            <h2 class="text-xs font-semibold tracking-wider uppercase text-indigo-300 mb-2">Generative Summary</h2>
+            <p class="text-slate-200 leading-relaxed font-light text-sm md:text-base">
+                God spoke through prophets and now through His Son, Jesus, who is superior to angels, creator, and sustainer of the universe, seated at God's right hand. Believers are urged to heed salvation, live by faith, and recognize their new identity in Christ, emphasizing grace, righteousness, and reconciliation with God through faith and the Holy Spirit.
+            </p>
+        </section>
+
+        <!-- Dynamic Content injected here by Javascript -->
+        <div id="content-container" class="space-y-6"></div>
+
+    </main>
+
+    <!-- Premium Mobile-First Bottom Navigation Bar -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 shadow-xl z-50 sm:relative sm:border-t-0 sm:shadow-none sm:bg-transparent">
+        <div class="max-w-4xl mx-auto px-2 flex justify-around py-2 sm:justify-start sm:gap-4 sm:px-4 sm:mb-6">
+            <!-- JavaScript dynamically renders navigation buttons here based on data entries -->
+            <div id="nav-wrapper" class="w-full flex justify-around sm:justify-start sm:gap-2"></div>
+        </div>
+    </nav>
+
+    <!-- CORE DATA LAYER & APP CONTROLLER -->
+    <script>
+        /**
+         * 1. APP DATA STRUCTURE
+         * To add details later, simply add another object block `{}` inside this array.
+         * The UI will automatically generate navigation buttons and parse the content.
+         */
+        const studyData = [
+            {
+                id: "galatians-3",
+                tabLabel: "Galatians 3",
+                title: "Galatians 3:1-6",
+                subtitle: "Faith vs. Works of the Law",
+                type: "scripture",
+                verses: [
+                    { num: 1, text: "O foolish Galatians! Who has bewitched you? It was before your eyes that Jesus Christ was publicly portrayed as crucified." },
+                    { num: 2, text: "Let me ask you only this: Did you receive the Spirit by works of the law or by hearing with faith?" },
+                    { num: 3, text: "Are you so foolish? Having begun by the Spirit, are you now being perfected by the flesh?" },
+                    { num: 4, text: "Did you suffer so many things in vain—if indeed it was in vain?" },
+                    { num: 5, text: "Does he who supplies the Spirit to you and works miracles among you do so by works of the law, or by hearing with faith—" },
+                    { num: 6, text: "just as Abraham \"believed God, and it was counted to him as righteousness\"?" }
+                ],
+                insights: []
+            },
+            {
+                id: "identity",
+                tabLabel: "Identity",
+                title: "Identity \"In Christ\"",
+                subtitle: "Core Theological Reflection",
+                type: "reflection",
+                content: "\"In Christ\" describes the believer's new spiritual identity where past sins are forgiven and life is lived united with Jesus.",
+                highlights: [
+                    "Transformed life",
+                    "Adoption into God's family",
+                    "A secure future with Him"
+                ]
+            },
+            {
+                id: "galatians-2",
+                tabLabel: "Galatians 2",
+                title: "Galatians 2:20-21",
+                subtitle: "Crucified with Christ",
+                type: "scripture",
+                verses: [
+                    { num: 20, text: "I have been crucified with Christ. It is no longer I who live, but Christ who lives in me. And the life I now live in the flesh I live by faith in the Son of God, who loved me and gave himself for me." }
+                ],
+                insights: [
+                    "True transformation removes the self-centered ego and establishes a Christ-centered existence.",
+                    "Living by faith is anchored inherently in the historic love and sacrifice of Jesus."
+                ]
+            }
+            // Add your next topic here! Example:
+            // ,{ id: "next-topic", tabLabel: "Next Lesson", title: "Future Study Notes", type: "reflection", content: "Your future text goes here..." }
+        ];
+
+        /**
+         * 2. UX CONTROL LOGIC
+         */
+        let currentTabId = studyData[0].id;
+
+        function initApp() {
+            renderNavigation();
+            switchTab(currentTabId);
+        }
+
+        // Dynamically creates navigation tabs based on data array length
+        function renderNavigation() {
+            const navWrapper = document.getElementById('nav-wrapper');
+            navWrapper.innerHTML = '';
+
+            studyData.forEach(item => {
+                const btn = document.createElement('button');
+                btn.id = `btn-${item.id}`;
+                btn.className = `flex-1 sm:flex-initial text-center px-4 py-2.5 rounded-xl text-xs font-semibold tracking-wide transition uppercase`;
+                btn.textContent = item.tabLabel;
+                btn.onclick = () => switchTab(item.id);
+                navWrapper.appendChild(btn);
+            });
+        }
+
+        // Updates UI active state and renders selected container data
+        function switchTab(tabId) {
+            currentTabId = tabId;
+            
+            // Update Active Tab Button Highlights
+            studyData.forEach(item => {
+                const btn = document.getElementById(`btn-${item.id}`);
+                if (item.id === tabId) {
+                    btn.className = "flex-1 sm:flex-initial text-center px-4 py-2.5 rounded-xl text-xs font-semibold tracking-wide bg-indigo-600 text-white shadow-md shadow-indigo-200";
+                } else {
+                    btn.className = "flex-1 sm:flex-initial text-center px-4 py-2.5 rounded-xl text-xs font-semibold tracking-wide text-slate-500 hover:text-slate-900 hover:bg-slate-100";
+                }
+            });
+
+            // Find current data profile
+            const activeData = studyData.find(d => d.id === tabId);
+            renderContent(activeData);
+        }
+
+        // Generates the interface based on the type of study block selected
+        function renderContent(data) {
+            const container = document.getElementById('content-container');
+            container.innerHTML = ''; // Clear prior screen content
+
+            // 1. Header component for content block
+            let htmlContent = `
+                <div class="mb-4">
+                    <h2 class="text-2xl font-bold tracking-tight text-slate-900">${data.title}</h2>
+                    <p class="text-sm text-slate-500">${data.subtitle}</p>
+                </div>
+            `;
+
+            // 2. Conditional Template Renderer
+            if (data.type === 'scripture') {
+                // Formatting Layout optimized for reading verses elegantly
+                htmlContent += `
+                    <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
+                        <div class="text-slate-800 leading-relaxed font-serif text-base md:text-lg space-y-3">
+                            ${data.verses.map(v => `
+                                <p><span class="text-indigo-600 font-sans font-bold text-xs inline-block w-6 select-none">[${v.num}]</span>${v.text}</p>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+
+                // If study data includes extra reflection insights
+                if (data.insights && data.insights.length > 0) {
+                    htmlContent += `
+                        <div class="bg-amber-50/60 rounded-2xl p-6 border border-amber-200/70 space-y-3">
+                            <h3 class="text-xs font-bold uppercase tracking-wider text-amber-800">Study Insights</h3>
+                            <ul class="list-disc pl-5 space-y-2 text-sm text-amber-900/80">
+                                ${data.insights.map(ins => `<li>${ins}</li>`).join('')}
+                            </ul>
+                        </div>
+                    `;
+                }
+
+            } else if (data.type === 'reflection') {
+                // Focus styling component optimized for premium highlight display cards
+                htmlContent += `
+                    <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-6">
+                        <blockquote class="text-lg md:text-xl font-medium italic text-slate-800 border-l-4 border-indigo-600 pl-4 py-1">
+                            ${data.content}
+                        </blockquote>
+                        
+                        ${data.highlights ? `
+                            <div class="pt-4 border-t border-slate-100">
+                                <h3 class="text-xs font-bold tracking-wider uppercase text-slate-400 mb-3">Key Pillars of this Identity</h3>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                    ${data.highlights.map(h => `
+                                        <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 text-center text-sm font-medium text-slate-700">
+                                            ${h}
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }
+
+            container.innerHTML = htmlContent;
+        }
+
+        // Bootstrap application setup on window execution load
+        window.onload = initApp;
+    </script>
+</body>
+</html>
