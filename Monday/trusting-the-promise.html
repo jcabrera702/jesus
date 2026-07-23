@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Crossing | Monday Men's Teaching Guide</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Merriweather:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       1. THEMING & BRANDING (THE CROSSING DARK MODE)
+       ========================================================================== */
+    :root {
+      --bg-main: #0B0F17;        /* Deep Charcoal/Black */
+      --bg-card: #161F30;        /* Slightly lighter slate for contrast */
+      --bg-card-alt: #1E293B;    /* Embedded callouts */
+      --accent-gold: #F59E0B;   /* Crossing Gold/Amber Accent */
+      --accent-blue: #38BDF8;   /* Leader Tip Blue */
+      --accent-green: #34D399;  /* Application Green */
+      --text-primary: #F8FAFC;  
+      --text-secondary: #94A3B8;
+      --text-muted: #64748B;    
+      --border-color: #2D3748;  
+      --radius-lg: 16px;
+      --radius-md: 10px;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-serif: 'Merriweather', Georgia, serif;
+      --max-width: 720px;      
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      padding-bottom: 90px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: var(--max-width);
+      padding: 20px;
+    }
+
+    /* ==========================================================================
+       2. HEADER & MEETING INFO
+       ========================================================================== */
+    .header {
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 20px;
+    }
+
+    .brand-tag {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--accent-gold);
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .brand-tag span {
+      background: var(--accent-gold);
+      color: #000;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+    }
+
+    .header h1 {
+      font-size: 1.8rem;
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 6px;
+    }
+
+    .header .subtitle {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    .meta-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .meta-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 10px 14px;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .meta-card svg {
+      width: 18px;
+      height: 18px;
+      stroke: var(--accent-gold);
+      flex-shrink: 0;
+    }
+
+    /* ==========================================================================
+       3. STICKY NAV TABS
+       ========================================================================== */
+    .tab-bar {
+      display: flex;
+      background: rgba(22, 31, 48, 0.85);
+      padding: 4px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+      margin-bottom: 24px;
+      position: sticky;
+      top: 12px;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+    }
+
+    .tab-btn {
+      flex: 1;
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      padding: 10px 6px;
+      font-size: 0.825rem;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+
+    .tab-btn.active {
+      background: var(--accent-gold);
+      color: #000;
+      box-shadow: 0 2px 10px rgba(245, 158, 11, 0.3);
+    }
+
+    /* ==========================================================================
+       4. CONTENT SECTIONS
+       ========================================================================== */
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 28px 0 16px 0;
+    }
+
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-left: 3px solid var(--accent-gold);
+      padding-left: 10px;
+    }
+
+    .time-badge {
+      font-size: 0.75rem;
+      background: var(--bg-card-alt);
+      color: var(--accent-gold);
+      border: 1px solid var(--border-color);
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-weight: 600;
+    }
+
+    /* Scripture Styling */
+    .scripture-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      font-family: var(--font-serif);
+      font-size: 1rem;
+      line-height: 1.85;
+      color: #E2E8F0;
+      margin-bottom: 24px;
+    }
+
+    .verse-num {
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent-gold);
+      vertical-align: super;
+      margin-right: 4px;
+    }
+
+    /* Leader Insight Boxes */
+    .leader-tip {
+      background: rgba(56, 189, 248, 0.08);
+      border-left: 3px solid var(--accent-blue);
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      padding: 12px 16px;
+      margin: 12px 0;
+      font-size: 0.875rem;
+      color: #E0F2FE;
+    }
+
+    .leader-tip strong {
+      color: var(--accent-blue);
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    /* Question Cards */
+    .q-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .q-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .q-number {
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: var(--accent-gold);
+      letter-spacing: 0.05em;
+    }
+
+    .q-type {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .q-text {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+
+    /* Commentary inside questions */
+    .q-commentary {
+      background: var(--bg-card-alt);
+      border-radius: 6px;
+      padding: 10px 12px;
+      font-size: 0.825rem;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+    }
+
+    .q-commentary strong {
+      color: var(--accent-gold);
+    }
+
+    /* Interactive Notes Area */
+    .q-notes {
+      width: 100%;
+      background: var(--bg-main);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 10px;
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 0.875rem;
+      resize: vertical;
+      min-height: 65px;
+    }
+
+    .q-notes:focus {
+      outline: none;
+      border-color: var(--accent-gold);
+    }
+
+    /* Quotes Callouts */
+    .quote-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-left: 4px solid var(--accent-gold);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .quote-card p {
+      font-style: italic;
+      color: #F1F5F9;
+      font-size: 0.95rem;
+    }
+
+    .quote-card .speaker {
+      margin-top: 8px;
+      font-size: 0.8rem;
+      color: var(--accent-gold);
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    /* Outline Summary Cards */
+    .outline-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+
+    .outline-card h3 {
+      font-size: 1rem;
+      color: var(--accent-gold);
+      margin-bottom: 6px;
+    }
+
+    .outline-card p {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+
+    /* ==========================================================================
+       5. BOTTOM BAR / CONTROLS
+       ========================================================================== */
+    .bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(11, 15, 23, 0.92);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border-color);
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .btn {
+      background: var(--accent-gold);
+      color: #000;
+      border: none;
+      padding: 10px 16px;
+      border-radius: var(--radius-md);
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+    }
+
+    .status-text {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- HEADER -->
+    <header class="header">
+      <div class="brand-tag">
+        The Crossing <span>Monday Men</span>
+      </div>
+      <h1>Trusting the Promise</h1>
+      <div class="subtitle">Faith Under Pressure • Leader Teaching Guide</div>
+      
+      <div class="meta-bar">
+        <div class="meta-card">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          <div><strong>Windmill Campus</strong><br>Green Room (Behind Stage)</div>
+        </div>
+        <div class="meta-card">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <div><strong>Suggested Pace</strong><br>60–75 Min Discussion</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- NAVIGATION TABS -->
+    <nav class="tab-bar">
+      <button class="tab-btn active" onclick="switchTab('outline')">Outline</button>
+      <button class="tab-btn" onclick="switchTab('scripture')">Text</button>
+      <button class="tab-btn" onclick="switchTab('questions')">Questions</button>
+      <button class="tab-btn" onclick="switchTab('quotes')">Quotes</button>
+    </nav>
+
+    <!-- TAB 1: TEACHING OUTLINE & OVERVIEW -->
+    <section id="tab-outline" class="tab-content active">
+      
+      <div class="leader-tip">
+        <strong>Pastor's Note to Leader</strong>
+        Welcome the guys in, grab coffee, and keep the icebreaker moving quickly (10 mins max). The goal of tonight isn't just to talk about Abraham's historical test, but to lead men to examine what "Isaac" they might be holding onto tighter than God.
+      </div>
+
+      <div class="section-header">
+        <div class="section-title">Lesson Overview</div>
+        <span class="time-badge">Genesis Series</span>
+      </div>
+
+      <div class="outline-card">
+        <h3>1. Testing vs. Tempting</h3>
+        <p>God tests to reveal and refine genuine faith (v.1); Satan tempts to destroy. Testing shows us where our trust actually rests under pressure.</p>
+      </div>
+
+      <div class="outline-card">
+        <h3>2. Faith Expressed in Prompt Action</h3>
+        <p>Abraham rose "early the next morning" (v.3). True faith isn't an abstract feeling; it's immediate obedience before seeing the full outcome.</p>
+      </div>
+
+      <div class="outline-card">
+        <h3>3. Expectant Hope (Yahweh-Jireh)</h3>
+        <p>"God Himself will provide the lamb" (v.8). Abraham trusted God's character and promises even when the logistics seemed impossible (Hebrews 11:17-19).</p>
+      </div>
+
+      <div class="outline-card">
+        <h3>4. The Ultimate Substitute</h3>
+        <p>Isaac carrying the wood up Mount Moriah foreshadows Christ carrying His cross up Calvary. God spared Abraham's son, but did not spare His own.</p>
+      </div>
+
+      <div class="leader-tip">
+        <strong>Leader Tip for Group Flow</strong>
+        If discussion gets bogged down in debate over Abraham's morality or hard questions, pull the group back to <em>Question 10 & 13</em>: Focus on the <strong>object of our faith</strong> (Jesus) rather than human perfection.
+      </div>
+    </section>
+
+    <!-- TAB 2: SCRIPTURE TEXT -->
+    <section id="tab-scripture" class="tab-content">
+      <div class="section-header">
+        <div class="section-title">Genesis 22:1-14 (NIV)</div>
+        <span class="time-badge">Read Aloud Together</span>
+      </div>
+
+      <div class="scripture-box">
+        <p><span class="verse-num">1</span> Some time later God tested Abraham. He said to him, “Abraham!” “Here I am,” he replied.</p>
+        <p><span class="verse-num">2</span> Then God said, “Take your son, your only son, whom you love—Isaac—and go to the region of Moriah. Sacrifice him there as a burnt offering on a mountain I will show you.”</p>
+        <p><span class="verse-num">3</span> Early the next morning Abraham got up and loaded his donkey. He took with him two of his servants and his son Isaac. When he had cut enough wood for the burnt offering, he set out for the place God had told him about.</p>
+        <p><span class="verse-num">4</span> On the third day Abraham looked up and saw the place in the distance.</p>
+        <p><span class="verse-num">5</span> He said to his servants, “Stay here with the donkey while I and the boy go over there. We will worship and then we will come back to you.”</p>
+        <p><span class="verse-num">6</span> Abraham took the wood for the burnt offering and placed it on his son Isaac, and he himself carried the fire and the knife. As the two of them went on together,</p>
+        <p><span class="verse-num">7</span> Isaac spoke up and said to his father Abraham, “Father?” “Yes, my son?” Abraham replied. “The fire and wood are here,” Isaac said, “but where is the lamb for the burnt offering?”</p>
+        <p><span class="verse-num">8</span> Abraham answered, “God himself will provide the lamb for the burnt offering, my son.” And the two of them went on together.</p>
+        <p><span class="verse-num">9</span> When they reached the place God had told him about, Abraham built an altar there and arranged the wood on it. He bound his son Isaac and laid him on the altar, on top of the wood.</p>
+        <p><span class="verse-num">10</span> Then he reached out his hand and took the knife to slay his son.</p>
+        <p><span class="verse-num">11</span> But the angel of the Lord called out to him from heaven, “Abraham! Abraham!” “Here I am,” he replied.</p>
+        <p><span class="verse-num">12</span> “Do not lay a hand on the boy,” he said. “Do not do anything to him. Now I know that you fear God, because you have not withheld from me your son, your only son.”</p>
+        <p><span class="verse-num">13</span> Abraham looked up and there in a thicket he saw a ram caught by its horns. He went over and took the ram and sacrificed it as a burnt offering instead of his son.</p>
+        <p><span class="verse-num">14</span> So Abraham called that place The Lord Will Provide. And to this day it is said, “On the mountain of the Lord it will be provided.”</p>
+      </div>
+
+      <div class="leader-tip">
+        <strong>Cross-Reference Note</strong>
+        Check out <strong>Hebrews 11:17-19</strong> and <strong>James 2:21-23</strong> during discussion if guys ask how Abraham could logically go through with this. Abraham believed God could raise the dead.
+      </div>
+    </section>
+
+    <!-- TAB 3: ALL 17 LESSON QUESTIONS -->
+    <section id="tab-questions" class="tab-content">
+      
+      <!-- ICEBREAKER & INTRO -->
+      <div class="section-header">
+        <div class="section-title">1. Warm-Up & Intro</div>
+        <span class="time-badge">10 Mins</span>
+      </div>
+
+      <div class="q-card">
+        <div class="q-meta">
+          <span class="q-number">ICEBREAKER</span>
+          <span class="q-type">Casual</span>
+        </div>
+        <div class="q-text">What's something you're irrationally afraid of (heights, spiders, etc.)? Tell us about a time it caught you off guard.</div>
+        <textarea class="q-notes" id="note-0" placeholder="Leader notes / group responses..."></textarea>
+      </div>
+
+      <div class="q-card">
+        <div class="q-meta">
+          <span class="q-number">INTRODUCTION</span>
+          <span class="q-type">Sermon Recall</span>
+        </div>
+        <div class="q-text">What stood out to you most from this week’s message?</div>
+        <textarea class="q-notes" id="note-intro" placeholder="Leader notes..."></textarea>
+      </div>
+
+      <!-- OBSERVATION QUESTIONS -->
+      <div class="section-header">
+        <div class="section-title">2. Observation (Genesis 22:1-14)</div>
+        <span class="time-badge">20 Mins</span>
+      </div>
+
+      <div class="q-card">
+        <div class="q-meta">
+          <span class="q-number">QUESTION 1</span>
+          <span class="q-type">Observation</span>
+        </div>
+        <div class="q-text">What details in the story reveal Abraham’s faith before God provided the ram?</div>
+        <div class="q-commentary"><strong>Key Details:</strong> Early rising (v.3), statement "we will come back" (v.5), "God himself will provide" (v.8).</div>
+        <textarea class="q-notes" id="note-1" placeholder="Leader notes..."></textarea>
+      </div>
+
+      <div class="q-card">
+        <div class="q-meta">
+          <span class="q-number">QUESTION 2</span>
+          <span class="q-type">Observation</span>
+        </div>
+        <div class="q-text">The sermon described three characteristics of faith. What were they and which verses illustrate each one?</div>
+        <textarea class="q-notes" id="note-2" placeholder="Leader notes..."></textarea>
+      </div>
+
+      <div class="q-card">
+        <div class="q-meta">
+          <span class="q-number">QUESTION 3</span>
+          <span class="q-type">Observation</span>
+        </div>
+        <div class="q-text">What repeated statements about God or Abraham caught your attention?</div>
+        <div class="q-commentary"><strong>Notice:</strong> "Here I am" (v.1, 11), "Your son, your only son" (v.2, 12), "Went on together" (v.6, 8).</div>
+        <textarea class="q-notes" id="note-3" placeholder="Leader notes..."></textarea>
+      </div>
+
+      <div class="q-card">
+        <div class="q-meta">
+          <span class="q-number">QUESTION 4</span>
+          <span class="q-type">Typology</span>
+        </div>
+        <div class="q-text">What similarities do you see between Isaac and Christ?</div>
+        <div class="q-commentary"><strong>Connections:</strong> Beloved only son; carrying wood/cross up the hill; submission to the father; miraculous birth.</div>
+        <textarea class="q-notes" id="note-4" placeholder="Leader notes..."></textarea>
+      </div>
+
+      <!-- INTERPRETATION QUESTIONS -->
+      <div class="section-header">
+        <div class="section-title">3. Interpretation</div>
+        <span class="time-badge">25 Mins</span>
+      </div>
+
+      <div class="q-card">
+        <div class="q-meta">
+          <span class="q-number">QUESTION 5</span>
+          <span class="q-type">Heart Check</span>
+        </div>
+        <div class="q-text">God called Isaac "your son, whom you love." What are the good things in your life that could quietly become more important to you than God?</div>
+        <textarea class="q-notes" id="note-5" placeholder="Leader notes..."></textarea>
+      </div>
+
+      <div class="q-card">
+        <div class="q-meta">
+          <span class="q-number">QUESTION 6</span>
+          <span class="q-type">Interpretation</span>
+        </div>
+        <div class="q-text">Why do you think God tested Abraham after waiting 25 years for Isaac?</div>
+        <textarea class="q-notes" id="note-6" placeholder="Leader notes..."></textarea>
+      </div>
+
+      <div class="q-card">
+        <div class="q-meta">
+          <span class="q-number">QUESTION 7</span>
+          <span class="q-type">Interpretation</span>
+        </div>
+        <div class="q-text">What was God revealing about Abraham and about himself?</div>
+        <textarea class="q-notes" id="note-7" placeholder="Leader notes..."></textarea>
+      </div>
+
+      <div class="q-card">
+        <div class="q-meta">
+          <span class="q-number">QUESTION 8</span>
+          <span class="q-type">Interpretation</span>
+        </div>
+        <div class="q-text">Faith was described as something revealed through action, not just an internal feeling. What is usually harder – the first step or continuing to obey while waiting?</div>
+        <textarea class="q-notes" id="note-8" placeholder="Leader notes..."></textarea>
+      </div>
+
+      <div class="q-card">
+        <div class="q-meta">
+          <span class="q-number">QUESTION 9</span>
+          <span class="q-type">Core Doctrine</span>
+        </div>
+        <div class="q-text">What is the difference between having faith in your own faith versus having faith in God's character?</div>
+        <textarea class="q-notes" id="note-9" placeholder="Leader notes..."></textarea>
+      </div>
+
+      <div class="q-card">
+        <div class="q-meta">
+          <span class="q-number">QUESTION 10</span>
+          <span class="q-type">Key Quote</span>
+        </div>
+        <div class="q-text">Pastor Seth said, “We’re not saved by the strength of our faith, but by the object of our faith.” Why is that distinction so important?</div>
+        <textarea class="q-notes" id="note-10" placeholder="Leader notes..."></textarea>
+      </div>
+
+      <div class="q-card">
+        <div class="q-meta">
+          <span class="q-number">QUESTION 11</span>
+          <span class="q-type">Interpretation</span>
+        </div>
+        <div class="q-text">Abraham repeatedly said, "God will provide," before he knew how everything would work out. What does that teach us about biblical hope? How is expectant faith different from simply wishing something will happen?</div>
+        <textarea class="q-notes" id="note-11" placeholder="Leader notes..."></textarea>
+      </div>
+
+      <div class="q-card">
+        <div class="q-meta">
+          <span class="q-number">QUESTION 12</span>
+          <span class="q-type">Practical Response</span>
+        </div>
+        <div class="q-text">If someone told you, "I just need to try harder to have faith," how would you respond to them after this week's message?</div>
+        <textarea class="q-notes" id="note-12" placeholder="Leader notes..."></textarea>
+      </div>
+
+      <div class="q-card">
+        <div class="q-meta">
+          <span class="q-number">QUESTION 13</span>
+          <span class="q-type">Key Quote</span>
+        </div>
+        <div class="q-text">Pastor Seth said, “Faith doesn’t grow by trying harder to trust. Faith grows by seeing more clearly that God is trustworthy.” What does this statement mean to you?</div>
+        <textarea class="q-notes" id="note-13" placeholder="Leader notes..."></textarea>
+      </div>
+
+      <!-- APPLICATION QUESTIONS -->
+      <div class="section-header">
+        <div class="section-title">4. Personal Application</div>
+        <span class="time-badge">20 Mins</span>
+      </div>
+
+      <div class="q-card">
+        <div class="q-meta">
+          <span class="q-number">QUESTION 14</span>
+          <span class="q-type">Action Step</span>
+        </div>
+        <div class="q-text">Since faith is something revealed through action, what is a step of obedience you’ve been aware of but keep putting off?</div>
+        <textarea class="q-notes" id="note-14" placeholder="Personal reflection or group prayer points..."></textarea>
+      </div>
+
+      <div class="q-card">
+        <div class="q-meta">
+          <span class="q-number">QUESTION 15</span>
+          <span class="q-type">Action Step</span>
+        </div>
+        <div class="q-text">Abraham said "God will provide" before he saw any evidence of it. Where are you waiting right now for God to provide, and what does it look like to keep trusting while you wait?</div>
+        <textarea class="q-notes" id="note-15" placeholder="Personal reflection..."></textarea>
+      </div>
+
+      <div class="q-card">
+        <div class="q-meta">
+          <span class="q-number">QUESTION 16</span>
+          <span class="q-type">Gospel Focus</span>
+        </div>
+        <div class="q-text">Genesis 22 points forward to Jesus, the Son who was not spared so we could be. How does the cross change the way you face uncertainty in your own life?</div>
+        <textarea class="q-notes" id="note-16" placeholder="Personal reflection..."></textarea>
+      </div>
+
+      <div class="q-card">
+        <div class="q-meta">
+          <span class="q-number">QUESTION 17</span>
+          <span class="q-type">Closing Commitment</span>
+        </div>
+        <div class="q-text">Which of these best describes where you are today:</div>
+        <div class="q-commentary">
+          • I need to love God more than His gifts<br>
+          • I need to take a step of obedience<br>
+          • I need to keep trusting while I wait<br>
+          • I need to remember God’s faithfulness instead of focusing on my fears
+        </div>
+        <textarea class="q-notes" id="note-17" placeholder="Record where the guys landed for follow-up/prayer..."></textarea>
+      </div>
+
+    </section>
+
+    <!-- TAB 4: KEY QUOTES -->
+    <section id="tab-quotes" class="tab-content">
+      <div class="section-header">
+        <div class="section-title">Quotes from Pastor Seth</div>
+        <span class="time-badge">Anchor Points</span>
+      </div>
+
+      <div class="quote-card">
+        <p>“We’re not saved by the strength of our faith, but by the object of our faith.”</p>
+        <div class="speaker">— Pastor Seth</div>
+      </div>
+
+      <div class="quote-card">
+        <p>“Faith doesn’t grow by trying harder to trust. Faith grows by seeing more clearly that God is trustworthy.”</p>
+        <div class="speaker">— Pastor Seth</div>
+      </div>
+
+      <div class="quote-card">
+        <p>“God doesn’t test us so that HE can find out how strong our faith is. God tests us so that WE can find out where our faith actually rests.”</p>
+        <div class="speaker">— Teaching Principle</div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- FIXED BOTTOM CONTROL BAR -->
+  <div class="bottom-bar">
+    <span class="status-text" id="status-text">Leader Notes Auto-Saved</span>
+    <div>
+      <button class="btn btn-secondary" onclick="clearNotes()">Clear</button>
+      <button class="btn" onclick="exportNotes()">Save Summary</button>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    // Tab Switching Functionality
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+      event.target.classList.add('active');
+      document.getElementById('tab-' + tabId).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Local Storage Note Persistence for all textareas
+    const textareas = document.querySelectorAll('.q-notes');
+
+    textareas.forEach((textarea) => {
+      const id = textarea.id;
+      if (id) {
+        const savedNote = localStorage.getItem('crossing_leader_note_' + id);
+        if (savedNote) textarea.value = savedNote;
+
+        textarea.addEventListener('input', () => {
+          localStorage.setItem('crossing_leader_note_' + id, textarea.value);
+          showStatus('Saving notes...');
+        });
+      }
+    });
+
+    function showStatus(msg) {
+      const statusEl = document.getElementById('status-text');
+      statusEl.textContent = msg;
+      setTimeout(() => {
+        statusEl.textContent = 'Leader Notes Auto-Saved';
+      }, 1500);
+    }
+
+    function clearNotes() {
+      if (confirm('Are you sure you want to clear all leader notes for this session?')) {
+        textareas.forEach((textarea) => {
+          textarea.value = '';
+          if (textarea.id) {
+            localStorage.removeItem('crossing_leader_note_' + textarea.id);
+          }
+        });
+        showStatus('Notes Cleared');
+      }
+    }
+
+    function exportNotes() {
+      let exportText = "MONDAY MEN'S LEADER NOTES - TRUSTING THE PROMISE\n";
+      exportText += "Date: July 19, 2026 | Location: Windmill Campus\n\n";
+
+      textareas.forEach((textarea, index) => {
+        if (textarea.value.trim() !== "") {
+          exportText += `[Note Block ${index + 1}]\n${textarea.value}\n\n`;
+        }
+      });
+
+      if (exportText.trim() === "") {
+        alert("No notes entered yet to export.");
+        return;
+      }
+
+      const blob = new Blob([exportText], { type: 'text/plain' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'Monday_Mens_Leader_Notes.txt';
+      a.click();
+    }
+  </script>
+</body>
+</html>

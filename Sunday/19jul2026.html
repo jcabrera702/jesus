@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-950 text-slate-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faith Under Pressure | Practical Application App</title>
+    
+    <!-- Tailwind CSS CDN for modern responsive layout and micro-interactions -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons CDN for clean, minimal icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Custom Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        amber: {
+                            400: '#f59e0b',
+                            500: '#d97706',
+                            600: '#b45309',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- UI Custom Styles -->
+    <style>
+        /* Smooth transitions for tabs and interactive elements */
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.25s ease-in-out; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Custom scrollbar styling for slick look */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #020617; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+    </style>
+</head>
+<body class="h-full flex flex-col font-sans antialiased selection:bg-amber-500 selection:text-slate-950 pb-20 md:pb-0">
+
+    <!-- ========================================== -->
+    <!-- HEADER SECTION                             -->
+    <!-- ========================================== -->
+    <header class="sticky top-0 z-30 bg-slate-900/80 backdrop-blur-md border-b border-slate-800/80 px-4 py-3">
+        <div class="max-w-xl mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
+                    <i data-lucide="shield-check" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <h1 class="text-base font-semibold text-white leading-tight">Faith Under Pressure</h1>
+                    <p class="text-xs text-slate-400">Application Guide & Record</p>
+                </div>
+            </div>
+            <!-- Dynamic Progress Indicator -->
+            <div class="text-right">
+                <span class="text-xs font-mono text-amber-400" id="header-stats">0 Logged</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ========================================== -->
+    <!-- MAIN CONTENT CONTAINER                    -->
+    <!-- ========================================== -->
+    <main class="flex-1 max-w-xl w-full mx-auto p-4 space-y-6">
+
+        <!-- CORE PREMISE BANNER -->
+        <section class="bg-gradient-to-r from-slate-900 via-slate-900 to-amber-950/30 border border-slate-800 rounded-2xl p-5 relative overflow-hidden shadow-lg">
+            <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-amber-500/10 rounded-full blur-xl pointer-events-none"></div>
+            <div class="flex items-start space-x-3">
+                <i data-lucide="quote" class="w-5 h-5 text-amber-400 shrink-0 mt-1"></i>
+                <div>
+                    <p class="text-sm font-medium text-amber-100 italic">"Faith is our response to the faithfulness of God."</p>
+                    <p class="text-xs text-slate-400 mt-1">Faith grows by seeing more clearly how trustworthy God is, not through self-reliance.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 1: FRAMEWORK & ACTION STEPS -->
+        <div id="tab-framework" class="tab-content active space-y-4">
+            <div class="flex items-center justify-between">
+                <h2 class="text-sm font-semibold tracking-wider text-slate-400 uppercase">3-Part Framework</h2>
+                <span class="text-xs text-slate-500">Tap card to expand details</span>
+            </div>
+            
+            <!-- Cards rendered dynamically via JavaScript -->
+            <div id="framework-list" class="space-y-3"></div>
+        </div>
+
+        <!-- TAB 2: FAITHFULNESS LOG (JOURNAL) -->
+        <div id="tab-log" class="tab-content space-y-4">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-sm font-semibold tracking-wider text-slate-400 uppercase">Faithfulness Record</h2>
+                    <p class="text-xs text-slate-500">Track God's past provision to anchor present trust</p>
+                </div>
+            </div>
+
+            <!-- ADD ENTRY FORM -->
+            <form id="add-entry-form" class="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3 shadow-sm">
+                <div>
+                    <label for="entry-title" class="block text-xs font-medium text-slate-300 mb-1">Title / Provision Area</label>
+                    <input type="text" id="entry-title" required placeholder="e.g., Financial breakthrough during career change" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-amber-500 transition">
+                </div>
+                <div>
+                    <label for="entry-category" class="block text-xs font-medium text-slate-300 mb-1">Category</label>
+                    <select id="entry-category" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-slate-300 focus:outline-none focus:border-amber-500 transition">
+                        <option value="Provision">Provision & Needs</option>
+                        <option value="Guidance">Guidance & Clarity</option>
+                        <option value="Peace">Peace & Protection</option>
+                        <option value="Answered Prayer">Answered Prayer</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="entry-desc" class="block text-xs font-medium text-slate-300 mb-1">Details & Reflections</label>
+                    <textarea id="entry-desc" rows="2" placeholder="Record what God did so you can look back on it during uncertain times..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-amber-500 transition"></textarea>
+                </div>
+                <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 active:scale-[0.99] text-slate-950 font-semibold py-2.5 rounded-xl text-sm transition flex items-center justify-center space-x-2 shadow-md shadow-amber-500/10">
+                    <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                    <span>Log Answered Prayer / Provision</span>
+                </button>
+            </form>
+
+            <!-- ENTRY LIST CONTAINER -->
+            <div id="log-entries" class="space-y-3">
+                <!-- Dynamic items rendered via JavaScript -->
+            </div>
+        </div>
+
+        <!-- TAB 3: REFLECTION QUESTIONS -->
+        <div id="tab-reflection" class="tab-content space-y-4">
+            <div class="flex items-center justify-between">
+                <h2 class="text-sm font-semibold tracking-wider text-slate-400 uppercase">Self & Group Reflection</h2>
+                <span class="text-xs text-slate-500">Interactive Prompt Notes</span>
+            </div>
+
+            <!-- Questions rendered dynamically -->
+            <div id="reflection-list" class="space-y-4"></div>
+        </div>
+
+    </main>
+
+    <!-- ========================================== -->
+    <!-- NAVIGATION BAR (MOBILE BOTTOM / DESKTOP)  -->
+    <!-- ========================================== -->
+    <nav class="fixed bottom-0 left-0 right-0 z-40 bg-slate-900/90 backdrop-blur-lg border-t border-slate-800 py-2">
+        <div class="max-w-xl mx-auto flex justify-around items-center px-4">
+            <button onclick="switchTab('framework')" id="nav-framework" class="nav-btn flex flex-col items-center space-y-1 text-amber-400">
+                <i data-lucide="layers" class="w-5 h-5"></i>
+                <span class="text-[10px] font-medium">Framework</span>
+            </button>
+            <button onclick="switchTab('log')" id="nav-log" class="nav-btn flex flex-col items-center space-y-1 text-slate-400 hover:text-slate-200">
+                <i data-lucide="book-open" class="w-5 h-5"></i>
+                <span class="text-[10px] font-medium">Provision Log</span>
+            </button>
+            <button onclick="switchTab('reflection')" id="nav-reflection" class="nav-btn flex flex-col items-center space-y-1 text-slate-400 hover:text-slate-200">
+                <i data-lucide="help-circle" class="w-5 h-5"></i>
+                <span class="text-[10px] font-medium">Reflect</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ========================================== -->
+    <!-- APPLICATION LOGIC & EXTENSIBLE DATA        -->
+    <!-- ========================================== -->
+    <script>
+        /* 
+         * APP DATA STRUCTURE
+         * Add or edit framework points, reflections, or initial data here to expand detail anytime.
+         */
+        const APP_DATA = {
+            framework: [
+                {
+                    id: 1,
+                    title: "1. Faith Loves God Above His Gifts",
+                    subtitle: "Tests reveal what is already in our hearts.",
+                    icon: "heart-handshake",
+                    principle: "Good gifts (career, family, health, security) become destructive idols when elevated above the Giver. God tests our devotion to ensure His gifts don't replace Him on the throne of our lives.",
+                    steps: [
+                        "Perform an Allegiance Audit: Identify 'white-knuckle' control areas.",
+                        "Ask: Am I trusting the gift to sustain me, or the God who gave it?",
+                        "Surrender ownership: Move gifts from idols of security to stewardships of grace."
+                    ]
+                },
+                {
+                    id: 2,
+                    title: "2. Faith Obeys Before Understanding",
+                    subtitle: "Faith is revealed by taking the step out onto the glass.",
+                    icon: "footprints",
+                    principle: "Standing on a solid glass floor doesn't prove your strength—it demonstrates the strength of the foundation holding you up. Complete understanding often comes along the path of obedience, not before.",
+                    steps: [
+                        "Determine your 'Glass-Floor' step (generosity, forgiveness, bold move).",
+                        "Decouple initial action from full outcome clarity.",
+                        "Execute the next single obedient action step."
+                    ]
+                },
+                {
+                    id: 3,
+                    title: "3. Faith Expects Provision While Waiting",
+                    subtitle: "Ground expectation in God's character (Jehovah Jireh).",
+                    icon: "anchor",
+                    principle: "Expectant faith rests in God's proven character during seasons of silence. The cross is the ultimate historical proof that God does not withhold what we truly need (Romans 8:32).",
+                    steps: [
+                        "Build and maintain a personal 'Faithfulness Record'.",
+                        "Review past provisions whenever facing new pressure or anxiety.",
+                        "Anchor hope in God's nature rather than demanding specific outcomes."
+                    ]
+                }
+            ],
+            reflections: [
+                {
+                    id: "r1",
+                    question: "1. Gifts vs. Giver",
+                    prompt: "What is currently sitting on the 'throne' of your thoughts or anxieties? How can you recalibrate its position relative to God?",
+                    placeholder: "Write your reflection here..."
+                },
+                {
+                    id: "r2",
+                    question: "2. Actionable Step",
+                    prompt: "What specific step of obedience have you been postponing until circumstances feel 'safer' or clearer?",
+                    placeholder: "Describe the step you need to take..."
+                },
+                {
+                    id: "r3",
+                    question: "3. Historical Provision",
+                    prompt: "Recall one specific moment where God provided for you when you couldn't see a way forward.",
+                    placeholder: "Record the memory here..."
+                }
+            ]
+        };
+
+        // --- LOCAL STORAGE STATE MANAGEMENT ---
+        let userEntries = JSON.parse(localStorage.getItem('faith_entries') || '[]');
+        let reflectionAnswers = JSON.parse(localStorage.getItem('faith_reflections') || '{}');
+
+        // --- RENDER FUNCTIONS ---
+
+        // Render 3-Part Framework Cards
+        function renderFramework() {
+            const container = document.getElementById('framework-list');
+            container.innerHTML = APP_DATA.framework.map(item => `
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 transition-all hover:border-slate-700">
+                    <div class="flex items-start space-x-3 cursor-pointer" onclick="toggleAccordion('framework-body-${item.id}')">
+                        <div class="p-2.5 rounded-xl bg-amber-500/10 text-amber-400 shrink-0">
+                            <i data-lucide="${item.icon}" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-sm font-semibold text-white">${item.title}</h3>
+                            <p class="text-xs text-slate-400 mt-0.5">${item.subtitle}</p>
+                        </div>
+                        <i data-lucide="chevron-down" class="w-4 h-4 text-slate-500 transition-transform" id="chevron-${item.id}"></i>
+                    </div>
+
+                    <div id="framework-body-${item.id}" class="mt-4 pt-3 border-t border-slate-800 space-y-3">
+                        <p class="text-xs text-slate-300 leading-relaxed">${item.principle}</p>
+                        <div class="bg-slate-950/60 rounded-xl p-3 border border-slate-800/60">
+                            <span class="text-[11px] font-semibold text-amber-400 uppercase tracking-wider block mb-2">Action Steps</span>
+                            <ul class="space-y-1.5">
+                                ${item.steps.map(step => `
+                                    <li class="flex items-start space-x-2 text-xs text-slate-300">
+                                        <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-amber-400 shrink-0 mt-0.5"></i>
+                                        <span>${step}</span>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        // Render Provision Log Entries
+        function renderEntries() {
+            const container = document.getElementById('log-entries');
+            document.getElementById('header-stats').innerText = `${userEntries.length} Logged`;
+
+            if (userEntries.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-8 px-4 bg-slate-900/50 border border-dashed border-slate-800 rounded-2xl">
+                        <i data-lucide="bookmark-plus" class="w-8 h-8 text-slate-600 mx-auto mb-2"></i>
+                        <p class="text-xs font-medium text-slate-400">No provisions logged yet.</p>
+                        <p class="text-[11px] text-slate-500 mt-1">Add your first entry above to build your faithfulness record.</p>
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+
+            container.innerHTML = userEntries.map((entry, index) => `
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-2 relative group">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-400 border border-amber-500/20">${entry.category}</span>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-[10px] text-slate-500">${entry.date}</span>
+                            <button onclick="deleteEntry(${index})" class="text-slate-600 hover:text-red-400 transition">
+                                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <h4 class="text-sm font-semibold text-white">${escapeHtml(entry.title)}</h4>
+                    ${entry.desc ? `<p class="text-xs text-slate-300 leading-relaxed">${escapeHtml(entry.desc)}</p>` : ''}
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        // Render Reflection Prompts
+        function renderReflections() {
+            const container = document.getElementById('reflection-list');
+            container.innerHTML = APP_DATA.reflections.map(item => {
+                const savedVal = reflectionAnswers[item.id] || '';
+                return `
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3">
+                        <div>
+                            <h3 class="text-sm font-semibold text-amber-400">${item.question}</h3>
+                            <p class="text-xs text-slate-300 mt-1">${item.prompt}</p>
+                        </div>
+                        <textarea 
+                            oninput="saveReflection('${item.id}', this.value)"
+                            rows="3" 
+                            placeholder="${item.placeholder}" 
+                            class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-amber-500 transition"
+                        >${escapeHtml(savedVal)}</textarea>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // --- INTERACTION HANDLERS ---
+
+        function toggleAccordion(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.classList.toggle('hidden');
+            }
+        }
+
+        function switchTab(tabId) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            // Reset nav buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-amber-400');
+                btn.classList.add('text-slate-400');
+            });
+
+            // Activate target tab & nav icon
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+            const activeNav = document.getElementById(`nav-${tabId}`);
+            if (activeNav) {
+                activeNav.classList.remove('text-slate-400');
+                activeNav.classList.add('text-amber-400');
+            }
+        }
+
+        // Form Submit Handler for New Entries
+        document.getElementById('add-entry-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const title = document.getElementById('entry-title').value;
+            const category = document.getElementById('entry-category').value;
+            const desc = document.getElementById('entry-desc').value;
+
+            const newEntry = {
+                title,
+                category,
+                desc,
+                date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+            };
+
+            userEntries.unshift(newEntry);
+            localStorage.setItem('faith_entries', JSON.stringify(userEntries));
+            
+            // Reset form & re-render
+            e.target.reset();
+            renderEntries();
+        });
+
+        function deleteEntry(index) {
+            userEntries.splice(index, 1);
+            localStorage.setItem('faith_entries', JSON.stringify(userEntries));
+            renderEntries();
+        }
+
+        function saveReflection(id, val) {
+            reflectionAnswers[id] = val;
+            localStorage.setItem('faith_reflections', JSON.stringify(reflectionAnswers));
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/[&<>"']/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+        }
+
+        // --- INITIALIZATION ---
+        window.addEventListener('DOMContentLoaded', () => {
+            renderFramework();
+            renderEntries();
+            renderReflections();
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>
