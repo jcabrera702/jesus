@@ -20,7 +20,8 @@
             --bg-card-hover: #1e273d;
             --accent-gold: #e2b714;
             --accent-gold-soft: rgba(226, 183, 20, 0.15);
-            --accent-blue: #3b82f6;
+            --accent-red: #ef4444;
+            --accent-red-hover: rgba(239, 68, 68, 0.2);
             --text-primary: #f3f4f6;
             --text-secondary: #9ca3af;
             --text-muted: #6b7280;
@@ -121,6 +122,7 @@
 
         /* Card Component */
         .card {
+            position: relative;
             background: var(--bg-card);
             border: 1px solid var(--border-color);
             border-radius: var(--radius-lg);
@@ -140,6 +142,7 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 12px;
+            padding-right: 28px; /* Room for delete button */
         }
 
         .badge {
@@ -151,6 +154,30 @@
             border-radius: 12px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+        }
+
+        /* Delete Button Styling */
+        .btn-delete {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .btn-delete:hover {
+            background: var(--accent-red-hover);
+            color: var(--accent-red);
         }
 
         .card-title {
@@ -225,7 +252,7 @@
             color: var(--text-secondary);
         }
 
-        /* Dynamic Content Form Modal/Section */
+        /* Dynamic Content Form Box */
         .add-entry-box {
             background: var(--bg-card);
             border: 1px dashed var(--accent-gold);
@@ -338,10 +365,10 @@
 
         <!-- Category Filters -->
         <div class="filter-bar">
-            <button class="chip active" onclick="filterCategory('all')">All Notes</button>
-            <button class="chip" onclick="filterCategory('rapture')">Raptures</button>
-            <button class="chip" onclick="filterCategory('timeline')">Daniel's 70 Weeks</button>
-            <button class="chip" onclick="filterCategory('core-principles')">Core Principles</button>
+            <button class="chip active" onclick="filterCategory('all', event)">All Notes</button>
+            <button class="chip" onclick="filterCategory('rapture', event)">Raptures</button>
+            <button class="chip" onclick="filterCategory('timeline', event)">Daniel's 70 Weeks</button>
+            <button class="chip" onclick="filterCategory('core-principles', event)">Core Principles</button>
         </div>
 
         <!-- Dynamic Card Container -->
@@ -356,7 +383,7 @@
             </div>
             <div class="card-title">Daniel's 70 Weeks Prophecy (Daniel 9:24-27)</div>
             <p class="lesson-text" style="font-size: 0.85rem; color: var(--text-secondary);">
-                $70 \times 7 = 490$ Prophetic Years focusing on God's program for the children of Israel.
+                70 x 7 = 490 Prophetic Years focusing on God's program for the children of Israel.
             </p>
             <div class="timeline-grid">
                 <div class="timeline-step">
@@ -478,11 +505,15 @@
             }
         ];
 
+        // Track active filter state globally
+        let currentFilter = 'all';
+
         // Retrieve existing notes from localStorage or initialize with initialData
         let studyNotes = JSON.parse(localStorage.getItem('revelationNotes')) || initialData;
 
         // Render Cards to UI
         function renderCards(filter = 'all') {
+            currentFilter = filter;
             const container = document.getElementById('cards-container');
             container.innerHTML = '';
 
@@ -490,9 +521,15 @@
                 ? studyNotes 
                 : studyNotes.filter(item => item.category === filter);
 
+            if (filtered.length === 0) {
+                container.innerHTML = `<p style="text-align: center; color: var(--text-muted); padding: 20px;">No notes in this category.</p>`;
+                return;
+            }
+
             filtered.forEach(note => {
                 const cardHtml = `
-                    <div class="card" data-category="${note.category}">
+                    <div class="card" data-id="${note.id}" data-category="${note.category}">
+                        <button class="btn-delete" title="Delete note" onclick="deleteNote(${note.id})">&times;</button>
                         <div class="card-header">
                             <span class="badge">${note.category.replace('-', ' ')}</span>
                         </div>
@@ -508,13 +545,22 @@
             });
         }
 
+        // Delete Functionality with localStorage persistence
+        function deleteNote(id) {
+            if (confirm("Are you sure you want to delete this study note?")) {
+                studyNotes = studyNotes.filter(note => note.id !== id);
+                localStorage.setItem('revelationNotes', JSON.stringify(studyNotes));
+                renderCards(currentFilter);
+            }
+        }
+
         // Filter Functionality
-        function filterCategory(category) {
-            // Update active state on chips
+        function filterCategory(category, evt) {
             const chips = document.querySelectorAll('.chip');
             chips.forEach(chip => chip.classList.remove('active'));
-            event.target.classList.add('active');
-
+            if (evt && evt.target) {
+                evt.target.classList.add('active');
+            }
             renderCards(category);
         }
 
@@ -529,7 +575,7 @@
             const lesson = document.getElementById('lesson').value;
 
             const newNote = {
-                id: Date.now(),
+                id: Date.now(), // Generate unique timestamp ID for deletion lookup
                 category,
                 title,
                 scriptureRef,
@@ -543,6 +589,11 @@
             // Reset form and re-render
             document.getElementById('noteForm').reset();
             renderCards('all');
+
+            // Reset filter chips to 'All Notes'
+            const chips = document.querySelectorAll('.chip');
+            chips.forEach(chip => chip.classList.remove('active'));
+            if (chips[0]) chips[0].classList.add('active');
 
             // Scroll up to show new card
             window.scrollTo({top: 0, behavior: 'smooth'});
