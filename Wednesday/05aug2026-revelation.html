@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book of Revelation Study Companion</title>
+    <!-- Google Fonts: Inter for clean UI typography & Playfair Display for elegant scriptural headings -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================
+           1. CSS CONSTANTS & THEMING
+           ========================================== */
+        :root {
+            /* Color Palette: Dark Luxurious Theme with Gold Accents */
+            --bg-body: #0b0f19;
+            --bg-card: #151c2c;
+            --bg-card-hover: #1e273d;
+            --accent-gold: #e2b714;
+            --accent-gold-soft: rgba(226, 183, 20, 0.15);
+            --accent-blue: #3b82f6;
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --text-muted: #6b7280;
+            --border-color: rgba(255, 255, 255, 0.08);
+            
+            /* Radius & Shadows */
+            --radius-lg: 16px;
+            --radius-md: 10px;
+            --radius-sm: 6px;
+            --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ==========================================
+           2. RESET & BASE STYLES
+           ========================================== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding-bottom: 80px; /* Space for mobile navigation */
+        }
+
+        /* ==========================================
+           3. UI COMPONENTS & LAYOUT
+           ========================================== */
+        header {
+            background: linear-gradient(180deg, rgba(21, 28, 44, 0.95) 0%, rgba(11, 15, 25, 0.8) 100%);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border-color);
+            padding: 20px 16px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            color: var(--accent-gold);
+            letter-spacing: 0.5px;
+        }
+
+        header p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px 16px;
+        }
+
+        /* Filter Navigation Bar */
+        .filter-bar {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 12px;
+            margin-bottom: 24px;
+            scrollbar-width: none; /* Firefox */
+        }
+
+        .filter-bar::-webkit-scrollbar {
+            display: none; /* Chrome/Safari */
+        }
+
+        .chip {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .chip.active, .chip:hover {
+            background: var(--accent-gold);
+            color: #000;
+            border-color: var(--accent-gold);
+            font-weight: 600;
+        }
+
+        /* Card Component */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-card);
+            transition: var(--transition-smooth);
+        }
+
+        .card:hover {
+            border-color: rgba(226, 183, 20, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .badge {
+            background: var(--accent-gold-soft);
+            color: var(--accent-gold);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .scripture-box {
+            background: rgba(0, 0, 0, 0.25);
+            border-left: 3px solid var(--accent-gold);
+            padding: 12px 16px;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            margin: 12px 0;
+        }
+
+        .scripture-ref {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .scripture-text {
+            font-style: italic;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .lesson-text {
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            margin-top: 12px;
+        }
+
+        /* Timeline Highlight Card */
+        .timeline-card {
+            background: linear-gradient(135deg, rgba(30, 39, 61, 0.8) 0%, rgba(21, 28, 44, 1) 100%);
+            border: 1px solid var(--accent-gold);
+        }
+
+        .timeline-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .timeline-step {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            border-radius: var(--radius-md);
+            text-align: center;
+        }
+
+        .timeline-step.active-phase {
+            border-color: var(--accent-gold);
+            background: var(--accent-gold-soft);
+        }
+
+        .timeline-step h4 {
+            font-size: 0.8rem;
+            color: var(--accent-gold);
+            margin-bottom: 4px;
+        }
+
+        .timeline-step p {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        /* Dynamic Content Form Modal/Section */
+        .add-entry-box {
+            background: var(--bg-card);
+            border: 1px dashed var(--accent-gold);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            margin-top: 32px;
+        }
+
+        .add-entry-box h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--accent-gold);
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            color: #fff;
+            font-size: 0.9rem;
+            font-family: inherit;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent-gold);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--accent-gold);
+            color: #000;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            margin-top: 8px;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        /* Bottom Navigation Bar for Mobile */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(21, 28, 44, 0.95);
+            backdrop-filter: blur(12px);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            z-index: 100;
+        }
+
+        .nav-item {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+        }
+
+        .nav-item.active {
+            color: var(--accent-gold);
+        }
+
+        .nav-icon {
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==========================================
+       4. HEADER SECTION
+       ========================================== -->
+    <header>
+        <h1>Revelation & Prophecy Study</h1>
+        <p>Notes, Scripture References & Prophetic Timeline</p>
+    </header>
+
+    <!-- ==========================================
+       5. MAIN CONTENT AREA
+       ========================================== -->
+    <main class="container">
+
+        <!-- Category Filters -->
+        <div class="filter-bar">
+            <button class="chip active" onclick="filterCategory('all')">All Notes</button>
+            <button class="chip" onclick="filterCategory('rapture')">Raptures</button>
+            <button class="chip" onclick="filterCategory('timeline')">Daniel's 70 Weeks</button>
+            <button class="chip" onclick="filterCategory('core-principles')">Core Principles</button>
+        </div>
+
+        <!-- Dynamic Card Container -->
+        <div id="cards-container">
+            <!-- Dynamic JavaScript content renders here -->
+        </div>
+
+        <!-- Daniel 70 Weeks Overview Module -->
+        <div class="card timeline-card">
+            <div class="card-header">
+                <span class="badge">Prophetic Timeline</span>
+            </div>
+            <div class="card-title">Daniel's 70 Weeks Prophecy (Daniel 9:24-27)</div>
+            <p class="lesson-text" style="font-size: 0.85rem; color: var(--text-secondary);">
+                $70 \times 7 = 490$ Prophetic Years focusing on God's program for the children of Israel.
+            </p>
+            <div class="timeline-grid">
+                <div class="timeline-step">
+                    <h4>7 Weeks (49 Years)</h4>
+                    <p>Rebuilding Jerusalem & the Temple (Past)</p>
+                </div>
+                <div class="timeline-step">
+                    <h4>62 Weeks (434 Years)</h4>
+                    <p>Waiting for Messiah the Prince (Past)</p>
+                </div>
+                <div class="timeline-step active-phase">
+                    <h4>Church Age</h4>
+                    <p><strong>You Are Here</strong><br>Ready for Rapture #2</p>
+                </div>
+                <div class="timeline-step">
+                    <h4>1 Week (7 Years)</h4>
+                    <p>The Tribulation Period (Future)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Easy Expandability Form: Add New Study Notes -->
+        <div class="add-entry-box">
+            <h3>+ Add New Study Note</h3>
+            <form id="noteForm" onsubmit="addNote(event)">
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select id="category" class="form-control">
+                        <option value="rapture">Rapture</option>
+                        <option value="timeline">Daniel's 70 Weeks</option>
+                        <option value="core-principles">Core Principles</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="title">Title / Topic</label>
+                    <input type="text" id="title" class="form-control" placeholder="e.g., Rapture of Tribulation Saints" required>
+                </div>
+                <div class="form-group">
+                    <label for="scriptureRef">Scripture Reference(s)</label>
+                    <input type="text" id="scriptureRef" class="form-control" placeholder="e.g., Revelation 7:14; 20:4-6" required>
+                </div>
+                <div class="form-group">
+                    <label for="scriptureText">Scripture Passage / Key Text</label>
+                    <textarea id="scriptureText" class="form-control" rows="2" placeholder="Enter key verses..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="lesson">Key Lesson & Context</label>
+                    <textarea id="lesson" class="form-control" rows="3" placeholder="Enter notes or spiritual lessons..." required></textarea>
+                </div>
+                <button type="submit" class="btn">Save Note to App</button>
+            </form>
+        </div>
+
+    </main>
+
+    <!-- ==========================================
+       6. MOBILE NAVIGATION BAR
+       ========================================== -->
+    <nav class="bottom-nav">
+        <div class="nav-item active" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+            <span class="nav-icon">📖</span>
+            <span>Study Notes</span>
+        </div>
+        <div class="nav-item" onclick="document.querySelector('.timeline-card').scrollIntoView({behavior: 'smooth'})">
+            <span class="nav-icon">⏳</span>
+            <span>Timeline</span>
+        </div>
+        <div class="nav-item" onclick="document.querySelector('.add-entry-box').scrollIntoView({behavior: 'smooth'})">
+            <span class="nav-icon">➕</span>
+            <span>Add Note</span>
+        </div>
+    </nav>
+
+    <!-- ==========================================
+       7. JAVASCRIPT & DATA ARCHITECTURE
+       ========================================== -->
+    <script>
+        /* Initial Study Data populated directly from the Revelation spreadsheet notes */
+        const initialData = [
+            {
+                id: 1,
+                category: "rapture",
+                title: "Rapture #1: Old Testament Saints",
+                scriptureRef: "1 Thessalonians 4:13 | Matthew 27:52-53 | Ephesians 4:8-11",
+                scriptureText: "And the graves were opened; and many bodies of the saints which slept arose, and came out of the graves after his resurrection...",
+                lesson: "This began when Jesus Christ resurrected from the grave. When Christ resurrected, Old Testament saints were led captive out of paradise/hell into heaven."
+            },
+            {
+                id: 2,
+                category: "rapture",
+                title: "Rapture #2: Faithful Believers in Christ",
+                scriptureRef: "1 Thessalonians 4:16-17 | Revelation 1",
+                scriptureText: "For the Lord himself shall descend from heaven with a shout... and the dead in Christ shall rise first: Then we which are alive and remain shall be caught up together with them in the clouds...",
+                lesson: "Applies to faithful believers of Jesus Christ prior to the Tribulation period (Pre-Tribulation Rapture). Both dead and living believers in Christ are caught up to meet the Lord."
+            },
+            {
+                id: 3,
+                category: "rapture",
+                title: "Rapture #3: Tribulation Saints",
+                scriptureRef: "Revelation 7:14 | Revelation 13:7 | Revelation 20:4-6",
+                scriptureText: "These are they which came out of great tribulation, and have washed their robes, and made them white in the blood of the Lamb.",
+                lesson: "For individuals who become Christians during the Tribulation period. Includes the 1st resurrection group and the 2 witnesses who reign with Christ for 1,000 years during the Millennium."
+            },
+            {
+                id: 4,
+                category: "core-principles",
+                title: "Nature of Revelation & Redemption",
+                scriptureRef: "Colossians 2:15 | Acts 2:27 | Matthew 27:52-53",
+                scriptureText: "And having spoiled principalities and powers, he made a shew of them openly, triumphing over them in it.",
+                lesson: "1) Revelation is a picture book, not a puzzle book—we look for where we are in God's big picture. 2) Revelation focuses on Jesus Christ: Christ suffered God's wrath, descended to lower parts of the earth, spoiled principalities/powers, left hell, and took believing OT saints to heaven."
+            },
+            {
+                id: 5,
+                category: "timeline",
+                title: "Audience of Revelation: Children of Israel",
+                scriptureRef: "Daniel 9:24 | Revelation",
+                scriptureText: "Seventy weeks are determined upon thy people and upon thy holy city...",
+                lesson: "The Book of Revelation is primarily speaking to the children of Israel. Faithful believers in Jesus Christ already have salvation through the Cross and are victorious prior to the Great Tribulation."
+            }
+        ];
+
+        // Retrieve existing notes from localStorage or initialize with initialData
+        let studyNotes = JSON.parse(localStorage.getItem('revelationNotes')) || initialData;
+
+        // Render Cards to UI
+        function renderCards(filter = 'all') {
+            const container = document.getElementById('cards-container');
+            container.innerHTML = '';
+
+            const filtered = filter === 'all' 
+                ? studyNotes 
+                : studyNotes.filter(item => item.category === filter);
+
+            filtered.forEach(note => {
+                const cardHtml = `
+                    <div class="card" data-category="${note.category}">
+                        <div class="card-header">
+                            <span class="badge">${note.category.replace('-', ' ')}</span>
+                        </div>
+                        <div class="card-title">${note.title}</div>
+                        <div class="scripture-box">
+                            <span class="scripture-ref">${note.scriptureRef}</span>
+                            <div class="scripture-text">"${note.scriptureText}"</div>
+                        </div>
+                        <p class="lesson-text"><strong>Lesson/Notes:</strong> ${note.lesson}</p>
+                    </div>
+                `;
+                container.innerHTML += cardHtml;
+            });
+        }
+
+        // Filter Functionality
+        function filterCategory(category) {
+            // Update active state on chips
+            const chips = document.querySelectorAll('.chip');
+            chips.forEach(chip => chip.classList.remove('active'));
+            event.target.classList.add('active');
+
+            renderCards(category);
+        }
+
+        // Add New Note Functionality (Persists to LocalStorage)
+        function addNote(event) {
+            event.preventDefault();
+
+            const category = document.getElementById('category').value;
+            const title = document.getElementById('title').value;
+            const scriptureRef = document.getElementById('scriptureRef').value;
+            const scriptureText = document.getElementById('scriptureText').value;
+            const lesson = document.getElementById('lesson').value;
+
+            const newNote = {
+                id: Date.now(),
+                category,
+                title,
+                scriptureRef,
+                scriptureText,
+                lesson
+            };
+
+            studyNotes.unshift(newNote); // Add to top of list
+            localStorage.setItem('revelationNotes', JSON.stringify(studyNotes));
+            
+            // Reset form and re-render
+            document.getElementById('noteForm').reset();
+            renderCards('all');
+
+            // Scroll up to show new card
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+
+        // Initial Load Render
+        renderCards();
+    </script>
+</body>
+</html>
