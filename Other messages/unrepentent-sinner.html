@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grace & Reconciliation: A Guide on the Unrepentant Sinner</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Configure Tailwind dark mode and custom colors
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            900: '#1e3a8a',
+                        },
+                        darkbg: '#0b0f17',
+                        cardbg: '#161e2e'
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Smooth Scrolling */
+        html { scroll-behavior: smooth; }
+        /* Custom scrollbar for tab navigation */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-darkbg text-slate-100 font-sans min-h-screen flex flex-col justify-between selection:bg-brand-500 selection:text-white">
+
+    <!-- HEADER / NAVIGATION -->
+    <header class="sticky top-0 z-50 bg-darkbg/80 backdrop-blur-md border-b border-slate-800">
+        <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="p-2.5 bg-brand-600/20 rounded-xl border border-brand-500/30 text-brand-500">
+                    <i class="fa-solid font-bold fa-book-bible text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight tracking-wide">Grace & Boundaries</h1>
+                    <p class="text-xs text-slate-400">Understanding Church Discipline & Restoration</p>
+                </div>
+            </div>
+            <!-- Quick search / Filter input -->
+            <div class="relative hidden sm:block w-48">
+                <input type="text" id="searchInput" onkeyup="filterCards()" placeholder="Search scriptures..." 
+                       class="w-full bg-slate-900 border border-slate-700 text-xs rounded-lg pl-8 pr-3 py-2 text-slate-200 focus:outline-none focus:border-brand-500 transition">
+                <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2.5 text-slate-500 text-xs"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="max-w-4xl mx-auto px-4 py-6 flex-grow w-full">
+
+        <!-- Mobile Search Bar -->
+        <div class="sm:hidden mb-6 relative">
+            <input type="text" id="mobileSearchInput" onkeyup="filterCardsMobile()" placeholder="Search scriptures & lessons..." 
+                   class="w-full bg-slate-900 border border-slate-700 text-sm rounded-xl pl-9 pr-4 py-2.5 text-slate-200 focus:outline-none focus:border-brand-500">
+            <i class="fa-solid fa-magnifying-glass absolute left-3 top-3.5 text-slate-500 text-sm"></i>
+        </div>
+
+        <!-- HERO / SUMMARY CARD -->
+        <section class="bg-gradient-to-r from-slate-900 via-cardbg to-slate-900 border border-slate-800 rounded-2xl p-6 mb-8 shadow-xl relative overflow-hidden">
+            <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-brand-600/10 rounded-full blur-2xl pointer-events-none"></div>
+            <span class="text-xs font-semibold uppercase tracking-wider text-brand-500 bg-brand-500/10 px-3 py-1 rounded-full border border-brand-500/20">Biblical Overview</span>
+            <h2 class="text-2xl font-bold mt-3 mb-2 text-white">How Christians Handle the Unrepentant</h2>
+            <p class="text-slate-300 text-sm leading-relaxed">
+                Biblical discipline is never meant to be vindictive. It follows a structured process focused on protecting the community, establishing clear boundaries, and ultimately striving for **restoration and grace**.
+            </p>
+        </section>
+
+        <!-- NAVIGATION TABS -->
+        <nav class="flex gap-2 overflow-x-auto no-scrollbar pb-2 mb-6 border-b border-slate-800" id="categoryTabs">
+            <button onclick="filterCategory('all')" class="tab-btn active px-4 py-2 text-sm font-medium rounded-xl whitespace-nowrap bg-brand-600 text-white transition">All Topics</button>
+            <button onclick="filterCategory('process')" class="tab-btn px-4 py-2 text-sm font-medium rounded-xl whitespace-nowrap bg-slate-900 text-slate-400 hover:text-white border border-slate-800 transition">1. The Process</button>
+            <button onclick="filterCategory('boundaries')" class="tab-btn px-4 py-2 text-sm font-medium rounded-xl whitespace-nowrap bg-slate-900 text-slate-400 hover:text-white border border-slate-800 transition">2. Boundaries</button>
+            <button onclick="filterCategory('restoration')" class="tab-btn px-4 py-2 text-sm font-medium rounded-xl whitespace-nowrap bg-slate-900 text-slate-400 hover:text-white border border-slate-800 transition">3. Restoration</button>
+        </nav>
+
+        <!-- DYNAMIC CONTENT CONTAINER (Scriptures & Lessons render here) -->
+        <div id="contentGrid" class="space-y-6">
+            <!-- JavaScript will render the cards here -->
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-slate-800/80 mt-12 bg-slate-950 py-6 text-center text-xs text-slate-500">
+        <p>Built for study and reflection. Designed with grace.</p>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        /**
+         * =================================================================
+         * DATA STRUCTURE
+         * To add more scriptures or lessons later, simply add a new object
+         * to this `appData` array!
+         * =================================================================
+         */
+        const appData = [
+            {
+                id: "matthew-18",
+                category: "process",
+                categoryName: "The Step-by-Step Process",
+                speaker: "Jesus",
+                reference: "Matthew 18:15–17",
+                scripture: "If your brother or sister sins, go and point out their fault, just between the two of you. If they listen to you, you have won them over. But if they will not listen, take one or two others along, so that 'every matter may be established by the testimony of two or three witnesses.' If they still refuse to listen, tell it to the church; and if they refuse to listen even to the church, treat them as you would a pagan or a tax collector.",
+                lessonTitle: "The Three-Step Protocol for Conflict & Sin",
+                keyTakeaways: [
+                    "Step 1: Keep it private first to preserve personal dignity.",
+                    "Step 2: Bring small group/elders to verify facts and mediate.",
+                    "Step 3: Involve church leadership only when private appeal fails."
+                ],
+                icon: "fa-diagram-project"
+            },
+            {
+                id: "luke-17",
+                category: "boundaries",
+                categoryName: "Boundaries & Forgiveness",
+                speaker: "Jesus",
+                reference: "Luke 17:3–4",
+                scripture: "So watch yourselves. If your brother or sister sins against you, rebuke them; and if they repent, forgive them. Even if they sin against you seven times in a day and seven times come back to you saying 'I repent,' you must forgive them.",
+                lessonTitle: "Conditional Reconciliation, Unconditional Heart",
+                keyTakeaways: [
+                    "Reconciliation requires acknowledged repentance.",
+                    "Forgiveness should be infinitely extended whenever true repentance occurs.",
+                    "Boundaries exist to protect both parties while keeping the door open to change."
+                ],
+                icon: "fa-shield-halved"
+            },
+            {
+                id: "matthew-18-sheep",
+                category: "restoration",
+                categoryName: "The Ultimate Goal: Restoration",
+                speaker: "Jesus",
+                reference: "Matthew 18:12–14",
+                scripture: "What do you think? If a man owns a hundred sheep, and one of them wanders away, will he not leave the ninety-nine on the hills and go to look for the one that wandered off? And if he finds it... he is happier about that one sheep than about the ninety-nine that did not wander off.",
+                lessonTitle: "The Heart Behind Discipline is Seeking the Lost",
+                keyTakeaways: [
+                    "Discipline is never about expulsion; it is about search and rescue.",
+                    "Every step taken toward an unrepentant person should stem from a desire to bring them safely back."
+                ],
+                icon: "fa-heart"
+            },
+            {
+                id: "luke-15-prodigal",
+                category: "restoration",
+                categoryName: "The Ultimate Goal: Restoration",
+                speaker: "Jesus",
+                reference: "Luke 15:11–32 (The Prodigal Son)",
+                scripture: "But while he was still a long way off, his father saw him and was filled with compassion for him; he ran to his son, threw his arms around him and kissed him.",
+                lessonTitle: "Respecting Choice While Waiting with Open Arms",
+                keyTakeaways: [
+                    "The Father allows the unrepentant son to experience the consequences of his choices.",
+                    "The posture of God (and the church) remains watchful, ready to celebrate full restoration the moment genuine repentance occurs."
+                ],
+                icon: "fa-person-walk-luggage"
+            },
+            {
+                id: "galatians-6",
+                category: "restoration",
+                categoryName: "Apostolic Guidance",
+                speaker: "Paul",
+                reference: "Galatians 6:1",
+                scripture: "Brothers and sisters, if someone is caught in a sin, you who live by the Spirit should restore that person gently. But watch yourself, or you also may be tempted.",
+                lessonTitle: "Gentleness & Humility in Correction",
+                keyTakeaways: [
+                    "Correction must always be delivered with gentleness, not spiritual pride.",
+                    "The goal is explicitly to 'restore' (repair/muffler back into alignment).",
+                    "Maintain self-awareness so you do not fall into sin while correcting others."
+                ],
+                icon: "fa-hand-holding-heart"
+            },
+            {
+                id: "2-corinthians-2",
+                category: "restoration",
+                categoryName: "Apostolic Guidance",
+                speaker: "Paul",
+                reference: "2 Corinthians 2:7–8",
+                scripture: "Now instead, you ought to forgive and comfort him, so that he will not be overwhelmed by excessive sorrow. I urge you, therefore, to reaffirm your love for him.",
+                lessonTitle: "Welcoming Back the Repentant Sinner",
+                keyTakeaways: [
+                    "Once repentance occurs, discipline must immediately cease.",
+                    "Reaffirm love publicly and offer comfort to prevent despair."
+                ],
+                icon: "fa-comments"
+            },
+            {
+                id: "2-thessalonians-3",
+                category: "boundaries",
+                categoryName: "Apostolic Guidance",
+                speaker: "Paul",
+                reference: "2 Thessalonians 3:14–15",
+                scripture: "Take special note of anyone who does not obey our instruction in this letter. Do not associate with them, in order that they may feel ashamed. Yet do not regard them as an enemy, but warn them as a brother.",
+                lessonTitle: "Treating the Unrepentant as a Brother, Not an Enemy",
+                keyTakeaways: [
+                    "Social boundaries create constructive shame to prompt self-reflection.",
+                    "Refuse enmity: The unrepentant person is treated as someone worthy of love and warning, not hostililty."
+                ],
+                icon: "fa-user-group"
+            }
+        ];
+
+        // State Management
+        let currentCategory = 'all';
+
+        // DOM Elements
+        const grid = document.getElementById('contentGrid');
+
+        /**
+         * Renders cards based on category and search query
+         */
+        function renderCards(filterText = '') {
+            grid.innerHTML = '';
+
+            const filteredData = appData.filter(item => {
+                const matchesCategory = (currentCategory === 'all' || item.category === currentCategory);
+                const query = filterText.toLowerCase();
+                const matchesSearch = item.reference.toLowerCase().includes(query) ||
+                                      item.scripture.toLowerCase().includes(query) ||
+                                      item.lessonTitle.toLowerCase().includes(query) ||
+                                      item.speaker.toLowerCase().includes(query);
+                return matchesCategory && matchesSearch;
+            });
+
+            if (filteredData.length === 0) {
+                grid.innerHTML = `
+                    <div class="text-center py-12 bg-slate-900 border border-slate-800 rounded-2xl">
+                        <i class="fa-solid fa-book-open text-3xl text-slate-600 mb-3"></i>
+                        <p class="text-slate-400 font-medium text-sm">No scriptures found matching your criteria.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            filteredData.forEach(item => {
+                const card = document.createElement('article');
+                card.className = "bg-cardbg border border-slate-800 rounded-2xl p-6 shadow-lg transition hover:border-slate-700";
+                
+                card.innerHTML = `
+                    <div class="flex items-start justify-between gap-4 mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="p-2.5 bg-slate-800 rounded-xl text-brand-500 border border-slate-700">
+                                <i class="fa-solid ${item.icon}"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs text-brand-500 font-semibold uppercase tracking-wider">${item.categoryName}</span>
+                                <h3 class="font-bold text-lg text-white leading-snug">${item.reference}</h3>
+                            </div>
+                        </div>
+                        <span class="text-xs bg-slate-800 text-slate-300 font-medium px-2.5 py-1 rounded-md border border-slate-700">
+                            ${item.speaker}
+                        </span>
+                    </div>
+
+                    <!-- Scripture Quote -->
+                    <blockquote class="bg-slate-900/80 border-l-4 border-brand-500 p-4 rounded-r-xl my-4 text-slate-300 text-sm italic leading-relaxed">
+                        "${item.scripture}"
+                    </blockquote>
+
+                    <!-- Core Lesson -->
+                    <div class="mt-5 pt-4 border-t border-slate-800">
+                        <h4 class="text-sm font-semibold text-slate-200 mb-2 flex items-center gap-2">
+                            <i class="fa-solid fa-graduation-cap text-brand-500 text-xs"></i>
+                            ${item.lessonTitle}
+                        </h4>
+                        <ul class="space-y-1.5 text-xs text-slate-400 pl-1">
+                            ${item.keyTakeaways.map(t => `<li class="flex items-start gap-2"><span class="text-brand-500">•</span> <span>${t}</span></li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        /**
+         * Category Tab Switcher
+         */
+        function filterCategory(category) {
+            currentCategory = category;
+            
+            // Update UI Active State on Tabs
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-brand-600', 'text-white', 'active');
+                btn.classList.add('bg-slate-900', 'text-slate-400');
+            });
+
+            event.currentTarget.classList.remove('bg-slate-900', 'text-slate-400');
+            event.currentTarget.classList.add('bg-brand-600', 'text-white', 'active');
+
+            renderCards();
+        }
+
+        /**
+         * Real-time Search Handler
+         */
+        function filterCards() {
+            const query = document.getElementById('searchInput').value;
+            renderCards(query);
+        }
+
+        function filterCardsMobile() {
+            const query = document.getElementById('mobileSearchInput').value;
+            renderCards(query);
+        }
+
+        // Initial Render on Page Load
+        renderCards();
+    </script>
+</body>
+</html>
