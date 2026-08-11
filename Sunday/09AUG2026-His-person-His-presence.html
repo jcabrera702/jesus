@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>His Person & Presence | Companion App</title>
+  
+  <!-- Modern Typography (Inter & Playfair Display) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* ==========================================================================
+       1. CSS VARIABLES & CORE DESIGN TOKENS
+       ========================================================================== */
+    :root {
+      /* Brand Color Palette */
+      --primary-accent: #6366f1;       /* Holy Spirit Flame/Empowerment Tone */
+      --primary-hover: #4f46e5;
+      --bg-main: #0b0f17;              /* Deep Space Dark Background */
+      --bg-card: #161c28;              /* Surface Card Elevation */
+      --bg-card-hover: #1e2638;
+      --border-color: rgba(255, 255, 255, 0.08);
+      
+      /* Typography Colors */
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      
+      /* Semantic Highlights */
+      --gold-accent: #f59e0b;
+      --gold-glow: rgba(245, 158, 11, 0.15);
+      
+      /* UI Dimensions & Animation */
+      --radius-lg: 20px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --mobile-max-width: 440px;
+    }
+
+    /* ==========================================================================
+       2. GLOBAL RESET & BASE STYLES
+       ========================================================================== */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #030712;
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* ==========================================================================
+       3. MOBILE APP CONTAINER FRAMEWORK
+       ========================================================================== */
+    .app-viewport {
+      width: 100%;
+      max-width: var(--mobile-max-width);
+      background-color: var(--bg-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+      overflow-x: hidden;
+    }
+
+    /* Header Navigation */
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(11, 15, 23, 0.85);
+      backdrop-filter: blur(12px);
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .app-header .series-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--gold-accent);
+      font-weight: 700;
+    }
+
+    .app-header .sermon-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .header-action-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .header-action-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    /* Main Scrollable Content Area */
+    .app-content {
+      flex: 1;
+      padding: 20px;
+      padding-bottom: 100px; /* Clearance for Bottom Nav */
+    }
+
+    /* Tab Sections (Shown/Hidden via JS) */
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.4s ease forwards;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ==========================================================================
+       4. COMPONENT: MEDIA PLAYER & HERO SECTION
+       ========================================================================== */
+    .hero-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, var(--gold-glow) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .badge- milestone {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(245, 158, 11, 0.1);
+      color: var(--gold-accent);
+      border: 1px solid rgba(245, 158, 11, 0.2);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .speaker-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .speaker-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #334155;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: var(--gold-accent);
+      border: 2px solid var(--gold-accent);
+    }
+
+    /* Video Embed Container */
+    .video-container {
+      position: relative;
+      padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+      height: 0;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      margin-bottom: 20px;
+      border: 1px solid var(--border-color);
+    }
+
+    .video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* ==========================================================================
+       5. COMPONENT: LESSON & KEY POINT CARDS
+       ========================================================================== */
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-title i {
+      color: var(--primary-accent);
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-bottom: 16px;
+      transition: var(--transition);
+    }
+
+    .card:hover {
+      background: var(--bg-card-hover);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
+    }
+
+    .card-title {
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--text-main);
+    }
+
+    .timestamp-btn {
+      background: rgba(99, 102, 241, 0.1);
+      color: var(--primary-accent);
+      border: 1px solid rgba(99, 102, 241, 0.2);
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .timestamp-btn:hover {
+      background: var(--primary-accent);
+      color: #fff;
+    }
+
+    .card-body {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    /* Analogy Box / Highlight Block */
+    .analogy-box {
+      background: rgba(245, 158, 11, 0.05);
+      border-left: 3px solid var(--gold-accent);
+      padding: 12px 16px;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      margin: 16px 0;
+      font-size: 0.875rem;
+      color: #fef3c7;
+    }
+
+    .analogy-box strong {
+      color: var(--gold-accent);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    /* ==========================================================================
+       6. COMPONENT: SCRIPTURE CARDS
+       ========================================================================== */
+    .scripture-card {
+      background: linear-gradient(135deg, rgba(22, 28, 40, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .scripture-ref {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--primary-accent);
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .scripture-text {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      color: #e2e8f0;
+      line-height: 1.5;
+    }
+
+    /* ==========================================================================
+       7. COMPONENT: PERSONAL REFLECTION & NOTES (INTERACTIVE)
+       ========================================================================== */
+    .interactive-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      margin-top: 24px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 100px;
+      background: rgba(11, 15, 23, 0.6);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      resize: vertical;
+      margin-top: 10px;
+      margin-bottom: 12px;
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: var(--primary-accent);
+    }
+
+    .btn-primary {
+      width: 100%;
+      background: var(--primary-accent);
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+
+    /* ==========================================================================
+       8. COMPONENT: BOTTOM NAVIGATION BAR
+       ========================================================================== */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      max-width: var(--mobile-max-width);
+      background: rgba(11, 15, 23, 0.92);
+      backdrop-filter: blur(16px);
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0 16px 0;
+      z-index: 1000;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 0.7rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      background: none;
+      border: none;
+    }
+
+    .nav-item i {
+      font-size: 1.2rem;
+    }
+
+    .nav-item.active {
+      color: var(--primary-accent);
+    }
+
+    .nav-item.active i {
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================================================
+       MAIN MOBILE VIEWPORT WRAPPER
+       ========================================================================== -->
+  <div class="app-viewport">
+
+    <!-- APP HEADER -->
+    <header class="app-header">
+      <div>
+        <div class="series-title">Sermon Series</div>
+        <div class="sermon-title">His Person & Presence</div>
+      </div>
+      <button class="header-action-btn" onclick="shareApp()" title="Share Companion App">
+        <i class="fa-solid fa-share-nodes"></i>
+      </button>
+    </header>
+
+    <!-- APP CONTENT CONTAINER -->
+    <main class="app-content">
+
+      <!-- ==========================================================================
+           TAB 1: OVERVIEW & MEDIA
+           ========================================================================== -->
+      <section id="tab-overview" class="tab-content active">
+        
+        <!-- YOUTUBE EMBED PLAYER -->
+        <div class="video-container">
+          <iframe id="sermon-video" 
+                  src="https://www.youtube.com/embed/vED2Cvf7Y_Y?enablejsapi=1" 
+                  title="His Person & Presence | Shane Philip" 
+                  frameborder="0" 
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                  allowfullscreen>
+          </iframe>
+        </div>
+
+        <!-- HERO METADATA CARD -->
+        <div class="hero-card">
+          <div class="badge-milestone">
+            <i class="fa-solid fa-water"></i> 10,113 Baptisms Milestone
+          </div>
+          <h2 style="font-family: 'Playfair Display', serif; font-size: 1.4rem; margin-bottom: 8px;">
+            Part 1: His Person & Presence
+          </h2>
+          <p style="color: var(--text-muted); font-size: 0.875rem;">
+            Stop trying to live the Christian life on your own power. Learn what it means to rely on the multiplying force of the Holy Spirit.
+          </p>
+
+          <div class="speaker-info">
+            <div class="speaker-avatar">SP</div>
+            <div>
+              <div style="font-weight: 600; font-size: 0.9rem;">Shane Philip</div>
+              <div style="font-size: 0.75rem; color: var(--text-dim);">[The Crossing Church Las Vegas](https://www.youtube.com/watch?v=vED2Cvf7Y_Y)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- KEY TAKEAWAY ANALOGY -->
+        <div class="analogy-box">
+          <strong><i class="fa-solid fa-person-biking"></i> The E-Bike Analogy</strong>
+          "The motor doesn't replace my effort—it multiplies it. I still have to pedal, but now I do it with a power greater than my own."
+        </div>
+
+        <!-- SERMON OUTLINE CARDS -->
+        <h3 class="section-title"><i class="fa-solid fa-list-check"></i> Core Pillars</h3>
+
+        <!-- Core Pillar 1 -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">1. You Are Never Alone</span>
+            <button class="timestamp-btn" onclick="seekTo('22:20')">
+              <i class="fa-solid fa-play"></i> 22:20
+            </button>
+          </div>
+          <div class="card-body">
+            God's invisible, personal presence lives in you. You never walk into a hospital room, difficult conversation, or grief alone.
+          </div>
+        </div>
+
+        <!-- Core Pillar 2 -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">2. You Are Never Powerless</span>
+            <button class="timestamp-btn" onclick="seekTo('24:20')">
+              <i class="fa-solid fa-play"></i> 24:20
+            </button>
+          </div>
+          <div class="card-body">
+            The same Spirit that raised Jesus from the dead dwells in you, giving power over addiction, temptation, and unforgiveness.
+          </div>
+        </div>
+
+        <!-- Core Pillar 3 -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">3. You Are Never Without Hope</span>
+            <button class="timestamp-btn" onclick="seekTo('26:03')">
+              <i class="fa-solid fa-play"></i> 26:03
+            </button>
+          </div>
+          <div class="card-body">
+            The Holy Spirit is God's down payment (guarantee) for eternity, allowing you to experience heaven’s presence right now.
+          </div>
+        </div>
+
+      </section>
+
+
+      <!-- ==========================================================================
+           TAB 2: SCRIPTURE & TEACHINGS
+           ========================================================================== -->
+      <section id="tab-scripture" class="tab-content">
+        <h3 class="section-title"><i class="fa-solid fa-book-bible"></i> Referenced Scripture</h3>
+
+        <!-- Scripture 1 -->
+        <div class="scripture-card">
+          <div class="scripture-ref">
+            <span>John 16:7</span>
+            <button class="timestamp-btn" onclick="seekTo('04:32')"><i class="fa-solid fa-play"></i> 04:32</button>
+          </div>
+          <div class="scripture-text">
+            "Very truly I tell you, it is for your good that I am going away. Unless I go away, the Advocate will not come to you; but if I go, I will send him to you."
+          </div>
+        </div>
+
+        <!-- Scripture 2 -->
+        <div class="scripture-card">
+          <div class="scripture-ref">
+            <span>Isaiah 48:16</span>
+            <button class="timestamp-btn" onclick="seekTo('11:08')"><i class="fa-solid fa-play"></i> 11:08</button>
+          </div>
+          <div class="scripture-text">
+            "And now the Sovereign Lord has sent me, endowed with his Spirit."
+          </div>
+        </div>
+
+        <!-- Scripture 3 -->
+        <div class="scripture-card">
+          <div class="scripture-ref">
+            <span>Matthew 3:16-17</span>
+            <button class="timestamp-btn" onclick="seekTo('12:12')"><i class="fa-solid fa-play"></i> 12:12</button>
+          </div>
+          <div class="scripture-text">
+            "As soon as Jesus was baptized... he saw the Spirit of God descending like a dove... And a voice from heaven said, 'This is my Son, whom I love; with him I am well pleased.'"
+          </div>
+        </div>
+
+        <!-- Scripture 4 -->
+        <div class="scripture-card">
+          <div class="scripture-ref">
+            <span>1 Corinthians 6:19</span>
+            <button class="timestamp-btn" onclick="seekTo('22:38')"><i class="fa-solid fa-play"></i> 22:38</button>
+          </div>
+          <div class="scripture-text">
+            "Do you not know that your bodies are temples of the Holy Spirit who is in you, whom you have received from God?"
+          </div>
+        </div>
+
+        <!-- Scripture 5 -->
+        <div class="scripture-card">
+          <div class="scripture-ref">
+            <span>Romans 8:11</span>
+            <button class="timestamp-btn" onclick="seekTo('24:36')"><i class="fa-solid fa-play"></i> 24:36</button>
+          </div>
+          <div class="scripture-text">
+            "If the Spirit of him who raised Jesus from the dead is living in you, he... will also give life to your mortal bodies because of his Spirit who lives in you."
+          </div>
+        </div>
+
+        <!-- DEVELOPER EXPANSION BLOCK FOR SCRIPTURE -->
+        <!-- 
+          [TO ADD MORE SCRIPTURE LATER]: 
+          Copy and paste the template below inside this section:
+          
+          <div class="scripture-card">
+            <div class="scripture-ref">
+              <span>BOOK CHAPTER:VERSE</span>
+              <button class="timestamp-btn" onclick="seekTo('MM:SS')"><i class="fa-solid fa-play"></i> MM:SS</button>
+            </div>
+            <div class="scripture-text">"Verse text..."</div>
+          </div>
+        -->
+      </section>
+
+
+      <!-- ==========================================================================
+           TAB 3: WORD STUDY & THEOLOGY
+           ========================================================================== -->
+      <section id="tab-study" class="tab-content">
+        <h3 class="section-title"><i class="fa-solid fa-graduation-cap"></i> Theological Insights</h3>
+
+        <!-- Word Study Card -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Hebrew & Greek Definitions</span>
+            <button class="timestamp-btn" onclick="seekTo('13:04')"><i class="fa-solid fa-play"></i> 13:04</button>
+          </div>
+          <div class="card-body">
+            <p style="margin-bottom: 8px;"><strong>Ruach (Hebrew):</strong> Breath, wind, or spirit.</p>
+            <p><strong>Pneuma (Greek):</strong> Breath, wind, or spirit (Root word for pneumatic or pneumonia).</p>
+          </div>
+        </div>
+
+        <!-- Old vs New Covenant Card -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Old vs. New Covenant Spirit</span>
+            <button class="timestamp-btn" onclick="seekTo('20:17')"><i class="fa-solid fa-play"></i> 20:17</button>
+          </div>
+          <div class="card-body">
+            <ul style="padding-left: 18px; line-height: 1.8;">
+              <li><strong>Old Testament:</strong> Temporary empowering of select leaders (e.g., Joseph, Bezalel, David).</li>
+              <li><strong>In Jesus:</strong> God tabernacled (pitched his tent) with mankind.</li>
+              <li><strong>New Covenant:</strong> Permanent indwelling in <em>every</em> believer post-Pentecost.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- The Trinity Card -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Understanding the Trinity</span>
+            <button class="timestamp-btn" onclick="seekTo('09:07')"><i class="fa-solid fa-play"></i> 09:07</button>
+          </div>
+          <div class="card-body">
+            One God existing in three distinct persons: Father, Son, and Holy Spirit. The Spirit is a <em>Person</em> to be known, not an impersonal force.
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ==========================================================================
+           TAB 4: NOTES & PERSONAL REFLECTION (LOCAL STORAGE)
+           ========================================================================== -->
+      <section id="tab-reflection" class="tab-content">
+        <h3 class="section-title"><i class="fa-solid fa-pen-to-square"></i> Reflection & Action</h3>
+
+        <div class="interactive-section">
+          <label style="font-weight: 600; font-size: 0.9rem;">
+            Where have you been trying to "pedal on your own strength" lately?
+          </label>
+          <textarea id="user-notes" placeholder="Write down areas of fatigue, struggle, or spiritual burnout..."></textarea>
+          
+          <button class="btn-primary" onclick="saveNotes()">
+            <i class="fa-solid fa-floppy-disk"></i> Save Reflection
+          </button>
+          <p id="save-status" style="font-size: 0.75rem; color: #10b981; margin-top: 8px; text-align: center; display: none;">
+            ✓ Note saved locally!
+          </p>
+        </div>
+
+        <!-- Salvation / Prayer Response Block -->
+        <div class="card" style="margin-top: 20px; border-color: rgba(245, 158, 11, 0.3);">
+          <div class="card-title" style="color: var(--gold-accent); margin-bottom: 8px;">
+            <i class="fa-solid fa-hands-praying"></i> Surrender Prayer
+          </div>
+          <p style="font-style: italic; font-size: 0.875rem; color: var(--text-muted); line-height: 1.6;">
+            "God, today I surrender my life to Jesus. I declare Jesus as my Lord and Savior. Forgive my sins and grant me a brand new beginning through the Holy Spirit."
+          </p>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ==========================================================================
+       9. BOTTOM NAVIGATION BAR
+       ========================================================================== -->
+    <nav class="bottom-nav">
+      <button class="nav-item active" onclick="switchTab('overview', this)">
+        <i class="fa-solid fa-house"></i>
+        <span>Sermon</span>
+      </button>
+      <button class="nav-item" onclick="switchTab('scripture', this)">
+        <i class="fa-solid fa-book-open"></i>
+        <span>Scripture</span>
+      </button>
+      <button class="nav-item" onclick="switchTab('study', this)">
+        <i class="fa-solid fa-lightbulb"></i>
+        <span>Study</span>
+      </button>
+      <button class="nav-item" onclick="switchTab('reflection', this)">
+        <i class="fa-solid fa-heart"></i>
+        <span>Reflect</span>
+      </button>
+    </nav>
+
+  </div>
+
+  <!-- ==========================================================================
+       10. JAVASCRIPT: LOGIC & INTERACTION CONTROLLERS
+       ========================================================================== -->
+  <script>
+    /**
+     * Switch Navigation Tabs
+     * Controls section visibility and updates active UI state.
+     */
+    function switchTab(tabId, element) {
+      // Hide all tabs
+      const tabs = document.querySelectorAll('.tab-content');
+      tabs.forEach(tab => tab.classList.remove('active'));
+
+      // Deactivate all nav buttons
+      const navItems = document.querySelectorAll('.nav-item');
+      navItems.forEach(item => item.classList.remove('active'));
+
+      // Activate selected tab & button
+      document.getElementById(`tab-${tabId}`).classList.add('active');
+      element.classList.add('active');
+
+      // Scroll to top of tab content
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /**
+     * Seek YouTube Video to Specific Timestamp
+     * Converts "MM:SS" or "HH:MM:SS" string to total seconds and instructs iframe.
+     */
+    function seekTo(timestamp) {
+      const parts = timestamp.split(':').map(Number);
+      let seconds = 0;
+      
+      if (parts.length === 2) {
+        seconds = parts[0] * 60 + parts[1];
+      } else if (parts.length === 3) {
+        seconds = parts[0] * 3600 + parts[1] * 60 + parts[2];
+      }
+
+      // Send postMessage to YouTube IFrame API
+      const iframe = document.getElementById('sermon-video');
+      iframe.contentWindow.postMessage(JSON.stringify({
+        event: 'command',
+        func: 'seekTo',
+        args: [seconds, true]
+      }), '*');
+
+      // Scroll smoothly to video on interaction
+      iframe.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    /**
+     * Save Personal Reflection Notes to LocalStorage
+     */
+    function saveNotes() {
+      const noteText = document.getElementById('user-notes').value;
+      localStorage.setItem('sermon_notes_his_presence', noteText);
+      
+      const status = document.getElementById('save-status');
+      status.style.display = 'block';
+      setTimeout(() => {
+        status.style.display = 'none';
+      }, 3000);
+    }
+
+    /**
+     * Load Saved Notes on App Initial
+     */
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedNote = localStorage.getItem('sermon_notes_his_presence');
+      if (savedNote) {
+        document.getElementById('user-notes').value = savedNote;
+      }
+    });
+
+    /**
+     * Share App Action (Web Share API fallback)
+     */
+    function shareApp() {
+      if (navigator.share) {
+        navigator.share({
+          title: 'His Person & Presence Companion App',
+          text: 'Explore takeaways and scripture from the sermon "His Person & Presence".',
+          url: window.location.href,
+        }).catch(console.error);
+      } else {
+        alert('App URL copied to clipboard!');
+      }
+    }
+  </script>
+</body>
+</html>

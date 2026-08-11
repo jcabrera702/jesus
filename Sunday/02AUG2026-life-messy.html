@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>When Life Gets Messy — Sermon Companion</title>
+
+    <!-- Tailwind CSS CDN for modern responsive UI styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Google Fonts: Inter & Playfair Display for luxury typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS Configuration & Variables -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a; /* Dark slate base for modern glass look */
+            color: #f8fafc;
+        }
+        .serif-title {
+            font-family: 'Playfair Display', serif;
+        }
+        /* Custom scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 9999px;
+        }
+        /* Glassmorphism utility classes */
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-nav {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-24 md:pb-12 selection:bg-amber-500 selection:text-slate-900">
+
+    <!-- =========================================================================
+         1. TOP NAVIGATION BAR
+         Mobile-first sticky header with quick links and sermon metadata.
+         ========================================================================= -->
+    <nav class="sticky top-0 z-50 glass-nav px-4 py-3 sm:px-8">
+        <div class="max-w-5xl mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-amber-300 flex items-center justify-center text-slate-950 font-bold shadow-lg shadow-amber-500/20">
+                    <i data-lucide="cross" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <h1 class="text-sm font-semibold text-slate-200">Trusting the Promise</h1>
+                    <p class="text-xs text-amber-400 font-medium">Genesis 26 • Pastor Derek Beauchamp</p>
+                </div>
+            </div>
+            <!-- Quick Link to original YouTube Video -->
+            <a href="https://www.youtube.com/watch?v=WlLFglZCvjU" target="_blank" rel="noopener noreferrer" 
+               class="hidden sm:flex items-center space-x-2 text-xs bg-red-600/20 text-red-400 border border-red-500/30 px-3 py-1.5 rounded-full hover:bg-red-600 hover:text-white transition-all">
+                <i data-lucide="youtube" class="w-4 h-4"></i>
+                <span>Watch Sermon</span>
+            </a>
+        </div>
+    </nav>
+
+
+    <!-- =========================================================================
+         2. HERO SECTION
+         Engaging headline, key question, and media player entry point.
+         ========================================================================= -->
+    <header class="relative px-4 pt-10 pb-12 sm:px-8 text-center max-w-4xl mx-auto">
+        <!-- Ambient Glow -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-amber-500/10 blur-[100px] rounded-full pointer-events-none"></div>
+
+        <span class="inline-block px-3 py-1 text-xs font-semibold uppercase tracking-wider text-amber-400 bg-amber-500/10 border border-amber-500/20 rounded-full mb-4">
+            Series Finale: Isaac's Journey
+        </span>
+        <h2 class="serif-title text-4xl sm:text-6xl font-bold tracking-tight text-white mb-4 leading-tight">
+            What Do We Do When <br class="hidden sm:inline"/><span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-500">Life Gets Messy?</span>
+        </h2>
+        <p class="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
+            God never promises that life will be mess-free. Instead, He promises His unchanging presence right in the middle of our chaos, secrets, and struggles.
+        </p>
+
+        <!-- Quick Interactive Stats Bar -->
+        <div class="grid grid-cols-3 gap-3 max-w-lg mx-auto mt-8 text-left">
+            <div class="glass-card p-3 rounded-2xl">
+                <p class="text-[10px] text-slate-400 uppercase font-semibold">Core Passage</p>
+                <p class="text-xs font-bold text-amber-300 mt-0.5">Genesis 26</p>
+            </div>
+            <div class="glass-card p-3 rounded-2xl">
+                <p class="text-[10px] text-slate-400 uppercase font-semibold">Key Figure</p>
+                <p class="text-xs font-bold text-slate-200 mt-0.5">Isaac</p>
+            </div>
+            <div class="glass-card p-3 rounded-2xl">
+                <p class="text-[10px] text-slate-400 uppercase font-semibold">Main Action</p>
+                <p class="text-xs font-bold text-emerald-400 mt-0.5">Trust & Surrender</p>
+            </div>
+        </div>
+    </header>
+
+
+    <!-- =========================================================================
+         3. THREE CORE PILLARS OF THE SERMON
+         Structured content cards outlining the primary insights.
+         ========================================================================= -->
+    <main class="max-w-5xl mx-auto px-4 sm:px-8 space-y-12">
+
+        <section>
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <h3 class="serif-title text-2xl font-bold text-slate-100">Three Pillar Lessons</h3>
+                    <p class="text-xs text-slate-400">Core principles extracted from Genesis 26</p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Pillar 1 -->
+                <div class="glass-card rounded-2xl p-6 relative overflow-hidden group hover:border-amber-500/40 transition-all duration-300">
+                    <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <i data-lucide="shield-check" class="w-6 h-6"></i>
+                    </div>
+                    <span class="text-[10px] font-bold text-amber-400 uppercase tracking-widest">Pillar 01</span>
+                    <h4 class="text-lg font-bold text-white mt-1 mb-2">Trust God's Promises</h4>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        In famine, Isaac planned to flee to Egypt, but God told him to stay. God didn't instantly stop the famine; He promised: <em class="text-amber-200">"I will be with you."</em>
+                    </p>
+                    <div class="mt-4 pt-4 border-t border-slate-700/50 flex items-center justify-between text-[11px] text-slate-400">
+                        <span>Scripture: Gen 26:1–5</span>
+                        <i data-lucide="chevron-right" class="w-4 h-4 text-amber-400"></i>
+                    </div>
+                </div>
+
+                <!-- Pillar 2 -->
+                <div class="glass-card rounded-2xl p-6 relative overflow-hidden group hover:border-amber-500/40 transition-all duration-300">
+                    <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <i data-lucide="sun" class="w-6 h-6"></i>
+                    </div>
+                    <span class="text-[10px] font-bold text-amber-400 uppercase tracking-widest">Pillar 02</span>
+                    <h4 class="text-lg font-bold text-white mt-1 mb-2">Live No Lies</h4>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        Driven by fear, Isaac claimed Rebekah was his sister. Carrying deception requires managing heavy secrets. True freedom comes when we bring our "junk out loud" into God's light.
+                    </p>
+                    <div class="mt-4 pt-4 border-t border-slate-700/50 flex items-center justify-between text-[11px] text-slate-400">
+                        <span>Scripture: Proverbs 28:13</span>
+                        <i data-lucide="chevron-right" class="w-4 h-4 text-amber-400"></i>
+                    </div>
+                </div>
+
+                <!-- Pillar 3 -->
+                <div class="glass-card rounded-2xl p-6 relative overflow-hidden group hover:border-amber-500/40 transition-all duration-300">
+                    <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <i data-lucide="waves" class="w-6 h-6"></i>
+                    </div>
+                    <span class="text-[10px] font-bold text-amber-400 uppercase tracking-widest">Pillar 03</span>
+                    <h4 class="text-lg font-bold text-white mt-1 mb-2">Walk in the Way of Jesus</h4>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        When Philistines blocked Isaac's wells, he didn't retaliate with power. He kept moving and digging until God made room (<em class="text-amber-200">Rehoboth</em>). Love, not force, is our marker.
+                    </p>
+                    <div class="mt-4 pt-4 border-t border-slate-700/50 flex items-center justify-between text-[11px] text-slate-400">
+                        <span>Scripture: John 13:34–35</span>
+                        <i data-lucide="chevron-right" class="w-4 h-4 text-amber-400"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- =========================================================================
+             4. INTERACTIVE DIAGNOSTIC: "Where is Your Mess Today?"
+             A dynamic tool allowing users to select their situation and receive tailored application.
+             ========================================================================= -->
+        <section class="glass-card rounded-3xl p-6 sm:p-8 relative overflow-hidden border border-amber-500/20">
+            <div class="max-w-2xl mb-6">
+                <span class="text-xs font-bold text-amber-400 uppercase tracking-wider">Interactive Reflection</span>
+                <h3 class="serif-title text-2xl font-bold text-white mt-1">Identify Your Current "Mess"</h3>
+                <p class="text-xs sm:text-sm text-slate-300 mt-1">
+                    Select the area where you are facing pressure today to see Isaac’s principle applied directly.
+                </p>
+            </div>
+
+            <!-- Category Selector Buttons -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-6" id="categoryButtons">
+                <button onclick="selectCategory('finances')" id="btn-finances" class="category-btn glass-card p-3 rounded-xl text-left hover:border-amber-400/50 transition-all active-cat border-amber-400 bg-amber-500/10">
+                    <i data-lucide="wallet" class="w-4 h-4 text-amber-400 mb-1"></i>
+                    <p class="text-xs font-semibold text-slate-200">Finances</p>
+                </button>
+                <button onclick="selectCategory('family')" id="btn-family" class="category-btn glass-card p-3 rounded-xl text-left hover:border-amber-400/50 transition-all">
+                    <i data-lucide="users" class="w-4 h-4 text-slate-400 mb-1"></i>
+                    <p class="text-xs font-semibold text-slate-200">Family & Relationships</p>
+                </button>
+                <button onclick="selectCategory('work')" id="btn-work" class="category-btn glass-card p-3 rounded-xl text-left hover:border-amber-400/50 transition-all">
+                    <i data-lucide="briefcase" class="w-4 h-4 text-slate-400 mb-1"></i>
+                    <p class="text-xs font-semibold text-slate-200">Work & Career</p>
+                </button>
+                <button onclick="selectCategory('secrets')" id="btn-secrets" class="category-btn glass-card p-3 rounded-xl text-left hover:border-amber-400/50 transition-all">
+                    <i data-lucide="key" class="w-4 h-4 text-slate-400 mb-1"></i>
+                    <p class="text-xs font-semibold text-slate-200">Secrets / Lies</p>
+                </button>
+            </div>
+
+            <!-- Dynamic Advice Output Container -->
+            <div id="categoryDetail" class="bg-slate-900/80 rounded-2xl p-5 border border-slate-700/60 transition-all">
+                <!-- Content dynamically populated via JS -->
+            </div>
+        </section>
+
+
+        <!-- =========================================================================
+         5. THE STORY OF THE THREE WELLS (INTERACTIVE TIMELINE)
+         Exploring Genesis 26:17-22 - Esek, Sitna, and Rehoboth.
+         ========================================================================= -->
+        <section class="space-y-6">
+            <div>
+                <h3 class="serif-title text-2xl font-bold text-slate-100">Isaac's Three Wells</h3>
+                <p class="text-xs text-slate-400">How Isaac navigated conflict when others blocked his blessings</p>
+            </div>
+
+            <div class="grid sm:grid-cols-3 gap-4">
+                <!-- Well 1 -->
+                <div class="glass-card p-5 rounded-2xl border-l-4 border-l-red-500">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-xs font-bold text-red-400 uppercase">Well #1</span>
+                        <span class="text-[10px] bg-red-500/10 text-red-300 px-2 py-0.5 rounded-full font-semibold">Conflict</span>
+                    </div>
+                    <h4 class="text-lg font-bold text-white">Esek</h4>
+                    <p class="text-xs text-amber-300 italic mb-2 font-serif">"Dispute"</p>
+                    <p class="text-xs text-slate-300">
+                        The herders of Gerar argued that the water belonged to them. Isaac didn't fight back; he named the reality and moved forward.
+                    </p>
+                </div>
+
+                <!-- Well 2 -->
+                <div class="glass-card p-5 rounded-2xl border-l-4 border-l-amber-500">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-xs font-bold text-amber-400 uppercase">Well #2</span>
+                        <span class="text-[10px] bg-amber-500/10 text-amber-300 px-2 py-0.5 rounded-full font-semibold">Opposition</span>
+                    </div>
+                    <h4 class="text-lg font-bold text-white">Sitna</h4>
+                    <p class="text-xs text-amber-300 italic mb-2 font-serif">"Opposition / Accusation"</p>
+                    <p class="text-xs text-slate-300">
+                        They dug a second well and quarreled over that one too. Rather than taking matters into his own hands, Isaac let go again.
+                    </p>
+                </div>
+
+                <!-- Well 3 -->
+                <div class="glass-card p-5 rounded-2xl border-l-4 border-l-emerald-500">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-xs font-bold text-emerald-400 uppercase">Well #3</span>
+                        <span class="text-[10px] bg-emerald-500/10 text-emerald-300 px-2 py-0.5 rounded-full font-semibold">Breakthrough</span>
+                    </div>
+                    <h4 class="text-lg font-bold text-white">Rehoboth</h4>
+                    <p class="text-xs text-emerald-300 italic mb-2 font-serif">"Room to Flourish"</p>
+                    <p class="text-xs text-slate-300">
+                        No one quarreled over this well. Isaac declared: <em>"Now the Lord has given us room, and we will flourish."</em>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- =========================================================================
+         6. SCRIPTURE REFERENCE VAULT
+         Expandable key verses referenced throughout the sermon.
+         ========================================================================= -->
+        <section class="glass-card rounded-3xl p-6 sm:p-8">
+            <h3 class="serif-title text-2xl font-bold text-white mb-2">Key Scriptures</h3>
+            <p class="text-xs text-slate-400 mb-6">Meditate on the verses referenced in this message</p>
+
+            <div class="space-y-3" id="scriptureList">
+                <!-- Javascript dynamically renders verses or we can pre-render for SEO -->
+            </div>
+        </section>
+
+
+        <!-- =========================================================================
+         7. PERSONAL REFLECTION & JOURNALING (WITH LOCALSTORAGE)
+         Users can write notes, prayer requests, or application points that persist.
+         ========================================================================= -->
+        <section class="glass-card rounded-3xl p-6 sm:p-8">
+            <div class="flex items-center justify-between mb-4">
+                <div>
+                    <h3 class="serif-title text-2xl font-bold text-white">Personal Sermon Notes</h3>
+                    <p class="text-xs text-slate-400">Write down your takeaways. Notes automatically save locally.</p>
+                </div>
+                <div id="saveStatus" class="text-xs text-emerald-400 font-medium hidden flex items-center space-x-1">
+                    <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
+                    <span>Saved</span>
+                </div>
+            </div>
+
+            <!-- Notes Textarea -->
+            <textarea id="userNotes" rows="5" 
+                      placeholder="What is God prompting you to confess, release, or trust Him with this week?..." 
+                      class="w-full bg-slate-900/90 text-slate-200 border border-slate-700 rounded-2xl p-4 text-xs sm:text-sm focus:outline-none focus:border-amber-400 transition-colors placeholder:text-slate-500 resize-none"></textarea>
+
+            <div class="mt-4 flex justify-between items-center">
+                <button onclick="clearNotes()" class="text-xs text-slate-400 hover:text-red-400 transition-colors flex items-center space-x-1">
+                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                    <span>Clear Notes</span>
+                </button>
+                <button onclick="saveNotes()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs px-5 py-2.5 rounded-xl transition-all shadow-md shadow-amber-500/20 flex items-center space-x-1.5">
+                    <i data-lucide="save" class="w-4 h-4"></i>
+                    <span>Save Reflection</span>
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+
+    <!-- =========================================================================
+         8. FOOTER
+         Sermon attribution & developer notes.
+         ========================================================================= -->
+    <footer class="mt-16 text-center text-xs text-slate-500 border-t border-slate-800/80 pt-8 pb-12 max-w-5xl mx-auto px-4">
+        <p>Sermon message by Pastor Derek Beauchamp • <a href="https://www.youtube.com/watch?v=WlLFglZCvjU" target="_blank" class="text-amber-400 underline hover:text-amber-300">The Crossing Church Las Vegas</a></p>
+        <p class="mt-1 text-[11px] text-slate-600">Built as a flexible web application template. Easily expandable with additional audio, video, and small-group curriculum.</p>
+    </footer>
+
+
+    <!-- =========================================================================
+         JAVASCRIPT LOGIC
+         Handles UI interaction, dynamic content loading, state management, and persistence.
+         ========================================================================= -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        /* -------------------------------------------------------------------------
+           DATA STRUCTURES
+           Centralized object storing dynamic content so new sections can easily be added.
+           ------------------------------------------------------------------------- */
+        
+        // Diagnostic category data
+        const categories = {
+            finances: {
+                title: "Financial Pressure & Money Messes",
+                quote: "Maybe you've made a mess with your money, and you've got a nice truck but you can't put any gas in it.",
+                action: "Stop running to human 'Egypts' (e.g., trying to quickly solve money strain through human tricks or more debt). Focus on stewardship and trusting God’s presence in the lean season.",
+                verse: "Genesis 26:3 — 'Stay in this land for a while, and I will be with you and will bless you.'"
+            },
+            family: {
+                title: "Family Tensions & Relationship Messes",
+                quote: "The way you'd describe your family group message is awkward. There are tensions and chaos.",
+                action: "Followers of Jesus operate differently. Instead of using power, shouting, or control to put people in their place, practice turning the other cheek and walking in patient love.",
+                verse: "John 13:34–35 — 'By this everyone will know that you are my disciples, if you love one another.'"
+            },
+            work: {
+                title: "Work, Career & Future Uncertainty",
+                quote: "Maybe you're not sure where you stand at work or if you'll even have your job.",
+                action: "Isaac kept re-digging wells despite opposition until room was made (Rehoboth). Keep doing faithful work without growing weary.",
+                verse: "Galatians 6:9 — 'Let us not become weary in doing good, for at the proper time we will reap a harvest if we do not give up.'"
+            },
+            secrets: {
+                title: "Hidden Secrets, Lies & Addiction",
+                quote: "Living in a lie is not God's best for your life. Managing deception is like carrying a 100-pound bag on your back.",
+                action: "Find a trustworthy 'confessor' in your life (a spouse, trusted pastor, or close friend) and bring your 'junk out loud' into the light where healing happens.",
+                verse: "Proverbs 28:13 — 'Whoever conceals their sins does not prosper, but the one who confesses and renounces them finds mercy.'"
+            }
+        };
+
+        // Scripture List Data
+        const scriptures = [
+            { verse: "Genesis 26:2-3", text: "The Lord appeared to Isaac and said, 'Do not go down to Egypt; live in the land where I tell you to live... I will be with you and will bless you.'" },
+            { verse: "Proverbs 28:13", text: "Whoever conceals their sins does not prosper, but the one who confesses and renounces them finds mercy." },
+            { verse: "Genesis 26:22", text: "He moved on from there and dug another well, and no one quarreled over it. He named it Rehoboth, saying, 'Now the Lord has given us room and we will flourish in the land.'" },
+            { verse: "John 13:35", text: "By this everyone will know that you are my disciples, if you love one another." },
+            { verse: "James 1:2-4", text: "Consider it pure joy, my brothers and sisters, whenever you face trials of many kinds, because you know that the testing of your faith produces perseverance." }
+        ];
+
+
+        /* -------------------------------------------------------------------------
+           FUNCTIONS
+           ------------------------------------------------------------------------- */
+
+        // Function to handle category selection in the diagnostic tool
+        function selectCategory(catKey) {
+            // Update button styles
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('border-amber-400', 'bg-amber-500/10');
+                btn.querySelector('i').classList.replace('text-amber-400', 'text-slate-400');
+            });
+
+            const activeBtn = document.getElementById(`btn-${catKey}`);
+            if (activeBtn) {
+                activeBtn.classList.add('border-amber-400', 'bg-amber-500/10');
+                const icon = activeBtn.querySelector('i');
+                if (icon) icon.classList.replace('text-slate-400', 'text-amber-400');
+            }
+
+            // Populate detail view
+            const cat = categories[catKey];
+            const detailContainer = document.getElementById('categoryDetail');
+            
+            detailContainer.innerHTML = `
+                <div class="space-y-3 animate-fade-in">
+                    <h4 class="text-base font-bold text-amber-300 flex items-center space-x-2">
+                        <span>${cat.title}</span>
+                    </h4>
+                    <p class="text-xs text-slate-300 italic border-l-2 border-amber-400/50 pl-3 py-0.5">
+                        "${cat.quote}"
+                    </p>
+                    <div class="pt-2">
+                        <p class="text-xs font-semibold text-slate-200 uppercase tracking-wider">Practical Action:</p>
+                        <p class="text-xs text-slate-300 mt-1 leading-relaxed">${cat.action}</p>
+                    </div>
+                    <div class="pt-2 text-[11px] text-amber-400 font-medium">
+                        ${cat.verse}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Render Scripture Vault
+        function renderScriptures() {
+            const container = document.getElementById('scriptureList');
+            container.innerHTML = scriptures.map(s => `
+                <div class="p-4 rounded-2xl bg-slate-900/60 border border-slate-800 hover:border-slate-700 transition-all">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="text-xs font-bold text-amber-400">${s.verse}</span>
+                        <i data-lucide="book-open" class="w-3.5 h-3.5 text-slate-500"></i>
+                    </div>
+                    <p class="text-xs text-slate-300 leading-relaxed">"${s.text}"</p>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        // LocalStorage logic for Personal Reflection Notes
+        function saveNotes() {
+            const notesText = document.getElementById('userNotes').value;
+            localStorage.setItem('sermon_messy_life_notes', notesText);
+            
+            // Show saved indicator
+            const status = document.getElementById('saveStatus');
+            status.classList.remove('hidden');
+            setTimeout(() => status.classList.add('hidden'), 3000);
+        }
+
+        function loadNotes() {
+            const saved = localStorage.getItem('sermon_messy_life_notes');
+            if (saved) {
+                document.getElementById('userNotes').value = saved;
+            }
+        }
+
+        function clearNotes() {
+            if (confirm("Are you sure you want to clear your reflection notes?")) {
+                localStorage.removeItem('sermon_messy_life_notes');
+                document.getElementById('userNotes').value = '';
+            }
+        }
+
+        /* -------------------------------------------------------------------------
+           INITIALIZATION ON PAGE LOAD
+           ------------------------------------------------------------------------- */
+        window.addEventListener('DOMContentLoaded', () => {
+            selectCategory('finances'); // Default active tab
+            renderScriptures();
+            loadNotes();
+        });
+    </script>
+</body>
+</html>
