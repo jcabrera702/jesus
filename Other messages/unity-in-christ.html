@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unity in Christ - NASB 1995 Interactive Guide</title>
+
+    <!-- Google Fonts for Modern Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS for Utility Framework -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Custom UI Theme Configuration and Embedded Styles -->
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-card: rgba(30, 41, 59, 0.7);
+            --gold-accent: #f59e0b;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            font-family: 'Inter', sans-serif;
+            color: #f1f5f9;
+            min-height: 100vh;
+        }
+
+        .serif-title {
+            font-family: 'Cinzel', serif;
+        }
+
+        /* Modern Glassmorphism Styling */
+        .glass-panel {
+            background: var(--glass-card);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+        }
+
+        .glass-input {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--glass-border);
+        }
+
+        .glass-input:focus {
+            border-color: var(--gold-accent);
+            outline: none;
+        }
+
+        /* Custom Scrollbar for Smooth UX */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.6);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(245, 158, 11, 0.3);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(245, 158, 11, 0.6);
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- ==========================================
+         HEADER / NAVIGATION SECTION
+         ========================================== -->
+    <header class="sticky top-0 z-40 glass-panel border-b border-slate-800/80 px-4 py-4 md:px-8">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <!-- App Emblem -->
+                <div class="w-10 h-10 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 font-bold text-lg">
+                    ✝
+                </div>
+                <div>
+                    <h1 class="serif-title text-xl md:text-2xl font-bold tracking-wide text-amber-100">Unity in Spirit</h1>
+                    <p class="text-xs text-slate-400">NASB 1995 Biblical Framework for Christian Fellowship</p>
+                </div>
+            </div>
+
+            <!-- Search & Filter Controls -->
+            <div class="w-full md:w-auto flex flex-col sm:flex-row items-center gap-2">
+                <div class="relative w-full sm:w-64">
+                    <input type="text" id="searchInput" placeholder="Search scripture or lesson..." 
+                           class="w-full glass-input text-sm text-slate-200 placeholder-slate-400 rounded-lg px-4 py-2 pl-9 focus:ring-1 focus:ring-amber-500/50 transition">
+                    <svg class="w-4 h-4 absolute left-3 top-2.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==========================================
+         MAIN CONTENT AREA
+         ========================================== -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-8 md:px-8 flex flex-col gap-8">
+        
+        <!-- Hero Concept Banner -->
+        <section class="glass-panel rounded-2xl p-6 md:p-8 border border-amber-500/20 bg-gradient-to-r from-amber-500/10 via-purple-900/10 to-transparent">
+            <div class="max-w-3xl">
+                <span class="inline-block px-3 py-1 bg-amber-500/10 border border-amber-500/30 rounded-full text-xs font-semibold text-amber-400 mb-3">NASB 1995 Edition</span>
+                <h2 class="serif-title text-2xl md:text-4xl font-bold text-slate-100 mb-3">One Body, One Mind</h2>
+                <p class="text-sm md:text-base text-slate-300 leading-relaxed mb-4">
+                    "Being diligent to preserve the unity of the Spirit in the bond of peace. There is one body and one Spirit, just as also you were called in one hope of your calling..." 
+                    <span class="text-amber-400 font-semibold">— Ephesians 4:3-4</span>
+                </p>
+                <p class="text-xs md:text-sm text-slate-400">
+                    Explore foundational scriptures and practical theological lessons designed to align the local and global church under biblical harmony.
+                </p>
+            </div>
+        </section>
+
+        <!-- Dynamic Category Filter Chips -->
+        <section class="flex flex-wrap items-center gap-2 pb-2 border-b border-slate-800" id="categoryFilters">
+            <button onclick="filterCategory('All')" class="filter-btn active bg-amber-500 text-slate-950 font-medium text-xs md:text-sm px-4 py-1.5 rounded-full transition">All Lessons</button>
+            <button onclick="filterCategory('Same Mind')" class="filter-btn bg-slate-800/80 hover:bg-slate-700 text-slate-300 text-xs md:text-sm px-4 py-1.5 rounded-full transition border border-slate-700">Same Mind</button>
+            <button onclick="filterCategory('Love & Patience')" class="filter-btn bg-slate-800/80 hover:bg-slate-700 text-slate-300 text-xs md:text-sm px-4 py-1.5 rounded-full transition border border-slate-700">Love & Patience</button>
+            <button onclick="filterCategory('Diversity of Gifts')" class="filter-btn bg-slate-800/80 hover:bg-slate-700 text-slate-300 text-xs md:text-sm px-4 py-1.5 rounded-full transition border border-slate-700">Diversity of Gifts</button>
+            <button onclick="filterCategory('Community')" class="filter-btn bg-slate-800/80 hover:bg-slate-700 text-slate-300 text-xs md:text-sm px-4 py-1.5 rounded-full transition border border-slate-700">Community</button>
+        </section>
+
+        <!-- Interactive Grid for Scripture Cards -->
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-6" id="scriptureGrid">
+            <!-- Dynamic Script Insertion via JS -->
+        </section>
+
+    </main>
+
+    <!-- ==========================================
+         DETAILED MODAL (FOR EXPANDED LESSON STUDY)
+         ========================================== -->
+    <div id="lessonModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
+        <div class="glass-panel max-w-2xl w-full rounded-2xl border border-slate-700 p-6 md:p-8 max-h-[90vh] overflow-y-auto relative">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-100 p-2 text-xl font-bold">&times;</button>
+            <div id="modalContent">
+                <!-- Injected dynamically via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         FOOTER
+         ========================================== -->
+    <footer class="glass-panel border-t border-slate-800 mt-auto py-6 px-4 text-center text-xs text-slate-500">
+        <p>Scripture taken from the NEW AMERICAN STANDARD BIBLE® (NASB 1995), Copyright © 1960, 1962, 1963, 1968, 1971, 1972, 1973, 1975, 1977, 1995 by The Lockman Foundation.</p>
+        <p class="mt-1">Architected with Modular Data Structure for Future Expansion.</p>
+    </footer>
+
+    <!-- ==========================================
+         JAVASCRIPT LOGIC & MODULAR DATA
+         ========================================== -->
+    <script>
+        /* 
+         * DATA MODEL (Easy to expand)
+         * To add new scripture passages or lessons later, simply copy one object structure
+         * below and append it to the UNITIES_DATA array.
+         */
+        const UNITIES_DATA = [
+            {
+                id: "1cor1-10",
+                reference: "1 Corinthians 1:10",
+                category: "Same Mind",
+                scripture: "Now I exhort you, brethren, by the name of our Lord Jesus Christ, that you all agree and that there be no divisions among you, but that you be made complete in the same mind and in the same judgment.",
+                title: "Eliminating Divisions in Faith",
+                lesson: "A calling for believers to prioritize core truth over factionalism. Differences in opinion on non-essential doctrines should not fragment the fellowship of believers.",
+                extendedNotes: "Paul wrote this to address cliques forming within the church of Corinth. 'Agreement' here does not mandate robotic conformity in all personal preferences, but alignment under Jesus Christ's gospel, purpose, and lordship."
+            },
+            {
+                id: "eph4-1-6",
+                reference: "Ephesians 4:1–6",
+                category: "Love & Patience",
+                scripture: "I, therefore, the prisoner of the Lord, implore you to walk in a manner worthy of the calling with which you have been called, with all humility and gentleness, with patience, showing tolerance for one another in love, being diligent to preserve the unity of the Spirit in the bond of peace. There is one body and one Spirit, just as also you were called in one hope of your calling; one Lord, one faith, one baptism, one God and Father of all who is over all and through all and in all.",
+                title: "Preserving the Bond of Peace",
+                lesson: "Unity is not something human effort invents; it is produced by the Spirit. Our role is to 'preserve' it through active humility, gentleness, and patient endurance with each other.",
+                extendedNotes: "The seven 'ones' listed by Paul (one body, Spirit, hope, Lord, faith, baptism, God) form the indestructible foundation of universal Christian unity."
+            },
+            {
+                id: "rom12-4-5",
+                reference: "Romans 12:4–5",
+                category: "Diversity of Gifts",
+                scripture: "For just as we have many members in one body and all the members do not have the same function, so we, who are many, are one body in Christ, and individually members one of another.",
+                title: "Diversity Within One Body",
+                lesson: "Unity is distinct from uniformity. Individual differences in roles, personalities, and spiritual gifts enhance the strength of the whole body when coordinated in Christ.",
+                extendedNotes: "Just as an eye cannot perform the task of a hand, believers are designed to depend on one another. Disunity occurs when members attempt to isolate or over-magnify their individual functions."
+            },
+            {
+                id: "phil2-1-4",
+                reference: "Philippians 2:1–4",
+                category: "Same Mind",
+                scripture: "Therefore if there is any encouragement in Christ, if there is any consolation of love, if there is any fellowship of the Spirit, if any affection and compassion, make my joy complete by being of the same mind, maintaining the same love, united in spirit, intent on one purpose. Do nothing from selfishness or empty conceit, but with humility of mind regard one another as more important than yourselves; do not merely look out for your own personal interests, but also for the interests of others.",
+                title: "Humility as the Engine of Unity",
+                lesson: "Selfishness and pride are the primary catalysts of church discord. True harmony arises when believers intentionally esteem others above themselves.",
+                extendedNotes: "Paul anchors this mindset directly in Jesus Christ's willingness to empty Himself on the cross (Philippians 2:5-11)."
+            },
+            {
+                id: "acts4-32",
+                reference: "Acts 4:32",
+                category: "Community",
+                scripture: "And the congregation of those who believed were of one heart and soul; and not one of them claimed that anything belonging to him was his own, but all things were common property to them.",
+                title: "Shared Heart & Resource Fellowship",
+                lesson: "Early church unity expressed itself in genuine material care, emotional cohesion, and sacrificial stewardship for the common good.",
+                extendedNotes: "Spiritual oneness naturally manifests in tangible generosity and a willingness to lighten the physical burdens of brothers and sisters in Christ."
+            },
+            {
+                id: "rom14-19",
+                reference: "Romans 14:19 & 15:5–6",
+                category: "Love & Patience",
+                scripture: "So then we pursue the things which make for peace and the building up of one another... Now may the God of patience and comfort grant you to be like-minded toward one another, according to Christ Jesus, that you may with one mind and one mouth glorify the God and Father of our Lord Jesus Christ.",
+                title: "Pursuing Peace Over Personal Preference",
+                lesson: "When opinions on non-essential secondary matters differ, believers are called to actively pursue peace and mutual edification rather than argument.",
+                extendedNotes: "Romans 14–15 outlines how stronger and weaker consciences exist together within the same church without breaking fellowship."
+            },
+            {
+                id: "john17-20-23",
+                reference: "John 17:20–23",
+                category: "Same Mind",
+                scripture: "I do not ask on behalf of these alone, but for those also who believe in Me through their word; that they may all be one; even as You, Father, are in Me and I in You, that they also may be in Us, so that the world may believe that You sent Me. The glory which You have given Me I have given to them, that they may be one, just as We are one; I in them and You in Me, that they may be perfected in unity, so that the world may know that You sent Me, and loved them, even as You loved Me.",
+                title: "Christ's High Priestly Prayer for Oneness",
+                lesson: "Church unity is not merely a practical recommendation; it was Jesus' explicit prayer before His crucifixion. Our oneness serves as primary evidence to the world that Jesus was sent by the Father.",
+                extendedNotes: "Jesus anchors church unity in the divine unity of the Trinity ('as You, Father, are in Me and I in You'). True Christian oneness is meant to reflect the inter-Trinitarian relationship to an unbelieving world."
+            },
+            {
+                id: "eph4-11-16",
+                reference: "Ephesians 4:11–16",
+                category: "Diversity of Gifts",
+                scripture: "And He gave some as apostles, and some as prophets, and some as evangelists, and some as pastors and teachers, for the equipping of the saints for the work of service, to the building up of the body of Christ; until we all attain to the unity of the faith, and of the knowledge of the Son of God, to a mature man... As a result, we are no longer to be children, tossed here and there by waves and carried about by every wind of doctrine...",
+                title: "Maturity Prevents Doctrinal Instability",
+                lesson: "Spiritual gifts and leadership offices are given to build up the church toward maturity so believers aren't easily blown off course by sensational or false doctrines.",
+                extendedNotes: "This passage explicitly ties unity of faith to spiritual maturity. Immaturity leads to being 'tossed by waves' (v. 14), whereas speaking truth in love produces healthy, coordinated growth across the entire body."
+            },
+            {
+                id: "mat18-15-17",
+                reference: "Matthew 18:15–17",
+                category: "Community",
+                scripture: "If your brother sins, go and show him his fault in private; if he listens to you, you have won your brother. But if he does not listen to you, take one or two more with you, so that by the mouth of two or three witnesses every fact may be confirmed. If he refuses to listen to them, tell it to the church...",
+                title: "Biblical Dispute Resolution",
+                lesson: "Unity requires proactive, private conflict resolution. Addressing offense directly and privately prevents gossip and widespread division in the local body.",
+                extendedNotes: "Unresolved interpersonal conflict is one of the quickest ways disunity spreads in a church. Jesus outlines a clear, staged protocol designed to bring about reconciliation and protect both the individual and the congregation."
+            },
+        ];
+
+        // State Management
+        let currentCategory = 'All';
+        let searchQuery = '';
+
+        // DOM Elements
+        const grid = document.getElementById('scriptureGrid');
+        const searchInput = document.getElementById('searchInput');
+
+        // Render Function: Converts Data Objects into Responsive HTML Cards
+        function renderCards() {
+            grid.innerHTML = '';
+
+            const filteredData = UNITIES_DATA.filter(item => {
+                const matchesCategory = currentCategory === 'All' || item.category === currentCategory;
+                const matchesSearch = item.reference.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                      item.scripture.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                      item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                      item.lesson.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchesCategory && matchesSearch;
+            });
+
+            if (filteredData.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-1 md:col-span-2 text-center py-12 glass-panel rounded-xl">
+                        <p class="text-slate-400">No scriptures or lessons found matching your criteria.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            filteredData.forEach(item => {
+                const card = document.createElement('article');
+                card.className = "glass-panel rounded-xl p-6 border border-slate-800 hover:border-amber-500/40 transition duration-300 flex flex-col justify-between group";
+                
+                card.innerHTML = `
+                    <div>
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="text-xs font-semibold px-2.5 py-1 bg-amber-500/10 text-amber-400 border border-amber-500/20 rounded-md">
+                                ${item.category}
+                            </span>
+                            <span class="text-xs font-semibold text-slate-400 border border-slate-700/60 px-2 py-0.5 rounded">
+                                NASB 1995
+                            </span>
+                        </div>
+
+                        <h3 class="serif-title text-lg font-bold text-slate-100 group-hover:text-amber-300 transition mb-1">
+                            ${item.title}
+                        </h3>
+                        <p class="text-xs text-amber-400/90 font-medium mb-3">${item.reference}</p>
+
+                        <!-- Scripture Quote Block -->
+                        <blockquote class="text-sm text-slate-300 italic border-l-2 border-amber-500/60 pl-3 py-1 mb-4 bg-slate-900/30 rounded-r">
+                            "${item.scripture}"
+                        </blockquote>
+
+                        <!-- Practical Lesson Overview -->
+                        <div class="mb-4">
+                            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Key Application</h4>
+                            <p class="text-xs md:text-sm text-slate-300 leading-relaxed">${item.lesson}</p>
+                        </div>
+                    </div>
+
+                    <!-- Action Button to Open Extended Study -->
+                    <button onclick="openModal('${item.id}')" 
+                            class="w-full mt-2 py-2 px-4 rounded-lg bg-slate-800/80 hover:bg-amber-500 hover:text-slate-950 text-slate-300 font-medium text-xs transition duration-200 border border-slate-700 hover:border-amber-500">
+                        Read Extended Lesson & Exposition
+                    </button>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Category Filter Controller
+        function filterCategory(category) {
+            currentCategory = category;
+            
+            // UI Button Active State Toggle
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                if (btn.innerText.trim() === category || (category === 'All' && btn.innerText.trim() === 'All Lessons')) {
+                    btn.className = "filter-btn active bg-amber-500 text-slate-950 font-medium text-xs md:text-sm px-4 py-1.5 rounded-full transition";
+                } else {
+                    btn.className = "filter-btn bg-slate-800/80 hover:bg-slate-700 text-slate-300 text-xs md:text-sm px-4 py-1.5 rounded-full transition border border-slate-700";
+                }
+            });
+
+            renderCards();
+        }
+
+        // Search Input Listener
+        searchInput.addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            renderCards();
+        });
+
+        // Modal Controllers for Extended Lessons
+        function openModal(id) {
+            const item = UNITIES_DATA.find(d => d.id === id);
+            if (!item) return;
+
+            const modalContent = document.getElementById('modalContent');
+            modalContent.innerHTML = `
+                <span class="text-xs font-semibold px-2.5 py-1 bg-amber-500/10 text-amber-400 border border-amber-500/20 rounded-md">
+                    ${item.category}
+                </span>
+                <h2 class="serif-title text-2xl font-bold text-slate-100 mt-3 mb-1">${item.title}</h2>
+                <p class="text-sm text-amber-400 font-semibold mb-4">${item.reference} (NASB 1995)</p>
+
+                <div class="glass-panel p-4 rounded-xl border border-slate-700/80 mb-6 bg-slate-900/60">
+                    <p class="text-sm md:text-base text-slate-200 italic leading-relaxed">"${item.scripture}"</p>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <h3 class="text-xs font-bold text-amber-400 uppercase tracking-wider mb-1">Core Principle</h3>
+                        <p class="text-sm text-slate-300 leading-relaxed">${item.lesson}</p>
+                    </div>
+                    <div>
+                        <h3 class="text-xs font-bold text-amber-400 uppercase tracking-wider mb-1">Exposition & Context</h3>
+                        <p class="text-sm text-slate-300 leading-relaxed">${item.extendedNotes}</p>
+                    </div>
+                </div>
+
+                <div class="mt-8 pt-4 border-t border-slate-800 flex justify-end">
+                    <button onclick="closeModal()" class="px-5 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-semibold rounded-lg text-xs transition">
+                        Close Study
+                    </button>
+                </div>
+            `;
+
+            document.getElementById('lessonModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('lessonModal').classList.add('hidden');
+        }
+
+        // Close modal on escape key
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        // Initial Render Execution
+        renderCards();
+    </script>
+</body>
+</html>
