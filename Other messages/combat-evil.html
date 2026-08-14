@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Armor & Truth — Spiritual Warfare Manual</title>
+
+    <!-- Google Fonts: Inter for UI, Playfair Display for Scripture & Headers -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <!-- CSS STYLES -->
+    <style>
+        /* ==========================================================================
+           1. DESIGN SYSTEM & VARIABLES
+           ========================================================================== */
+        :root {
+            --bg-dark: #0A0C10;
+            --bg-card: #12161F;
+            --bg-card-hover: #1A202C;
+            --border-color: #232D3F;
+            
+            --gold-primary: #D4AF37;
+            --gold-light: #F3E5AB;
+            --gold-glow: rgba(212, 175, 55, 0.15);
+            
+            --text-main: #F0F4F8;
+            --text-muted: #94A3B8;
+
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-serif: 'Playfair Display', Georgia, serif;
+
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ==========================================================================
+           2. BASE STYLES
+           ========================================================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        .app-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+            width: 100%;
+            flex: 1;
+        }
+
+        /* ==========================================================================
+           3. HEADER
+           ========================================================================== */
+        header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            padding-top: 1rem;
+        }
+
+        .badge {
+            display: inline-block;
+            background: var(--gold-glow);
+            color: var(--gold-primary);
+            border: 1px solid var(--gold-primary);
+            padding: 0.35rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        header h1 {
+            font-family: var(--font-serif);
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            color: #FFFFFF;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        /* ==========================================================================
+           4. NAVIGATION TABS
+           ========================================================================== */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .tab-btn:hover {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .tab-btn.active {
+            color: var(--gold-primary);
+            background: var(--gold-glow);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        /* ==========================================================================
+           5. CONTROLS (SEARCH & CATEGORY FILTERS)
+           ========================================================================== */
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .search-box {
+            position: relative;
+            width: 100%;
+        }
+
+        .search-box input {
+            width: 100%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 1rem 1.2rem;
+            border-radius: var(--radius-md);
+            color: var(--text-main);
+            font-size: 1rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .search-box input:focus {
+            border-color: var(--gold-primary);
+            box-shadow: 0 0 12px var(--gold-glow);
+        }
+
+        .filter-pills {
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+            scrollbar-width: thin;
+        }
+
+        .pill {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: var(--transition);
+        }
+
+        .pill:hover, .pill.active {
+            border-color: var(--gold-primary);
+            color: var(--gold-light);
+            background: var(--gold-glow);
+        }
+
+        /* ==========================================================================
+           6. CONTENT SECTIONS & GRIDS
+           ========================================================================== */
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* SCRIPTURE CARD */
+        .scripture-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 1.75rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: var(--transition);
+        }
+
+        .scripture-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        .card-tag {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--gold-primary);
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .card-quote {
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+            font-style: italic;
+            color: var(--text-main);
+            margin-bottom: 1.25rem;
+            line-height: 1.5;
+        }
+
+        .card-ref-link {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--gold-light);
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 0.75rem;
+            transition: var(--transition);
+        }
+
+        .card-ref-link:hover {
+            color: #FFFFFF;
+            text-decoration: underline;
+        }
+
+        .card-summary {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 0.75rem;
+        }
+
+        /* DECLARATION CARD */
+        .declaration-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            border-radius: var(--radius-lg);
+            padding: 1.75rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .declaration-title {
+            font-family: var(--font-serif);
+            font-size: 1.25rem;
+            color: var(--gold-light);
+            margin-bottom: 0.75rem;
+        }
+
+        .declaration-text {
+            font-size: 1rem;
+            color: var(--text-main);
+            line-height: 1.6;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 1.25rem;
+            border-left: 3px solid var(--gold-primary);
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            font-style: italic;
+        }
+
+        /* LESSON ACCORDION */
+        .lesson-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            margin-bottom: 1.25rem;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .lesson-header {
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .lesson-header:hover {
+            background: var(--bg-card-hover);
+        }
+
+        .lesson-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .lesson-icon {
+            color: var(--gold-primary);
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+
+        .lesson-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+            padding: 0 1.5rem;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .lesson-body-content {
+            padding: 1.25rem 0 1.75rem 0;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .lesson-body-content p {
+            margin-bottom: 1rem;
+        }
+
+        .lesson-body-content ul {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .lesson-body-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .lesson-card.open .lesson-body {
+            max-height: 700px;
+        }
+
+        .lesson-card.open .lesson-icon {
+            transform: rotate(180deg);
+        }
+
+        /* ==========================================================================
+           7. FOOTER
+           ========================================================================== */
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 4rem;
+        }
+
+        @media (min-width: 768px) {
+            .controls {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .search-box {
+                max-width: 350px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- HEADER -->
+        <header>
+            <span class="badge">Spiritual Warfare Manual</span>
+            <h1>Equipped for Battle</h1>
+            <p>A comprehensive repository of scriptures, declarations of renunciation, and lessons on discerning darkness and walking in authority.</p>
+        </header>
+
+        <!-- NAVIGATION TABS -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('scriptures', this)">Scripture Index</button>
+            <button class="tab-btn" onclick="switchTab('declarations', this)">Declarations & Prayers</button>
+            <button class="tab-btn" onclick="switchTab('lessons', this)">Core Lessons</button>
+        </div>
+
+        <!-- TAB 1: SCRIPTURES -->
+        <main id="scriptures" class="content-section active">
+            <div class="controls">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Search scripture, text, keyword..." onkeyup="filterScriptures()">
+                </div>
+                
+                <div class="filter-pills">
+                    <button class="pill active" onclick="filterCategory('All', this)">All</button>
+                    <button class="pill" onclick="filterCategory('Protection & Refuge', this)">Protection</button>
+                    <button class="pill" onclick="filterCategory('Authority & Power', this)">Authority</button>
+                    <button class="pill" onclick="filterCategory('Purity & Media Focus', this)">Purity & Focus</button>
+                    <button class="pill" onclick="filterCategory('Warnings & Occult', this)">Occult Warnings</button>
+                    <button class="pill" onclick="filterCategory('Mindset', this)">Mindset</button>
+                </div>
+            </div>
+
+            <div class="grid" id="scriptureGrid"></div>
+        </main>
+
+        <!-- TAB 2: DECLARATIONS & PRAYERS -->
+        <main id="declarations" class="content-section">
+            <p style="color: var(--text-muted); margin-bottom: 1.5rem; text-align: center;">Active prayers of repentance, renunciation, and cleansing for your home and spirit.</p>
+            <div id="declarationsContainer"></div>
+        </main>
+
+        <!-- TAB 3: LESSONS -->
+        <main id="lessons" class="content-section">
+            <div id="lessonsContainer"></div>
+        </main>
+
+        <!-- FOOTER -->
+        <footer>
+            <p>Armor & Truth Guide &bull; Designed for study, reflection, and spiritual vigilance.</p>
+        </footer>
+    </div>
+
+    <!-- JAVASCRIPT DATA & LOGIC -->
+    <script>
+        /* ==========================================================================
+           DATA STRUCTURES (Easily add more items here later!)
+           ========================================================================== */
+
+        // 1. SCRIPTURES DATA ARRAY
+        const scripturesData = [
+            {
+                reference: "Isaiah 33:15-17 (NASB1995)",
+                quote: "He who stops his ears from hearing about bloodshed and shuts his eyes from looking upon evil; He will dwell on the heights, His refuge will be the impregnable rock; His bread will be given him, His water will be sure.",
+                category: "Purity & Media Focus",
+                summary: "Promise of divine provision and security for those who turn away from ungodly entertainment, violence, and unrighteous gain.",
+                url: "https://bible.com/bible/100/isa.33.15-17.NASB1995"
+            },
+            {
+                reference: "2 Thessalonians 3:2-3 (NLT/NASB1995)",
+                quote: "But the Lord is faithful; he will strengthen you and guard you from the evil one.",
+                category: "Protection & Refuge",
+                summary: "Assurance that God remains faithful to guard believers against spiritual evil and wicked influences.",
+                url: "https://bible.com/bible/116/2th.3.2-3.NLT"
+            },
+            {
+                reference: "Luke 10:19 (NLT)",
+                quote: "Look, I have given you authority over all the power of the enemy, and you can walk among snakes and scorpions and crush them. Nothing will injure you.",
+                category: "Authority & Power",
+                summary: "Christ grants believers explicit authority and power over all demonic influences.",
+                url: "https://bible.com/bible/116/luk.10.19.NLT"
+            },
+            {
+                reference: "Luke 11:24 (NLT)",
+                quote: "When an evil spirit leaves a person, it goes into the desert, searching for rest. But when it finds none, it says, 'I will return to the person I came from.'",
+                category: "Authority & Power",
+                summary: "Highlights the necessity of filling cleansed spaces and hearts with God's Spirit so evil spirits cannot return.",
+                url: "https://bible.com/bible/116/luk.11.24.NLT"
+            },
+            {
+                reference: "Psalms 23:4-6 (NASB1995)",
+                quote: "Even though I walk through the valley of the shadow of death, I fear no evil, for You are with me... You prepare a table before me in the presence of my enemies.",
+                category: "Protection & Refuge",
+                summary: "Comfort and boldness in the presence of spiritual threats through the abiding presence of the Shepherd.",
+                url: "https://bible.com/bible/100/psa.23.4-6.NASB1995"
+            },
+            {
+                reference: "Romans 1:28-29 (NASB1995)",
+                quote: "And just as they did not see fit to acknowledge God any longer, God gave them over to a depraved mind, to do those things which are not proper...",
+                category: "Mindset",
+                summary: "Warning against ignoring God; rejecting divine truth leads to a depraved mind filled with wickedness, envy, and malice.",
+                url: "https://bible.com/bible/100/rom.1.28-29.NASB1995"
+            },
+            {
+                reference: "Psalms 91:1-16 (NASB1995)",
+                quote: "He who dwells in the shelter of the Most High Will abide in the shadow of the Almighty... No evil will befall you, Nor will any plague come near your tent.",
+                category: "Protection & Refuge",
+                summary: "A foundational psalm detailing complete angelic protection, safety from hidden snares, and deliverance for those who trust God.",
+                url: "https://bible.com/bible/100/psa.91.1-16.NASB1995"
+            },
+            {
+                reference: "Isaiah 54:17 (NASB1995)",
+                quote: "No weapon that is formed against you will prosper; And every tongue that accuses you in judgment you will condemn.",
+                category: "Protection & Refuge",
+                summary: "Declaration of the heritage of God's servants—complete vindication and immunity from effective demonic weapons.",
+                url: "https://bible.com/bible/100/isa.54.17.NASB1995"
+            },
+            {
+                reference: "Isaiah 8:19 (NASB1995)",
+                quote: "When they say to you, 'Consult the mediums and the spiritists who whisper and mutter,' should not a people consult their God?",
+                category: "Warnings & Occult",
+                summary: "Direct instruction to turn exclusively to God rather than seeking guidance from mediums or channelers.",
+                url: "https://bible.com/bible/100/isa.8.19.NASB1995"
+            },
+            {
+                reference: "Leviticus 19:31 (NASB1995)",
+                quote: "Do not turn to mediums or spiritists; do not seek them out to be defiled by them. I am the Lord your God.",
+                category: "Warnings & Occult",
+                summary: "Commandment warning that engaging with mediums defiles the believer's spiritual purity.",
+                url: "https://bible.com/bible/100/lev.19.31.NASB1995"
+            },
+            {
+                reference: "Deuteronomy 18:10-12 (NASB1995)",
+                quote: "There shall not be found among you anyone who... practices witchcraft, or one who interprets omens... or a medium, or a spiritist... For whoever does these things is detestable to the Lord.",
+                category: "Warnings & Occult",
+                summary: "Explicit prohibition of all forms of sorcery, divination, witchcraft, and contact with the dead.",
+                url: "https://bible.com/bible/100/deu.18.10-12.NASB1995"
+            },
+            {
+                reference: "Ephesians 6:12 (NASB1995)",
+                quote: "For our struggle is not against flesh and blood, but against the rulers, against the powers, against the world forces of this darkness...",
+                category: "Mindset",
+                summary: "Identifies the cosmic nature of spiritual conflict beyond human personalities.",
+                url: "https://bible.com/bible/100/eph.6.12.NASB1995"
+            },
+            {
+                reference: "1 John 4:4 (NASB1995)",
+                quote: "You are from God, little children, and have overcome them; because greater is He who is in you than he who is in the world.",
+                category: "Authority & Power",
+                summary: "Reminds believers that the Holy Spirit within them vastly surpasses any force operating in the world.",
+                url: "https://bible.com/bible/100/1jn.4.4.NASB1995"
+            },
+            {
+                reference: "John 1:5 (NASB1995)",
+                quote: "The Light shines in the darkness, and the darkness did not comprehend it.",
+                category: "Authority & Power",
+                summary: "From Greek 'katalambanō'—darkness can neither grasp/understand nor overcome/seize the divine light.",
+                url: "https://bible.com/bible/100/jhn.1.5.NASB1995"
+            },
+            {
+    reference: "Luke 10:20 (NIV)",
+    quote: "However, do not rejoice that the spirits submit to you, but rejoice that your names are written in heaven.",
+    category: "Mindset",
+    summary: "Jesus realigns His disciples' joy, emphasizing that having our names written in heaven is infinitely greater than exercising spiritual authority over dark spirits.",
+    url: "https://bible.com/bible/111/luk.10.20.NIV"
+}
+        ];
+
+        // 2. DECLARATIONS & PRAYERS DATA ARRAY
+        const declarationsData = [
+            {
+                title: "Command of Cleansing & Authority Over the Home",
+                text: "In the name of Jesus Christ, I command every unclean spirit hiding in this home to leave now. You are not welcome here. I break your power, I cancel every assignment. I send you to the dry places, I plead the blood of Jesus over this entire space. Every door you entered through is now closed forever."
+            },
+            {
+                title: "Prayer of Repentance & Cleansing (1 John 1:9)",
+                text: "Father, I come before You in repentance. Your Word promises that if we confess our sins, You are faithful and just to forgive us and cleanse us from all unrighteousness. Cleanse my heart, my mind, and my household today."
+            },
+            {
+                title: "Renunciation of Open Doors & Legal Rights",
+                text: "I renounce and reject every object, practice, or agreement I have made knowingly or unknowingly that invited darkness into my home. I break every legal right the enemy has claimed over my space in the name of Jesus."
+            }
+        ];
+
+        // 3. CORE LESSONS DATA ARRAY
+        const lessonsData = [
+            {
+                title: "Lesson 1: Media Consumption & Guarding the Senses",
+                category: "Purity & Mindset",
+                content: `
+                    <p>As noted in <strong>Isaiah 33:15-17</strong>, there is a direct connection between what we consume through our eyes and ears and our spiritual stability.</p>
+                    <ul>
+                        <li><strong>Discerning Subtle Evil:</strong> Social media, modern music, and entertainment frequently normalize pride, unbelief, rebellion, and envy.</li>
+                        <li><strong>The Divine Promise:</strong> When we intentionally shut our eyes and ears to evil, God promises spiritual heights, an impregnable fortress, and assured spiritual sustenance.</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Lesson 2: Word Study — Katalambanō (John 1:5)",
+                category: "Biblical Languages",
+                content: `
+                    <p>In <strong>John 1:5</strong>, the Greek word <em>katalambanō</em> carries a dual meaning:</p>
+                    <ul>
+                        <li><strong>To Comprehend / Understand:</strong> Darkness lacks the capacity to comprehend the divine nature of Christ.</li>
+                        <li><strong>To Overcome / Seize:</strong> Darkness is completely incapable of overpowering or extinguishing the Light.</li>
+                    </ul>
+                    <p><em>Takeaway:</em> Spiritual darkness will never understand your light, nor does it have the power to suppress it when you walk in Christ.</p>
+                `
+            },
+            {
+                title: "Lesson 3: Complete Occult Prohibition",
+                category: "Discerning Evil",
+                content: `
+                    <p>Scripture repeatedly prohibits seeking advice or power outside of God (<strong>Leviticus 19:31</strong>, <strong>Deuteronomy 18:10-12</strong>, <strong>Isaiah 8:19</strong>).</p>
+                    <ul>
+                        <li><strong>Mediums & Spiritists:</strong> Any attempt to contact the dead, read omens, or engage in divination defiles spiritual purity and invites dark influences.</li>
+                        <li><strong>The Right Source:</strong> A believer must consult God directly through His Word and Holy Spirit rather than turning to worldly spiritism.</li>
+                    </ul>
+                `
+            }
+        ];
+
+        /* ==========================================================================
+           UI RENDERING & INTERACTION LOGIC
+           ========================================================================== */
+
+        let activeCategory = 'All';
+
+        // Render Scripture Cards
+        function renderScriptures(data) {
+            const grid = document.getElementById('scriptureGrid');
+            grid.innerHTML = '';
+
+            if (data.length === 0) {
+                grid.innerHTML = `<p style="color: var(--text-muted); grid-column: 1/-1; text-align: center; padding: 2rem;">No matching scriptures found.</p>`;
+                return;
+            }
+
+            data.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'scripture-card';
+                card.innerHTML = `
+                    <div>
+                        <div class="card-tag">${item.category}</div>
+                        <div class="card-quote">"${item.quote}"</div>
+                    </div>
+                    <div>
+                        <a href="${item.url}" target="_blank" rel="noopener" class="card-ref-link">${item.reference} &#8599;</a>
+                        <div class="card-summary">${item.summary}</div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Render Declarations & Prayers
+        function renderDeclarations() {
+            const container = document.getElementById('declarationsContainer');
+            container.innerHTML = '';
+
+            declarationsData.forEach(dec => {
+                const card = document.createElement('div');
+                card.className = 'declaration-card';
+                card.innerHTML = `
+                    <div class="declaration-title">${dec.title}</div>
+                    <div class="declaration-text">"${dec.text}"</div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Render Lessons Accordion
+        function renderLessons() {
+            const container = document.getElementById('lessonsContainer');
+            container.innerHTML = '';
+
+            lessonsData.forEach((lesson, index) => {
+                const card = document.createElement('div');
+                card.className = 'lesson-card';
+                card.innerHTML = `
+                    <div class="lesson-header" onclick="toggleLesson(${index})">
+                        <span class="lesson-title">${lesson.title}</span>
+                        <span class="lesson-icon">&#9660;</span>
+                    </div>
+                    <div class="lesson-body" id="lesson-body-${index}">
+                        <div class="lesson-body-content">
+                            ${lesson.content}
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function toggleLesson(index) {
+            const card = document.querySelectorAll('.lesson-card')[index];
+            card.classList.toggle('open');
+        }
+
+        // Tab Switching
+        function switchTab(tabId, element) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
+
+            element.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        // Filtering
+        function filterCategory(category, element) {
+            activeCategory = category;
+            document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+            element.classList.add('active');
+            filterScriptures();
+        }
+
+        function filterScriptures() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+
+            const filtered = scripturesData.filter(item => {
+                const matchesCategory = (activeCategory === 'All') || (item.category === activeCategory);
+                const matchesSearch = item.quote.toLowerCase().includes(query) || 
+                                      item.reference.toLowerCase().includes(query) || 
+                                      item.summary.toLowerCase().includes(query);
+
+                return matchesCategory && matchesSearch;
+            });
+
+            renderScriptures(filtered);
+        }
+
+        // Init App
+        window.addEventListener('DOMContentLoaded', () => {
+            renderScriptures(scripturesData);
+            renderDeclarations();
+            renderLessons();
+        });
+    </script>
+</body>
+</html>
