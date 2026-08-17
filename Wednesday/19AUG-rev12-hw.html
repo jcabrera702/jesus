@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scripture Study Dashboard</title>
+  
+  <!-- Inter Font & FontAwesome Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* ==========================================================================
+       1. CSS VARIABLES & THEME SETUP (Design System Tokens)
+       ========================================================================== */
+    :root {
+      /* Color Palette */
+      --bg-base: #0f172a;           /* Dark Slate Background */
+      --bg-surface: #1e293b;        /* Card & Sidebar Background */
+      --bg-surface-hover: #334155;  /* Hover States */
+      --border-color: #334155;      /* Border Separators */
+      
+      --primary: #6366f1;           /* Indigo Primary Accent */
+      --primary-hover: #4f46e5;
+      --primary-light: rgba(99, 102, 241, 0.15);
+      
+      --accent-red: #ef4444;        /* For Red Dragon / Warnings */
+      --accent-red-light: rgba(239, 68, 68, 0.12);
+      
+      --text-main: #f8fafc;         /* High-contrast text */
+      --text-muted: #94a3b8;        /* Subtitles & Meta text */
+      --text-gold: #fbbf24;         /* Highlights / Verse Reference */
+
+      /* Layout Guidelines */
+      --sidebar-width: 280px;
+      --radius-lg: 16px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+      --shadow-main: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+      --transition-fast: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ==========================================================================
+       2. BASE & RESET STYLES
+       ========================================================================== */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      line-height: 1.6;
+      display: flex;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-base);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-color);
+      border-radius: 4px;
+    }
+
+    /* ==========================================================================
+       3. NAVIGATION / SIDEBAR
+       ========================================================================== */
+    .sidebar {
+      width: var(--sidebar-width);
+      background-color: var(--bg-surface);
+      border-right: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 100;
+      transition: var(--transition-fast);
+    }
+
+    .brand-header {
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .brand-header i {
+      font-size: 1.5rem;
+      color: var(--primary);
+    }
+
+    .brand-header h1 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-links {
+      list-style: none;
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .nav-item button {
+      width: 100%;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 14px 16px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition-fast);
+      text-align: left;
+    }
+
+    .nav-item button:hover {
+      background-color: var(--bg-surface-hover);
+      color: var(--text-main);
+    }
+
+    .nav-item.active button {
+      background-color: var(--primary-light);
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .nav-item button i {
+      font-size: 1.1rem;
+      width: 20px;
+    }
+
+    /* Mobile Header & Hamburger Toggle */
+    .mobile-header {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 64px;
+      background-color: var(--bg-surface);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0 20px;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 110;
+    }
+
+    .menu-toggle {
+      background: none;
+      border: none;
+      color: var(--text-main);
+      font-size: 1.4rem;
+      cursor: pointer;
+    }
+
+    /* Backdrop for mobile drawer */
+    .backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 90;
+    }
+
+    /* ==========================================================================
+       4. MAIN CONTENT AREA
+       ========================================================================== */
+    .main-content {
+      margin-left: var(--sidebar-width);
+      flex: 1;
+      padding: 40px;
+      max-width: 1200px;
+      transition: var(--transition-fast);
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.35s ease-out forwards;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Header Section inside Tabs */
+    .section-header {
+      margin-bottom: 32px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+    }
+
+    .badge-primary {
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+
+    .badge-red {
+      background: var(--accent-red-light);
+      color: var(--accent-red);
+    }
+
+    .section-title {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin-bottom: 8px;
+    }
+
+    .section-subtitle {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+    }
+
+    /* ==========================================================================
+       5. CARDS & UI COMPONENTS
+       ========================================================================== */
+    .card {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-main);
+    }
+
+    /* Verse Callout Box */
+    .verse-box {
+      background: var(--bg-base);
+      border-left: 4px solid var(--text-gold);
+      padding: 20px;
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      margin: 20px 0;
+      font-style: italic;
+    }
+
+    .verse-box .ref {
+      display: block;
+      margin-top: 8px;
+      font-style: normal;
+      font-weight: 600;
+      color: var(--text-gold);
+    }
+
+    /* Perspective Grid (Homework 1) */
+    .perspective-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 24px;
+    }
+
+    .perspective-card {
+      background-color: var(--bg-base);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      position: relative;
+    }
+
+    .perspective-card.selected {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px var(--primary-light);
+    }
+
+    .perspective-card h3 {
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Entities Accordion/List (Homework 2) */
+    .entity-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .entity-card {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+
+    .entity-header {
+      padding: 20px 28px;
+      background-color: rgba(255,255,255,0.02);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .entity-header h3 {
+      font-size: 1.25rem;
+      color: var(--primary);
+    }
+
+    .entity-body {
+      padding: 28px;
+    }
+
+    .name-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 16px 0;
+    }
+
+    .tag {
+      background: var(--bg-base);
+      border: 1px solid var(--border-color);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-gold);
+    }
+
+    /* Dynamic Details List (Homework 3) */
+    .details-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .details-item {
+      background: var(--bg-base);
+      border-left: 3px solid var(--accent-red);
+      padding: 16px 20px;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .details-item-content h4 {
+      font-size: 1.05rem;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+
+    .details-item-content p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    /* Dynamic Input Form (Homework 3 Extensibility) */
+    .add-detail-form {
+      margin-top: 32px;
+      background: var(--bg-base);
+      border: 1px dashed var(--border-color);
+      padding: 24px;
+      border-radius: var(--radius-md);
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 12px 16px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 0.95rem;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition-fast);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-red {
+      background: var(--accent-red);
+    }
+    .btn-red:hover {
+      background: #dc2626;
+    }
+
+    /* ==========================================================================
+       6. RESPONSIVE MEDIA QUERIES (Mobile Friendly Layout Adjustments)
+       ========================================================================== */
+    @media (max-width: 900px) {
+      .mobile-header {
+        display: flex;
+      }
+
+      .sidebar {
+        transform: translateX(-100%);
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .backdrop.open {
+        display: block;
+      }
+
+      .main-content {
+        margin-left: 0;
+        padding: 88px 20px 40px 20px; /* Top padding clears mobile header */
+      }
+
+      .section-title {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================================================
+       MOBILE NAVIGATION HEADER
+       ========================================================================== -->
+  <header class="mobile-header">
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <i class="fa-solid fa-book-bible" style="color: var(--primary);"></i>
+      <span style="font-weight: 700;">Scripture Study</span>
+    </div>
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle Navigation">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+  </header>
+
+  <!-- Dark Overlay when Mobile Drawer is Open -->
+  <div class="backdrop" id="backdrop"></div>
+
+  <!-- ==========================================================================
+       SIDEBAR NAVIGATION
+       ========================================================================== -->
+  <nav class="sidebar" id="sidebar">
+    <div class="brand-header">
+      <i class="fa-solid fa-book-bible"></i>
+      <h1>Scripture Study</h1>
+    </div>
+    <ul class="nav-links">
+      <li class="nav-item active" data-tab="tab-hw1">
+        <button><i class="fa-solid fa-person-breastfeeding"></i> Homework 1: The Woman</button>
+      </li>
+      <li class="nav-item" data-tab="tab-hw2">
+        <button><i class="fa-solid fa-users-rectangle"></i> Homework 2: The Three Groups</button>
+      </li>
+      <li class="nav-item" data-tab="tab-hw3">
+        <button><i class="fa-solid fa-dragon"></i> Homework 3: Red Dragon</button>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- ==========================================================================
+       MAIN CONTENT CONTAINER
+       ========================================================================== -->
+  <main class="main-content">
+
+    <!-- ----------------------------------------------------------------------
+         HOMEWORK 1: Revelation 12:1-2 (The Sun-Clothed Woman)
+         ---------------------------------------------------------------------- -->
+    <section id="tab-hw1" class="tab-content active">
+      <div class="section-header">
+        <span class="badge badge-primary">Homework One</span>
+        <h2 class="section-title">Revelation 12:1-2 — The Clothed Woman</h2>
+        <p class="section-subtitle">Examine the identity of the heavenly woman in John's vision.</p>
+      </div>
+
+      <div class="card">
+        <h3>Scripture Context</h3>
+        <div class="verse-box">
+          "A great sign appeared in heaven: a woman clothed with the sun, with the moon under her feet and a crown of twelve stars on her head. She was pregnant and cried out in pain as she was about to give birth."
+          <span class="ref">— Revelation 12:1-2 (NIV)</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Who is this Woman?</h3>
+        <p style="color: var(--text-muted); margin-bottom: 16px;">
+          The identity of this woman is interpreted through two primary biblical perspectives. While both views carry historical symbolism, scripture strongly points toward <strong>the Nation of Israel</strong> as the complete prophetic representation.
+        </p>
+
+        <div class="perspective-grid">
+          <!-- View 1: Nation of Israel -->
+          <div class="perspective-card selected">
+            <h3><i class="fa-solid fa-star-of-david" style="color: var(--text-gold);"></i> Nation of Israel</h3>
+            <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 12px;">
+              <strong>Primary Interpretation:</strong> The imagery directly mirrors Joseph's dream in <strong>Genesis 37:9-10</strong>, where the sun represents Jacob, the moon represents Rachel, and the 12 stars represent the 12 tribes of Israel.
+            </p>
+            <p style="font-size: 0.95rem; color: var(--text-muted);">
+              Israel is pictured throughout the Old Testament as the "wife of Yahweh" who groans in birth pangs to bring forth the Messiah (<strong>Micah 5:2-3</strong>, <strong>Isaiah 26:17-18</strong>).
+            </p>
+          </div>
+
+          <!-- View 2: Virgin Mary -->
+          <div class="perspective-card">
+            <h3><i class="fa-solid fa-person-praying" style="color: var(--primary);"></i> The Virgin Mary</h3>
+            <p style="font-size: 0.95rem; color: var(--text-muted);">
+              <strong>Secondary/Literal Aspect:</strong> Mary is the historical individual who physically gave birth to Jesus Christ (the male child of Rev 12:5). However, Mary herself stems from Israel. Most biblical scholars view Mary as a personification of corporate Israel rather than the sole fulfillment of this symbolic prophecy.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Supporting Scriptures</h3>
+        
+        <div class="verse-box">
+          "Then he had another dream... 'Listen,' he said, 'I had another dream, and this time the sun and moon and eleven stars were bowing down to me.'"
+          <span class="ref">— Genesis 37:9 (Imagery of Israel's 12 Tribes)</span>
+        </div>
+
+        <div class="verse-box">
+          "As a pregnant woman approaches the time to give birth and writhes and cries out in her pain, so were we in your presence, LORD."
+          <span class="ref">— Isaiah 26:17 (Israel's Birth Pangs)</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------------------------
+         HOMEWORK 2: Biblical Entities (Israel, Church, Gentiles)
+         ---------------------------------------------------------------------- -->
+    <section id="tab-hw2" class="tab-content">
+      <div class="section-header">
+        <span class="badge badge-primary">Homework Two</span>
+        <h2 class="section-title">Identification of Biblical Entities</h2>
+        <p class="section-subtitle">Understanding God's distinct groups and their scriptural titles.</p>
+      </div>
+
+      <div class="entity-container">
+        
+        <!-- Entity 1: Nation of Israel -->
+        <div class="entity-card">
+          <div class="entity-header">
+            <h3>1. The Nation of Israel</h3>
+            <i class="fa-solid fa-shield-halved" style="color: var(--primary);"></i>
+          </div>
+          <div class="entity-body">
+            <p><strong>Definition:</strong> The physical descendants of Abraham, Isaac, and Jacob with whom God established an everlasting covenant.</p>
+            <div style="margin-top: 12px;">
+              <strong>Alternative Scriptural Names:</strong>
+              <div class="name-tags">
+                <span class="tag">The Chosen People (Deut 7:6)</span>
+                <span class="tag">The Apple of His Eye (Zech 2:8)</span>
+                <span class="tag">My Firstborn Son (Exodus 4:22)</span>
+                <span class="tag">House of Jacob (Luke 1:33)</span>
+              </div>
+            </div>
+            <div class="verse-box">
+              "For you are a people holy to the LORD your God. The LORD your God has chosen you out of all the peoples on the face of the earth to be his people, his treasured possession."
+              <span class="ref">— Deuteronomy 7:6</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Entity 2: The Church -->
+        <div class="entity-card">
+          <div class="entity-header">
+            <h3>2. The Church (Ekklesia)</h3>
+            <i class="fa-solid fa-church" style="color: var(--primary);"></i>
+          </div>
+          <div class="entity-body">
+            <p><strong>Definition:</strong> The body of believers (both Jews and Gentiles) redeemed through faith in Jesus Christ, called out from the world.</p>
+            <div style="margin-top: 12px;">
+              <strong>Alternative Scriptural Names:</strong>
+              <div class="name-tags">
+                <span class="tag">The Body of Christ (1 Cor 12:27)</span>
+                <span class="tag">The Bride of Christ (2 Cor 11:2)</span>
+                <span class="tag">Household of God (Eph 2:19)</span>
+                <span class="tag">A Royal Priesthood (1 Peter 2:9)</span>
+              </div>
+            </div>
+            <div class="verse-box">
+              "Now you are the body of Christ, and each one of you is a part of it."
+              <span class="ref">— 1 Corinthians 12:27</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Entity 3: Gentiles -->
+        <div class="entity-card">
+          <div class="entity-header">
+            <h3>3. Gentiles (Goyim / Ethne)</h3>
+            <i class="fa-solid fa-earth-americas" style="color: var(--primary);"></i>
+          </div>
+          <div class="entity-body">
+            <p><strong>Definition:</strong> Non-Jewish nations or individuals who historically were outside the Jewish covenant, but are now offered salvation through Christ.</p>
+            <div style="margin-top: 12px;">
+              <strong>Alternative Scriptural Names:</strong>
+              <div class="name-tags">
+                <span class="tag">The Nations (Psalm 2:8)</span>
+                <span class="tag">Uncircumcision (Ephesians 2:11)</span>
+                <span class="tag">Wild Olive Shoot (Romans 11:17)</span>
+                <span class="tag">Heathen (Galatians 3:8 - KJV)</span>
+              </div>
+            </div>
+            <div class="verse-box">
+              "Therefore, remember that formerly you who are Gentiles by birth... remember that at that time you were separate from Christ, excluded from citizenship in Israel..."
+              <span class="ref">— Ephesians 2:11-12</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------------------------
+         HOMEWORK 3: Revelation 12:3 (The Red Dragon)
+         ---------------------------------------------------------------------- -->
+    <section id="tab-hw3" class="tab-content">
+      <div class="section-header">
+        <span class="badge badge-red">Homework Three</span>
+        <h2 class="section-title">Revelation 12:3 — The Great Red Dragon</h2>
+        <p class="section-subtitle">Examine the identity, symbolism, and lessons regarding the adversary.</p>
+      </div>
+
+      <div class="card">
+        <h3>Scripture Context</h3>
+        <div class="verse-box" style="border-left-color: var(--accent-red);">
+          "Then another sign appeared in heaven: an enormous red dragon with seven heads and ten horns and seven crowns on its heads."
+          <span class="ref">— Revelation 12:3</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Who is the Red Dragon?</h3>
+        <p style="color: var(--text-muted);">
+          Scripture removes all guesswork regarding this identity. Revelation 12:9 explicitly states: 
+          <strong style="color: var(--text-main);">"The great dragon was hurled down—that ancient serpent called the devil, or Satan, who leads the whole world astray."</strong>
+        </p>
+
+        <!-- Dynamic List for Details / Lessons -->
+        <h4 style="margin-top: 24px;">Key Symbolism & Lessons Learned:</h4>
+        <ul class="details-list" id="dragonDetailsList">
+          <li class="details-item">
+            <div class="details-item-content">
+              <h4>Identity: Satan / The Devil</h4>
+              <p>Confirmed explicitly in Rev 12:9. He is the ultimate spiritual adversary of God, Israel, and the Church.</p>
+            </div>
+          </li>
+          <li class="details-item">
+            <div class="details-item-content">
+              <h4>Red Color: Murder & Violence</h4>
+              <p>The color red signifies his murderous nature. Jesus stated in John 8:44 that Satan "was a murderer from the beginning."</p>
+            </div>
+          </li>
+          <li class="details-item">
+            <div class="details-item-content">
+              <h4>7 Heads & 10 Horns: World Powers & Authority</h4>
+              <p>Represents vast political intelligence (heads), raw power/strength (horns), and dominion over earthly kingdom systems (crowns).</p>
+            </div>
+          </li>
+        </ul>
+
+        <!-- Form to Add More Details (Extensibility Requirement) -->
+        <div class="add-detail-form">
+          <h4 style="margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-plus-circle" style="color: var(--primary);"></i> Add Custom Detail or Insight
+          </h4>
+          <form id="addDetailForm">
+            <div class="form-group">
+              <label for="detailTitle">Title / Symbol</label>
+              <input type="text" id="detailTitle" class="form-control" placeholder="e.g. Tail drawing 1/3 stars" required>
+            </div>
+            <div class="form-group">
+              <label for="detailDesc">Lesson / Scriptural Insight</label>
+              <textarea id="detailDesc" class="form-control" rows="3" placeholder="e.g. Represents Satan persuading a third of the angels to join his rebellion (Rev 12:4)." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-red"><i class="fa-solid fa-plus"></i> Add to Study Notes</button>
+          </form>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==========================================================================
+       7. JAVASCRIPT LOGIC
+       ========================================================================== -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+      // --- TAB SWITCHING SYSTEM ---
+      const navItems = document.querySelectorAll('.nav-item');
+      const tabContents = document.querySelectorAll('.tab-content');
+      const sidebar = document.getElementById('sidebar');
+      const backdrop = document.getElementById('backdrop');
+
+      navItems.forEach(item => {
+        item.addEventListener('click', () => {
+          const targetTab = item.getAttribute('data-tab');
+
+          // Update navigation highlight state
+          navItems.forEach(nav => nav.classList.remove('active'));
+          item.classList.add('active');
+
+          // Switch visible content tab
+          tabContents.forEach(tab => {
+            if (tab.id === targetTab) {
+              tab.classList.add('active');
+            } else {
+              tab.classList.remove('active');
+            }
+          });
+
+          // Auto-close sidebar on mobile after clicking
+          closeMobileMenu();
+        });
+      });
+
+      // --- MOBILE NAVIGATION DRAWER ---
+      const menuToggle = document.getElementById('menuToggle');
+
+      function openMobileMenu() {
+        sidebar.classList.add('open');
+        backdrop.classList.add('open');
+      }
+
+      function closeMobileMenu() {
+        sidebar.classList.remove('open');
+        backdrop.classList.remove('open');
+      }
+
+      menuToggle.addEventListener('click', () => {
+        if (sidebar.classList.contains('open')) {
+          closeMobileMenu();
+        } else {
+          openMobileMenu();
+        }
+      });
+
+      backdrop.addEventListener('click', closeMobileMenu);
+
+
+      // --- HOMEWORK 3: DYNAMICALLY ADD DETAILS/LESSONS ---
+      const addDetailForm = document.getElementById('addDetailForm');
+      const dragonDetailsList = document.getElementById('dragonDetailsList');
+
+      addDetailForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const titleInput = document.getElementById('detailTitle');
+        const descInput = document.getElementById('detailDesc');
+
+        const titleText = titleInput.value.trim();
+        const descText = descInput.value.trim();
+
+        if (titleText && descText) {
+          // Create new HTML list item
+          const listItem = document.createElement('li');
+          listItem.className = 'details-item';
+          listItem.innerHTML = `
+            <div class="details-item-content">
+              <h4>${escapeHTML(titleText)}</h4>
+              <p>${escapeHTML(descText)}</p>
+            </div>
+          `;
+
+          // Append to existing list
+          dragonDetailsList.appendChild(listItem);
+
+          // Reset Form Fields
+          titleInput.value = '';
+          descInput.value = '';
+        }
+      });
+
+      // Helper function to prevent XSS in dynamic input
+      function escapeHTML(str) {
+        return str.replace(/[&<>'"]/g, 
+          tag => ({
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            "'": '&#39;',
+            '"': '&quot;'
+          }[tag] || tag)
+        );
+      }
+
+    });
+  </script>
+</body>
+</html>
