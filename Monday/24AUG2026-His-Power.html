@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Holy Spirit: His Power | Bible Study Companion</title>
+    
+    <!-- Tailwind CSS CDN for utility-first styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0284c7',
+                            600: '#0369a1',
+                            900: '#0c4a6e',
+                            amber: '#d97706',
+                            emerald: '#059669'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Modern Dark Glassmorphic Aesthetic */
+        body { background-color: #0b132b; color: #f1f5f9; }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .accordion-content {
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        .accordion-content.open {
+            max-height: 500px;
+            opacity: 1;
+            padding-top: 1rem;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col font-sans antialiased">
+
+    <!-- ========================================================= -->
+    <!-- 1. HEADER & STICKY NAVIGATION                             -->
+    <!-- ========================================================= -->
+    <header class="sticky top-0 z-50 glass-card border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-sky-500 flex items-center justify-center text-slate-950 font-bold shadow-lg shadow-sky-500/20">
+                    <i class="fa-solid fa-fire text-lg"></i>
+                </div>
+                <div>
+                    <span class="font-serif font-bold text-base sm:text-lg text-white block leading-tight">The Holy Spirit: His Power</span>
+                    <span class="text-xs text-amber-400 font-medium">1 Corinthians 12 Study Companion</span>
+                </div>
+            </div>
+
+            <!-- Desktop Nav Links -->
+            <nav class="hidden md:flex space-x-8 text-sm font-medium text-slate-300">
+                <a href="#passage" class="hover:text-amber-400 transition-colors">Scripture</a>
+                <a href="#lessons" class="hover:text-amber-400 transition-colors">Key Lessons</a>
+                <a href="#study-guide" class="hover:text-amber-400 transition-colors">Study Questions</a>
+                <a href="#journal" class="hover:text-amber-400 transition-colors">Personal Reflection</a>
+            </nav>
+
+            <!-- Mobile Menu Toggle Button -->
+            <button id="menu-toggle" class="md:hidden p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800">
+                <i class="fa-solid fa-bars text-xl"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Drawer -->
+        <div id="mobile-menu" class="hidden md:hidden px-4 pt-2 pb-4 space-y-2 glass-card border-t border-slate-800">
+            <a href="#passage" class="block px-3 py-2 rounded-md text-slate-300 hover:bg-slate-800">Scripture</a>
+            <a href="#lessons" class="block px-3 py-2 rounded-md text-slate-300 hover:bg-slate-800">Key Lessons</a>
+            <a href="#study-guide" class="block px-3 py-2 rounded-md text-slate-300 hover:bg-slate-800">Study Questions</a>
+            <a href="#journal" class="block px-3 py-2 rounded-md text-slate-300 hover:bg-slate-800">Personal Reflection</a>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+
+        <!-- ========================================================= -->
+        <!-- 2. HERO / INTRODUCTION SECTION                            -->
+        <!-- ========================================================= -->
+        <section class="relative rounded-3xl overflow-hidden glass-card p-6 sm:p-10 border border-slate-700/50 shadow-2xl">
+            <div class="max-w-3xl space-y-4">
+                <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-semibold uppercase tracking-wider">
+                    <i class="fa-solid fa-book-open"></i> <span>8/23/26 Bible Study</span>
+                </div>
+                <h1 class="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight leading-tight">
+                    Every Believer Has a Gift. Every Gift Has a Purpose.
+                </h1>
+                <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                    The Holy Spirit doesn't just accompany us—He empowers us. Through 1 Corinthians 12, discover how God gives abilities to make much of Jesus, serve others for the common good, and fulfill your unique role in the Body of Christ.
+                </p>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- 3. FOUNDATION SCRIPTURE PASSAGE                           -->
+        <!-- ========================================================= -->
+        <section id="passage" class="glass-card p-6 sm:p-8 rounded-3xl space-y-4 border border-slate-800">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                <h2 class="font-serif text-2xl font-bold text-white"><i class="fa-solid fa-bible text-amber-400 mr-2"></i> 1 Corinthians 12:1–27 (NIV)</h2>
+                <span class="text-xs text-slate-400 bg-slate-800 px-3 py-1 rounded-full">Key Scripture</span>
+            </div>
+            <div class="text-slate-300 text-sm leading-relaxed space-y-3 max-h-60 overflow-y-auto pr-2">
+                <p><sup class="text-amber-400 font-bold">1</sup> Now about the gifts of the Spirit, brothers and sisters, I do not want you to be uninformed...</p>
+                <p><sup class="text-amber-400 font-bold">3</sup> Therefore I want you to know that no one who is speaking by the Spirit of God says, “Jesus be cursed,” and no one can say, “Jesus is Lord,” except by the Holy Spirit.</p>
+                <p><sup class="text-amber-400 font-bold">4-7</sup> There are different kinds of gifts, but the same Spirit distributes them... Now to each one the manifestation of the Spirit is given for the common good.</p>
+                <p><sup class="text-amber-400 font-bold">12-14</sup> Just as a body, though one, has many parts, but all its many parts form one body, so it is with Christ. For we were all baptized by one Spirit so as to form one body...</p>
+                <p><sup class="text-amber-400 font-bold">26-27</sup> If one part suffers, every part suffers with it; if one part is honored, every part rejoices with it. Now you are the body of Christ, and each one of you is a part of it.</p>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- 4. CORE LESSONS FROM THE SERMON                           -->
+        <!-- ========================================================= -->
+        <section id="lessons" class="space-y-6">
+            <h2 class="font-serif text-2xl sm:text-3xl font-bold text-white">Three Main Purposes of Spiritual Gifts</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <!-- Lesson 1 -->
+                <div class="glass-card p-6 rounded-2xl space-y-3 border-t-4 border-amber-500">
+                    <div class="text-amber-400 font-bold text-lg"><i class="fa-solid fa-cross mr-2"></i> 1. Make Much of Jesus</div>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        Spiritual gifts put the spotlight on Christ, not the gift-holder. The greatest miracle isn't extraordinary activity—it's the Spirit enabling you to declare and live "Jesus is Lord."
+                    </p>
+                </div>
+
+                <!-- Lesson 2 -->
+                <div class="glass-card p-6 rounded-2xl space-y-3 border-t-4 border-sky-500">
+                    <div class="text-sky-400 font-bold text-lg"><i class="fa-solid fa-hands-holding-child mr-2"></i> 2. Serve Others</div>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        Gifts are not God's gift <em>to</em> you for self-enjoyment—they are God's gift <em>through</em> you for the common good. Hold your role loosely and your identity as a child of God tightly.
+                    </p>
+                </div>
+
+                <!-- Lesson 3 -->
+                <div class="glass-card p-6 rounded-2xl space-y-3 border-t-4 border-emerald-500">
+                    <div class="text-emerald-400 font-bold text-lg"><i class="fa-solid fa-people-group mr-2"></i> 3. Play Your Part</div>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        Just like physical body parts or football team positions, every gift is essential. There is no room for feeling inferior or superior—every part is indispensable.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- 5. INTERACTIVE STUDY QUESTIONS ANSWERED                   -->
+        <!-- ========================================================= -->
+        <section id="study-guide" class="space-y-6">
+            <div class="border-b border-slate-800 pb-4">
+                <h2 class="font-serif text-2xl sm:text-3xl font-bold text-white">Study Sheet Answer Key</h2>
+                <p class="text-slate-400 text-xs sm:text-sm mt-1">Click any question to reveal scripture answers, sermon insights, and practical application.</p>
+            </div>
+
+            <!-- TAB CONTAINER FOR CATEGORIES -->
+            <div class="space-y-4">
+
+                <!-- --- CATEGORY 1: OBSERVATION QUESTIONS --- -->
+                <div class="glass-card rounded-2xl overflow-hidden border border-slate-800">
+                    <div class="bg-slate-900/80 px-6 py-4 font-semibold text-amber-400 flex justify-between items-center">
+                        <span><i class="fa-solid fa-magnifying-glass mr-2"></i> Observation Questions (1 Cor 12:1–27)</span>
+                        <span class="text-xs bg-amber-500/20 px-2 py-1 rounded">Q1 - Q8</span>
+                    </div>
+                    <div class="p-6 space-y-3">
+
+                        <!-- TO ADD OR EDIT QUESTIONS: Copy this accordion block -->
+                        <div class="border border-slate-800 rounded-xl p-4 bg-slate-900/40">
+                            <button onclick="toggleAccordion('q1')" class="w-full flex justify-between items-center text-left text-sm font-medium text-white hover:text-amber-400">
+                                <span>1. What did believers follow before knowing God? (v. 2)</span>
+                                <i class="fa-solid fa-chevron-down text-xs"></i>
+                            </button>
+                            <div id="q1" class="accordion-content text-xs text-slate-300 leading-relaxed">
+                                <strong class="text-amber-400 block mb-1">Answer:</strong>
+                                According to verse 2, before knowing God they were pagans who were "influenced and led astray to mute idols."
+                            </div>
+                        </div>
+
+                        <div class="border border-slate-800 rounded-xl p-4 bg-slate-900/40">
+                            <button onclick="toggleAccordion('q2')" class="w-full flex justify-between items-center text-left text-sm font-medium text-white hover:text-amber-400">
+                                <span>2. What words are repeated in verses 4–6? What does this show about God?</span>
+                                <i class="fa-solid fa-chevron-down text-xs"></i>
+                            </button>
+                            <div id="q2" class="accordion-content text-xs text-slate-300 leading-relaxed">
+                                <strong class="text-amber-400 block mb-1">Answer:</strong>
+                                Paul repeats "different kinds of..." (gifts, service, working) and "the same..." (Spirit, Lord, God). This shows the Trinitarian nature of God working through diversity in unity—one God bringing diverse gifts to His people.
+                            </div>
+                        </div>
+
+                        <div class="border border-slate-800 rounded-xl p-4 bg-slate-900/40">
+                            <button onclick="toggleAccordion('q3')" class="w-full flex justify-between items-center text-left text-sm font-medium text-white hover:text-amber-400">
+                                <span>3. Why emphasize what is the same when talking about differences? (v. 4–13)</span>
+                                <i class="fa-solid fa-chevron-down text-xs"></i>
+                            </button>
+                            <div id="q3" class="accordion-content text-xs text-slate-300 leading-relaxed">
+                                <strong class="text-amber-400 block mb-1">Answer:</strong>
+                                Paul emphasizes "the same Spirit" to prevent rivalry, spiritual pride, or feelings of division. Diversity in gifts exists to glorify one source—God Himself.
+                            </div>
+                        </div>
+
+                        <div class="border border-slate-800 rounded-xl p-4 bg-slate-900/40">
+                            <button onclick="toggleAccordion('q4')" class="w-full flex justify-between items-center text-left text-sm font-medium text-white hover:text-amber-400">
+                                <span>4. Why does the Holy Spirit give special abilities to each person? (v. 7)</span>
+                                <i class="fa-solid fa-chevron-down text-xs"></i>
+                            </button>
+                            <div id="q4" class="accordion-content text-xs text-slate-300 leading-relaxed">
+                                <strong class="text-amber-400 block mb-1">Answer:</strong>
+                                "Now to each one the manifestation of the Spirit is given <strong>for the common good</strong>" (v. 7). Gifts are given to bless and build up others, not for personal status.
+                            </div>
+                        </div>
+
+                        <div class="border border-slate-800 rounded-xl p-4 bg-slate-900/40">
+                            <button onclick="toggleAccordion('q5-8')" class="w-full flex justify-between items-center text-left text-sm font-medium text-white hover:text-amber-400">
+                                <span>5–8. Body Analogy, Unity, Suffering & Conclusion (v. 12, 13, 26, 27)</span>
+                                <i class="fa-solid fa-chevron-down text-xs"></i>
+                            </button>
+                            <div id="q5-8" class="accordion-content text-xs text-slate-300 leading-relaxed space-y-2">
+                                <p><strong>Q5 (v. 12):</strong> Physical example: The human body (one body made of many parts).</p>
+                                <p><strong>Q6 (v. 13):</strong> Being baptized by one Spirit into one body unites all believers regardless of background.</p>
+                                <p><strong>Q7 (v. 26):</strong> If one part suffers, every part suffers; if one part is honored, every part rejoices.</p>
+                                <p><strong>Q8 (v. 27):</strong> Conclusion: "Now you are the body of Christ, and each one of you is a part of it."</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- --- CATEGORY 2: INTERPRETATION QUESTIONS --- -->
+                <div class="glass-card rounded-2xl overflow-hidden border border-slate-800">
+                    <div class="bg-slate-900/80 px-6 py-4 font-semibold text-sky-400 flex justify-between items-center">
+                        <span><i class="fa-solid fa-lightbulb mr-2"></i> Interpretation Questions</span>
+                        <span class="text-xs bg-sky-500/20 px-2 py-1 rounded">Q9 - Q19</span>
+                    </div>
+                    <div class="p-6 space-y-3">
+
+                        <div class="border border-slate-800 rounded-xl p-4 bg-slate-900/40">
+                            <button onclick="toggleAccordion('q9')" class="w-full flex justify-between items-center text-left text-sm font-medium text-white hover:text-sky-400">
+                                <span>9 & 10. Why start with "Jesus is Lord" before listing spiritual gifts?</span>
+                                <i class="fa-solid fa-chevron-down text-xs"></i>
+                            </button>
+                            <div id="q9" class="accordion-content text-xs text-slate-300 leading-relaxed">
+                                <strong class="text-sky-400 block mb-1">Sermon Insight:</strong>
+                                Paul establishes that the clearest evidence of the Spirit's power isn't flashy spiritual activity—it's surrendering your heart to the Lordship of Jesus. Before discussing gifts, we must ask: <em>Is Jesus my King calling the shots?</em>
+                            </div>
+                        </div>
+
+                        <div class="border border-slate-800 rounded-xl p-4 bg-slate-900/40">
+                            <button onclick="toggleAccordion('q12')" class="w-full flex justify-between items-center text-left text-sm font-medium text-white hover:text-sky-400">
+                                <span>12 & 13. The Spotlight Test: Who receives the attention?</span>
+                                <i class="fa-solid fa-chevron-down text-xs"></i>
+                            </button>
+                            <div id="q12" class="accordion-content text-xs text-slate-300 leading-relaxed">
+                                <strong class="text-sky-400 block mb-1">Sermon Insight:</strong>
+                                In John 16:14, Jesus notes that the Spirit glorifies Him. When gifts are used improperly, the person receives praise. When operated in the Spirit, the spotlight lands squarely on Jesus.
+                            </div>
+                        </div>
+
+                        <div class="border border-slate-800 rounded-xl p-4 bg-slate-900/40">
+                            <button onclick="toggleAccordion('q14')" class="w-full flex justify-between items-center text-left text-sm font-medium text-white hover:text-sky-400">
+                                <span>14–16. Identity vs. Role: Holding roles loosely</span>
+                                <i class="fa-solid fa-chevron-down text-xs"></i>
+                            </button>
+                            <div id="q14" class="accordion-content text-xs text-slate-300 leading-relaxed">
+                                <strong class="text-sky-400 block mb-1">Sermon Insight:</strong>
+                                Pastor Seth emphasized: <em>"Your identity is not your role. Your identity is that you are a child of God."</em> Tying identity to a role makes us fragile if that role changes. Hold roles loosely, and let God hold you.
+                            </div>
+                        </div>
+
+                        <div class="border border-slate-800 rounded-xl p-4 bg-slate-900/40">
+                            <button onclick="toggleAccordion('q17')" class="w-full flex justify-between items-center text-left text-sm font-medium text-white hover:text-sky-400">
+                                <span>17–19. Overcoming Inferiority & Superiority (The Football Analogy)</span>
+                                <i class="fa-solid fa-chevron-down text-xs"></i>
+                            </button>
+                            <div id="q17" class="accordion-content text-xs text-slate-300 leading-relaxed">
+                                <strong class="text-sky-400 block mb-1">Sermon Insight:</strong>
+                                Just like a football team needs linemen as much as quarterbacks, the church needs every behind-the-scenes role (administration, changing trailer tires, hosting). Visible roles are not superior; every member is indispensable.
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- --- CATEGORY 3: APPLICATION QUESTIONS --- -->
+                <div class="glass-card rounded-2xl overflow-hidden border border-slate-800">
+                    <div class="bg-slate-900/80 px-6 py-4 font-semibold text-emerald-400 flex justify-between items-center">
+                        <span><i class="fa-solid fa-paper-plane mr-2"></i> Application Questions</span>
+                        <span class="text-xs bg-emerald-500/20 px-2 py-1 rounded">Q20 - Q22</span>
+                    </div>
+                    <div class="p-6 space-y-3">
+
+                        <div class="border border-slate-800 rounded-xl p-4 bg-slate-900/40">
+                            <button onclick="toggleAccordion('q20')" class="w-full flex justify-between items-center text-left text-sm font-medium text-white hover:text-emerald-400">
+                                <span>20–22. Looking Outward Instead of Inward This Week</span>
+                                <i class="fa-solid fa-chevron-down text-xs"></i>
+                            </button>
+                            <div id="q20" class="accordion-content text-xs text-slate-300 leading-relaxed space-y-2">
+                                <p><strong>Shift Perspective:</strong> Stop asking <em>"What am I good at?"</em> and start asking <em>"What in my life can make much of Jesus and help someone else?"</em></p>
+                                <p><strong>Practical Action:</strong> Look around tomorrow for someone who needs encouragement, practical help, or a listening ear. Put yourself and your abilities into God's hands and say: <em>"God, here I am. Use me."</em></p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- 6. PERSONAL REFLECTION & NOTES JOURNAL                    -->
+        <!-- ========================================================= -->
+        <section id="journal" class="glass-card p-6 sm:p-8 rounded-3xl space-y-4 border border-slate-800">
+            <h2 class="font-serif text-2xl font-bold text-white"><i class="fa-solid fa-pen-to-square text-amber-400 mr-2"></i> Personal Study Journal</h2>
+            <p class="text-slate-400 text-xs">Record your personal notes or reflections for this study session:</p>
+            
+            <textarea id="user-notes" rows="4" placeholder="Write down what God is putting on your heart regarding your gifts and who you can serve this week..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-4 text-xs text-slate-200 focus:outline-none focus:border-amber-500 transition-colors"></textarea>
+            
+            <button onclick="saveNotes()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-semibold text-xs shadow-lg hover:opacity-90 transition-opacity">
+                Save Reflection Notes
+            </button>
+            <span id="save-status" class="text-xs text-emerald-400 font-medium ml-3 hidden">Notes Saved!</span>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="glass-card border-t border-slate-800 mt-12 py-6">
+        <div class="max-w-7xl mx-auto px-4 text-center text-slate-500 text-xs">
+            <p>Interactive Bible Study Companion • Created for 1 Corinthians 12 Small Group Discussion</p>
+        </div>
+    </footer>
+
+    <!-- ========================================================= -->
+    <!-- 7. JAVASCRIPT FOR INTERACTIVITY & EXTENSIBILITY           -->
+    <!-- ========================================================= -->
+    <script>
+        // Toggle Accordion Panels
+        function toggleAccordion(id) {
+            const content = document.getElementById(id);
+            const isOpen = content.classList.contains('open');
+            
+            // Close all open accordions for clean UX
+            document.querySelectorAll('.accordion-content').forEach(item => item.classList.remove('open'));
+
+            if (!isOpen) {
+                content.classList.add('open');
+            }
+        }
+
+        // Toggle Mobile Menu
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Save Notes to LocalStorage
+        function saveNotes() {
+            const notes = document.getElementById('user-notes').value;
+            localStorage.setItem('holy_spirit_study_notes', notes);
+            const status = document.getElementById('save-status');
+            status.classList.remove('hidden');
+            setTimeout(() => status.classList.add('hidden'), 3000);
+        }
+
+        // Load saved notes on page startup
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedNotes = localStorage.getItem('holy_spirit_study_notes');
+            if (savedNotes) {
+                document.getElementById('user-notes').value = savedNotes;
+            }
+        });
+    </script>
+</body>
+</html>
