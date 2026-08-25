@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>His Power: Spiritual Gifts & Purpose | Sermon Companion</title>
+    <!-- Tailwind CSS for modern responsive styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for sleek visual iconography -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter & Playfair Display -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#0284c7',
+                            600: '#0369a1',
+                            900: '#0c4a6e',
+                            gold: '#d97706'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar and ambient UI glass effects */
+        body { background-color: #0f172a; color: #f8fafc; }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col font-sans antialiased selection:bg-brand-500 selection:text-white">
+
+    <!-- ========================================== -->
+    <!-- 1. HEADER & NAVIGATION SECTION            -->
+    <!-- ========================================== -->
+    <header class="sticky top-0 z-50 glass-panel border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-brand-500 flex items-center justify-center text-white shadow-lg shadow-brand-500/20">
+                    <i class="fa-solid font-bold fa-fire-flame-curved text-xl"></i>
+                </div>
+                <div>
+                    <span class="font-serif font-bold text-lg text-white tracking-wide block leading-tight">His Power</span>
+                    <span class="text-xs text-slate-400 block font-light">Sermon Companion App</span>
+                </div>
+            </div>
+
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex space-x-8 text-sm font-medium text-slate-300">
+                <a href="#overview" class="hover:text-amber-400 transition-colors">Overview</a>
+                <a href="#scripture" class="hover:text-amber-400 transition-colors">Scripture</a>
+                <a href="#core-lessons" class="hover:text-amber-400 transition-colors">Core Lessons</a>
+                <a href="#practical-gifts" class="hover:text-amber-400 transition-colors">Gifts & Reflection</a>
+            </nav>
+
+            <!-- Mobile Menu Toggle Button -->
+            <button id="menu-btn" class="md:hidden p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 focus:outline-none">
+                <i class="fa-solid fa-bars text-xl"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Drawer Menu -->
+        <div id="mobile-menu" class="hidden md:hidden px-4 pt-2 pb-4 space-y-2 glass-panel border-t border-slate-800">
+            <a href="#overview" class="block px-3 py-2 rounded-md text-slate-300 hover:bg-slate-800">Overview</a>
+            <a href="#scripture" class="block px-3 py-2 rounded-md text-slate-300 hover:bg-slate-800">Scripture</a>
+            <a href="#core-lessons" class="block px-3 py-2 rounded-md text-slate-300 hover:bg-slate-800">Core Lessons</a>
+            <a href="#practical-gifts" class="block px-3 py-2 rounded-md text-slate-300 hover:bg-slate-800">Gifts & Reflection</a>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+
+        <!-- ========================================== -->
+        <!-- 2. HERO / SERMON OVERVIEW SECTION         -->
+        <!-- ========================================== -->
+        <section id="overview" class="relative rounded-3xl overflow-hidden glass-panel p-8 md:p-12 border border-slate-700/50 shadow-2xl">
+            <div class="absolute -right-20 -top-20 w-96 h-96 bg-brand-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="max-w-3xl space-y-4">
+                <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-semibold uppercase tracking-wider">
+                    <i class="fa-solid fa-book-bible"></i> <span>1 Corinthians 12 Series</span>
+                </div>
+                <h1 class="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight leading-tight">
+                    Every Christian Has a Part to Play in the Church
+                </h1>
+                <p class="text-slate-300 text-base sm:text-lg font-light leading-relaxed">
+                    The Holy Spirit isn't just with us on our journey—He empowers us. Discover how God places unique gifts, abilities, and opportunities in your hands to make much of Jesus, serve others, and build up the Body of Christ.
+                </p>
+                <div class="pt-4 flex flex-wrap gap-4">
+                    <a href="#core-lessons" class="px-6 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-semibold shadow-lg shadow-amber-500/20 hover:scale-105 transition-all">
+                        Explore 3 Key Purposes
+                    </a>
+                    <a href="#practical-gifts" class="px-6 py-3 rounded-xl glass-panel text-slate-200 font-medium hover:bg-slate-800 border border-slate-700 transition-all">
+                        Discover Your Role
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- 3. KEY SCRIPTURE READINGS                  -->
+        <!-- ========================================== -->
+        <section id="scripture" class="space-y-6">
+            <div class="flex items-center justify-between">
+                <h2 class="font-serif text-2xl md:text-3xl font-bold text-white">Foundation Scripture</h2>
+                <span class="text-xs text-slate-400">1 Corinthians 12</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Scripture Card 1 -->
+                <!-- TO ADD MORE SCRIPTURES: Duplicate this card block and adjust references -->
+                <div class="glass-panel p-6 rounded-2xl border-l-4 border-amber-500 space-y-3 flex flex-col justify-between">
+                    <div>
+                        <div class="text-amber-400 font-semibold text-sm mb-1">1 Corinthians 12:3</div>
+                        <p class="text-slate-300 italic text-sm leading-relaxed">
+                            "Therefore I want you to know that no one who is speaking by the Spirit of God says, 'Jesus be cursed,' and no one can say, 'Jesus is Lord,' except by the Holy Spirit."
+                        </p>
+                    </div>
+                    <span class="text-xs text-slate-500 uppercase tracking-wider pt-2 block border-t border-slate-800">Miracle of Surrender</span>
+                </div>
+
+                <!-- Scripture Card 2 -->
+                <div class="glass-panel p-6 rounded-2xl border-l-4 border-brand-500 space-y-3 flex flex-col justify-between">
+                    <div>
+                        <div class="text-brand-500 font-semibold text-sm mb-1">1 Corinthians 12:7</div>
+                        <p class="text-slate-300 italic text-sm leading-relaxed">
+                            "Now to each one the manifestation of the Spirit is given for the common good."
+                        </p>
+                    </div>
+                    <span class="text-xs text-slate-500 uppercase tracking-wider pt-2 block border-t border-slate-800">Given for Others</span>
+                </div>
+
+                <!-- Scripture Card 3 -->
+                <div class="glass-panel p-6 rounded-2xl border-l-4 border-emerald-500 space-y-3 flex flex-col justify-between">
+                    <div>
+                        <div class="text-emerald-400 font-semibold text-sm mb-1">1 Corinthians 12:12, 18</div>
+                        <p class="text-slate-300 italic text-sm leading-relaxed">
+                            "Just as a body, though one, has many parts, but all its many parts form one body, so it is with Christ... God has placed the parts in the body, every one of them, just as he wanted them to be."
+                        </p>
+                    </div>
+                    <span class="text-xs text-slate-500 uppercase tracking-wider pt-2 block border-t border-slate-800">One Body, Many Roles</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- 4. CORE LESSONS & SERMON BREAKDOWN        -->
+        <!-- ========================================== -->
+        <section id="core-lessons" class="space-y-6">
+            <h2 class="font-serif text-2xl md:text-3xl font-bold text-white">Three Purposes of Spiritual Gifts</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Lesson 1 -->
+                <!-- TO ADD/MODIFY LESSONS: Update header titles, icons, and bullets below -->
+                <div class="glass-panel p-6 rounded-2xl space-y-4 hover:border-slate-600 transition-all flex flex-col">
+                    <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-xl font-bold border border-amber-500/20">
+                        1
+                    </div>
+                    <h3 class="text-xl font-bold text-white">Make Much of Jesus</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed flex-grow">
+                        The ultimate goal of spiritual gifts is not to bring attention or praise to ourselves, but to shine a spotlight directly on Jesus Christ as King and Lord.
+                    </p>
+                    <ul class="text-xs text-slate-300 space-y-2 pt-2 border-t border-slate-800">
+                        <li class="flex items-start"><i class="fa-solid fa-check text-amber-400 mr-2 mt-0.5"></i> The greatest miracle is surrendering to Jesus as Lord.</li>
+                        <li class="flex items-start"><i class="fa-solid fa-check text-amber-400 mr-2 mt-0.5"></i> John 16:14: The Spirit always glorifies Christ.</li>
+                    </ul>
+                </div>
+
+                <!-- Lesson 2 -->
+                <div class="glass-panel p-6 rounded-2xl space-y-4 hover:border-slate-600 transition-all flex flex-col">
+                    <div class="w-12 h-12 rounded-xl bg-brand-500/10 text-brand-400 flex items-center justify-center text-xl font-bold border border-brand-500/20">
+                        2
+                    </div>
+                    <h3 class="text-xl font-bold text-white">Serve Others</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed flex-grow">
+                        Spiritual gifts aren't God's gifts *to* you for personal status—they are God's gifts *through* you for the common good and benefit of others.
+                    </p>
+                    <ul class="text-xs text-slate-300 space-y-2 pt-2 border-t border-slate-800">
+                        <li class="flex items-start"><i class="fa-solid fa-check text-brand-400 mr-2 mt-0.5"></i> Your identity is in being a child of God, not your role.</li>
+                        <li class="flex items-start"><i class="fa-solid fa-check text-brand-400 mr-2 mt-0.5"></i> Hold positions loosely; let God hold you tightly.</li>
+                    </ul>
+                </div>
+
+                <!-- Lesson 3 -->
+                <div class="glass-panel p-6 rounded-2xl space-y-4 hover:border-slate-600 transition-all flex flex-col">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xl font-bold border border-emerald-500/20">
+                        3
+                    </div>
+                    <h3 class="text-xl font-bold text-white">Play Your Part in the Body</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed flex-grow">
+                        Just like a sports team or human body, every role is indispensable. No single part can do everything, and every position contributes to the goal.
+                    </p>
+                    <ul class="text-xs text-slate-300 space-y-2 pt-2 border-t border-slate-800">
+                        <li class="flex items-start"><i class="fa-solid fa-check text-emerald-400 mr-2 mt-0.5"></i> Unique gifts eliminate rivalry and competition.</li>
+                        <li class="flex items-start"><i class="fa-solid fa-check text-emerald-400 mr-2 mt-0.5"></i> You are the hands, feet, and compassion of Jesus today.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- 5. PRACTICAL EXAMPLES & SERMON ILLUSTRATIONS -->
+        <!-- ========================================== -->
+        <section class="glass-panel p-8 rounded-3xl space-y-6">
+            <h2 class="font-serif text-2xl font-bold text-white">Sermon Illustrations: Gifts in Action</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                <!-- Card A -->
+                <div class="bg-slate-900/60 p-5 rounded-xl border border-slate-800 space-y-2">
+                    <i class="fa-solid fa-clipboard-list text-amber-400 text-2xl"></i>
+                    <h4 class="font-semibold text-white">Administration</h4>
+                    <p class="text-xs text-slate-400">Organizing details, logistics, and planning events so the vision moves forward smoothly.</p>
+                </div>
+                <!-- Card B -->
+                <div class="bg-slate-900/60 p-5 rounded-xl border border-slate-800 space-y-2">
+                    <i class="fa-solid fa-house-user text-brand-400 text-2xl"></i>
+                    <h4 class="font-semibold text-white">Hospitality</h4>
+                    <p class="text-xs text-slate-400">Opening your home, creating welcoming environments, and caring for guests generously.</p>
+                </div>
+                <!-- Card C -->
+                <div class="bg-slate-900/60 p-5 rounded-xl border border-slate-800 space-y-2">
+                    <i class="fa-solid fa-wrench text-emerald-400 text-2xl"></i>
+                    <h4 class="font-semibold text-white">Practical Service</h4>
+                    <p class="text-xs text-slate-400">Using technical skills, fixing trailer tires, logistics, and step-by-step physical help.</p>
+                </div>
+                <!-- Card D -->
+                <div class="bg-slate-900/60 p-5 rounded-xl border border-slate-800 space-y-2">
+                    <i class="fa-solid fa-photo-film text-purple-400 text-2xl"></i>
+                    <h4 class="font-semibold text-white">Creative Arts</h4>
+                    <p class="text-xs text-slate-400">Design, media, and story-telling that capture what God is doing and share it with others.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- 6. INTERACTIVE APPLICATION & REFLECTION   -->
+        <!-- ========================================== -->
+        <section id="practical-gifts" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            
+            <!-- Reflection & Self-Assessment Tool -->
+            <div class="glass-panel p-6 sm:p-8 rounded-3xl space-y-6 flex flex-col justify-between">
+                <div>
+                    <h2 class="font-serif text-2xl font-bold text-white mb-2">Reflection & Action Steps</h2>
+                    <p class="text-slate-400 text-sm">
+                        Instead of asking "What am I good at?", ask: <em>"What in my life can make much of Jesus and serve others?"</em>
+                    </p>
+                    
+                    <div class="space-y-4 mt-6">
+                        <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
+                            <label class="block text-sm font-medium text-slate-200 mb-2">1. Where is God opening an opportunity for you to serve?</label>
+                            <input type="text" placeholder="e.g., Neighborhood, setup team, media..." class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-500 transition-colors">
+                        </div>
+
+                        <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
+                            <label class="block text-sm font-medium text-slate-200 mb-2">2. What natural talents or passions can God empower?</label>
+                            <input type="text" placeholder="e.g., Hospitality, technology, encouragement..." class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-500 transition-colors">
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="alert('Reflection saved! Keep looking for ways to put your gifts into action this week.')" class="w-full py-3 mt-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-semibold hover:opacity-90 transition-opacity">
+                    Save Reflection Notes
+                </button>
+            </div>
+
+            <!-- Group Discussion Questions -->
+            <div class="glass-panel p-6 sm:p-8 rounded-3xl space-y-6">
+                <h2 class="font-serif text-2xl font-bold text-white mb-2">Discussion Questions</h2>
+                <div class="space-y-4">
+                    <div class="p-4 rounded-xl bg-slate-900/40 border border-slate-800">
+                        <span class="text-amber-400 font-bold text-xs uppercase tracking-wider block mb-1">Question 1</span>
+                        <p class="text-sm text-slate-300">Have you ever felt like your contribution in family, work, or church didn't matter? How does 1 Corinthians 12 challenge that feeling?</p>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-slate-900/40 border border-slate-800">
+                        <span class="text-brand-400 font-bold text-xs uppercase tracking-wider block mb-1">Question 2</span>
+                        <p class="text-sm text-slate-300">What is the difference between performing a role for personal identity versus letting God use you as an instrument in His hand?</p>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-slate-900/40 border border-slate-800">
+                        <span class="text-emerald-400 font-bold text-xs uppercase tracking-wider block mb-1">Question 3</span>
+                        <p class="text-sm text-slate-300">Who is someone you can encourage or serve this coming week using the unique position God has placed you in?</p>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- ========================================== -->
+    <!-- 7. FOOTER SECTION                          -->
+    <!-- ========================================== -->
+    <footer class="glass-panel border-t border-slate-800 mt-12 py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center text-slate-500 text-xs space-y-2">
+            <p>Designed as an interactive web companion for sermon series on 1 Corinthians 12.</p>
+            <p class="text-slate-600">Built with standard HTML5, Tailwind CSS, and lightweight JS. Easily customizable for church applications.</p>
+        </div>
+    </footer>
+
+    <!-- ========================================== -->
+    <!-- 8. JAVASCRIPT FOR INTERACTIVITY           -->
+    <!-- ========================================== -->
+    <script>
+        // Toggle Mobile Menu Navigation
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when clicking menu items
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+    </script>
+</body>
+</html>
