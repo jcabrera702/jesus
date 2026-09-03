@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Keeping in Step | His Purity - Sermon Interactive App</title>
+  
+  <!-- Google Fonts: Inter for clean UI typography & Playfair Display for editorial headers -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <!-- CSS Styles -->
+  <style>
+    /* ==========================================================================
+       1. CSS VARIABLES & DESIGN TOKENS
+       Designed for modern aesthetics: earth/botanical tones (sage, leaf, gold)
+       ========================================================================== */
+    :root {
+      --bg-main: #f8faf7;
+      --surface-card: #ffffff;
+      --surface-glass: rgba(255, 255, 255, 0.85);
+      --primary-green: #2d5a27;
+      --primary-light: #eaf2e8;
+      --accent-gold: #d97706;
+      --accent-gold-light: #fef3c7;
+      --text-dark: #1f2937;
+      --text-muted: #6b7280;
+      --text-light: #f9fafb;
+      --weed-red: #ef4444;
+      --weed-bg: #fef2f2;
+      --border-color: #e5e7eb;
+      --radius-lg: 16px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -2px rgba(0,0,0,0.03);
+      --transition-fast: 0.2s ease;
+      --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ==========================================================================
+       2. BASE & RESET STYLES
+       ========================================================================== */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-dark);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Responsive typography */
+    h1, h2, h3, .serif-font {
+      font-family: 'Playfair Display', Georgia, serif;
+    }
+
+    /* Layout Containers */
+    .app-header {
+      background: linear-gradient(135deg, #1b3818 0%, #2d5a27 100%);
+      color: var(--text-light);
+      padding: 3rem 1.5rem 4rem 1.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .app-header::after {
+      content: '';
+      position: absolute;
+      bottom: -20px;
+      left: 0;
+      right: 0;
+      height: 40px;
+      background: var(--bg-main);
+      border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+    }
+
+    .header-tag {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(4px);
+      padding: 0.35rem 1rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .app-header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      line-height: 1.2;
+    }
+
+    .app-header p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 1.25rem 4rem 1.25rem;
+    }
+
+    /* Navigation Tabs */
+    .tab-nav {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: -20px;
+      margin-bottom: 2.5rem;
+      position: relative;
+      z-index: 10;
+      overflow-x: auto;
+      padding: 0.25rem;
+    }
+
+    .tab-btn {
+      background: var(--surface-card);
+      border: 1px solid var(--border-color);
+      padding: 0.75rem 1.25rem;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition-fast);
+      white-space: nowrap;
+    }
+
+    .tab-btn:hover {
+      color: var(--primary-green);
+      border-color: var(--primary-green);
+    }
+
+    .tab-btn.active {
+      background: var(--primary-green);
+      color: var(--text-light);
+      border-color: var(--primary-green);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* Grid Layouts */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .grid-2 {
+        grid-template-columns: 1fr 1fr;
+      }
+      .app-header h1 {
+        font-size: 3.2rem;
+      }
+    }
+
+    /* Component Cards */
+    .card {
+      background: var(--surface-card);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      box-shadow: var(--shadow-md);
+      border: 1px solid rgba(0,0,0,0.03);
+      transition: var(--transition-normal);
+      margin-bottom: 1.5rem;
+    }
+
+    .card:hover {
+      box-shadow: var(--shadow-lg);
+    }
+
+    .card-title {
+      font-size: 1.4rem;
+      color: var(--primary-green);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Scripture Quote Box */
+    .scripture-box {
+      background: var(--primary-light);
+      border-left: 4px solid var(--primary-green);
+      padding: 1.25rem;
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      margin: 1rem 0;
+      font-style: italic;
+    }
+
+    .scripture-ref {
+      display: block;
+      margin-top: 0.5rem;
+      font-style: normal;
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--primary-green);
+      text-transform: uppercase;
+    }
+
+    /* Interactive List / Badges */
+    .pill-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .pill {
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      user-select: none;
+      transition: var(--transition-fast);
+      border: 1px solid transparent;
+    }
+
+    /* Soil Assessment Section */
+    .pill-weed {
+      background: var(--weed-bg);
+      color: var(--weed-red);
+      border-color: rgba(239, 68, 68, 0.2);
+    }
+
+    .pill-weed.pulled {
+      text-decoration: line-through;
+      opacity: 0.35;
+      background: #f3f4f6;
+      color: var(--text-muted);
+    }
+
+    .pill-fruit {
+      background: var(--primary-light);
+      color: var(--primary-green);
+      border-color: rgba(45, 90, 39, 0.2);
+    }
+
+    .pill-fruit.active {
+      background: var(--primary-green);
+      color: var(--text-light);
+    }
+
+    /* St. Patrick's Breastplate Grid */
+    .breastplate-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .breastplate-item {
+      background: var(--surface-glass);
+      border: 1px solid var(--border-color);
+      padding: 1rem;
+      border-radius: var(--radius-md);
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .breastplate-item:hover, .breastplate-item.focused {
+      border-color: var(--accent-gold);
+      background: var(--accent-gold-light);
+      transform: translateY(-2px);
+    }
+
+    .breastplate-item span {
+      display: block;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+
+    /* Interactive Walk Tracker */
+    .tracker-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .tracker-step:last-child {
+      border-bottom: none;
+    }
+
+    .step-number {
+      background: var(--primary-light);
+      color: var(--primary-green);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* Buttons & Inputs */
+    .btn-primary {
+      background: var(--primary-green);
+      color: var(--text-light);
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition-fast);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-primary:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    .text-input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 0.95rem;
+      margin-top: 0.5rem;
+    }
+
+    .text-input:focus {
+      outline: none;
+      border-color: var(--primary-green);
+      box-shadow: 0 0 0 3px var(--primary-light);
+    }
+
+    /* Hidden Utility Class for Tab Switching */
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================================================
+       3. HEADER SECTION
+       Sermon Title, Speaker, & Core Message Summary
+       ========================================================================== -->
+  <header class="app-header">
+    <div class="header-tag">Galatians 5 Walkthrough</div>
+    <h1>His Purity & The Gardener</h1>
+    <p>Understanding how the Holy Spirit produces real transformation from the inside out.</p>
+  </header>
+
+  <!-- Main Container -->
+  <main class="container">
+
+    <!-- Tab Navigation -->
+    <nav class="tab-nav" aria-label="Sermon Sections">
+      <button class="tab-btn active" onclick="switchTab('overview')">Core Lessons</button>
+      <button class="tab-btn" onclick="switchTab('soil')">Soil & Weeds Tool</button>
+      <button class="tab-btn" onclick="switchTab('walk')">Daily Walk</button>
+      <button class="tab-btn" onclick="switchTab('prayer')">St. Patrick's Prayer</button>
+    </nav>
+
+    <!-- ==========================================================================
+         TAB 1: CORE LESSONS & SCRIPTURE OVERVIEW
+         ========================================================================== -->
+    <section id="overview" class="tab-content active">
+      
+      <!-- Key Illustration Card -->
+      <article class="card">
+        <h2 class="card-title">🍋 The Lemon Tree Metaphor</h2>
+        <p><strong>You are the gardener, not the fruit source.</strong> No matter how many times you tell a tree to grow fruit, nothing happens by force. The gardener prepares soil, waters, pulls weeds, and protects the tree. <em>God produces the fruit.</em></p>
+        
+        <div class="scripture-box">
+          "So I say, walk by the Spirit, and you will not gratify the desires of the flesh."
+          <span class="scripture-ref">Galatians 5:16</span>
+        </div>
+      </article>
+
+      <!-- Key Insights Grid -->
+      <div class="grid-2">
+        <article class="card">
+          <h3 class="card-title">⚠️ Works vs. Fruit</h3>
+          <p><strong>Works of the Flesh:</strong> What we manufacture out of broken human nature (e.g., rage, jealousy, selfishness). Nobody has to teach us how to grow weeds.</p>
+          <br>
+          <p><strong>Fruit of the Spirit:</strong> What the Spirit produces in us as we walk with Him. It is <em>singular</em>—one fruit with nine beautiful characteristics.</p>
+        </article>
+
+        <article class="card">
+          <h3 class="card-title">🛡️ Identity Precedes Behavior</h3>
+          <p>You don't become a child of God by acting like one; you live like a child of God because <strong>you already are one</strong>. Behavior flows from identity.</p>
+          
+          <div class="scripture-box">
+            "I have been crucified with Christ and I no longer live, but Christ lives in me."
+            <span class="scripture-ref">Galatians 2:20</span>
+          </div>
+        </article>
+      </div>
+
+    </section>
+
+    <!-- ==========================================================================
+         TAB 2: INTERACTIVE SOIL & WEEDS ASSESSMENT
+         Allows users to identify weeds to pull and fruit to cultivate
+         ========================================================================== -->
+    <section id="soil" class="tab-content">
+      
+      <article class="card">
+        <h2 class="card-title">🌱 Garden Soil Self-Assessment</h2>
+        <p>Click on any <strong>weed</strong> below to symbolically "pull it" out of your garden soil. Click on the <strong>fruit characteristics</strong> you want to focus on growing today.</p>
+
+        <!-- Weeds Section -->
+        <div style="margin-top: 1.5rem;">
+          <h3 style="font-size: 1.1rem; color: var(--weed-red);">1. Weeds of the Flesh (Click to Pull)</h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">Identified in Galatians 5:19-21 across 4 major categories.</p>
+          
+          <div class="pill-group" id="weeds-container">
+            <span class="pill pill-weed" onclick="toggleWeed(this)">Sexual Immorality</span>
+            <span class="pill pill-weed" onclick="toggleWeed(this)">Impurity</span>
+            <span class="pill pill-weed" onclick="toggleWeed(this)">Debauchery</span>
+            <span class="pill pill-weed" onclick="toggleWeed(this)">Idolatry</span>
+            <span class="pill pill-weed" onclick="toggleWeed(this)">Witchcraft/Occult</span>
+            <span class="pill pill-weed" onclick="toggleWeed(this)">Hatred</span>
+            <span class="pill pill-weed" onclick="toggleWeed(this)">Discord</span>
+            <span class="pill pill-weed" onclick="toggleWeed(this)">Jealousy</span>
+            <span class="pill pill-weed" onclick="toggleWeed(this)">Fits of Rage</span>
+            <span class="pill pill-weed" onclick="toggleWeed(this)">Selfish Ambition</span>
+            <span class="pill pill-weed" onclick="toggleWeed(this)">Dissensions</span>
+            <span class="pill pill-weed" onclick="toggleWeed(this)">Factions</span>
+            <span class="pill pill-weed" onclick="toggleWeed(this)">Envy</span>
+            <span class="pill pill-weed" onclick="toggleWeed(this)">Drunkenness</span>
+          </div>
+        </div>
+
+        <!-- Fruit Section -->
+        <div style="margin-top: 2rem;">
+          <h3 style="font-size: 1.1rem; color: var(--primary-green);">2. Fruit of the Spirit (Click to Focus)</h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">Galatians 5:22-23 - One fruit with nine distinct aspects.</p>
+          
+          <div class="pill-group" id="fruit-container">
+            <span class="pill pill-fruit" onclick="toggleFruit(this)">Love</span>
+            <span class="pill pill-fruit" onclick="toggleFruit(this)">Joy</span>
+            <span class="pill pill-fruit" onclick="toggleFruit(this)">Peace</span>
+            <span class="pill pill-fruit" onclick="toggleFruit(this)">Patience</span>
+            <span class="pill pill-fruit" onclick="toggleFruit(this)">Kindness</span>
+            <span class="pill pill-fruit" onclick="toggleFruit(this)">Goodness</span>
+            <span class="pill pill-fruit" onclick="toggleFruit(this)">Faithfulness</span>
+            <span class="pill pill-fruit" onclick="toggleFruit(this)">Gentleness</span>
+            <span class="pill pill-fruit" onclick="toggleFruit(this)">Self-Control</span>
+          </div>
+        </div>
+
+        <!-- Dynamic Output -->
+        <div id="soil-summary" class="scripture-box" style="margin-top: 2rem; display: none;">
+          <strong>Your Garden Action Plan:</strong>
+          <p id="soil-summary-text" style="font-style: normal; margin-top: 0.5rem;"></p>
+        </div>
+      </article>
+
+    </section>
+
+    <!-- ==========================================================================
+         TAB 3: DAILY WALK TRACKER
+         Micro-reflection tool for daily alignment
+         ========================================================================== -->
+    <section id="walk" class="tab-content">
+      
+      <article class="card">
+        <h2 class="card-title">🚶 Keeping in Step Daily</h2>
+        <p>Walking with the Spirit isn't a single sprint—it is thousands of ordinary steps taken every day. Use these daily steps to stay aligned.</p>
+
+        <div style="margin-top: 1.5rem;">
+          
+          <div class="tracker-step">
+            <div class="step-number">1</div>
+            <div>
+              <strong>Morning Alignment</strong>
+              <p style="font-size: 0.9rem; color: var(--text-muted);">Ask: "Holy Spirit, where are you leading today? What conversations do you want me to have?"</p>
+            </div>
+          </div>
+
+          <div class="tracker-step">
+            <div class="step-number">2</div>
+            <div>
+              <strong>Mid-Day Pause</strong>
+              <p style="font-size: 0.9rem; color: var(--text-muted);">In tense moments (e.g., Monday morning conversations): Listen to the Spirit's prompt before reacting.</p>
+            </div>
+          </div>
+
+          <div class="tracker-step">
+            <div class="step-number">3</div>
+            <div>
+              <strong>Evening Reflection</strong>
+              <p style="font-size: 0.9rem; color: var(--text-muted);">Identify where you kept step vs. where you lagged or ran ahead.</p>
+              <input type="text" id="daily-note" class="text-input" placeholder="Add a personal reflection note for today...">
+              <button class="btn-primary" style="margin-top: 0.75rem;" onclick="saveReflection()">Save Reflection</button>
+            </div>
+          </div>
+
+        </div>
+
+        <div id="saved-reflection-box" class="scripture-box" style="display: none; margin-top: 1.5rem;">
+          <strong>Saved Reflection:</strong>
+          <p id="saved-reflection-text" style="font-style: normal; margin-top: 0.25rem;"></p>
+        </div>
+      </article>
+
+    </section>
+
+    <!-- ==========================================================================
+         TAB 4: ST. PATRICK'S PRAYER (BREASTPLATE)
+         Interactive declaration widget
+         ========================================================================== -->
+    <section id="prayer" class="tab-content">
+      
+      <article class="card">
+        <h2 class="card-title">🛡️ St. Patrick's Breastplate</h2>
+        <p>A historic prayer declaring Christ's active presence surrounding every area of your life. Tap any statement to focus and meditate on it.</p>
+
+        <div class="breastplate-grid">
+          <div class="breastplate-item" onclick="focusPrayer(this)"><span>Christ with me</span></div>
+          <div class="breastplate-item" onclick="focusPrayer(this)"><span>Christ before me</span></div>
+          <div class="breastplate-item" onclick="focusPrayer(this)"><span>Christ behind me</span></div>
+          <div class="breastplate-item" onclick="focusPrayer(this)"><span>Christ in me</span></div>
+          <div class="breastplate-item" onclick="focusPrayer(this)"><span>Christ beneath me</span></div>
+          <div class="breastplate-item" onclick="focusPrayer(this)"><span>Christ above me</span></div>
+          <div class="breastplate-item" onclick="focusPrayer(this)"><span>Christ on my right</span></div>
+          <div class="breastplate-item" onclick="focusPrayer(this)"><span>Christ on my left</span></div>
+          <div class="breastplate-item" onclick="focusPrayer(this)"><span>Christ when I lie down</span></div>
+          <div class="breastplate-item" onclick="focusPrayer(this)"><span>Christ when I sit down</span></div>
+          <div class="breastplate-item" onclick="focusPrayer(this)"><span>Christ in every heart</span></div>
+          <div class="breastplate-item" onclick="focusPrayer(this)"><span>Christ in every eye</span></div>
+        </div>
+
+        <div id="prayer-display" class="scripture-box" style="text-align: center; margin-top: 1.5rem;">
+          <p id="prayer-focus-text" style="font-size: 1.1rem; font-weight: 600; color: var(--primary-green);">
+            "Christ be all around me. Amen."
+          </p>
+        </div>
+      </article>
+
+    </section>
+
+  </main>
+
+  <!-- ==========================================================================
+       4. JAVASCRIPT LOGIC
+       Modular logic for tab switching, interactive assessments, & reflections
+       ========================================================================== -->
+  <script>
+    // --- TAB SWITCHING MODULE ---
+    function switchTab(tabId) {
+      // Hide all tabs
+      const contents = document.querySelectorAll('.tab-content');
+      contents.forEach(content => content.classList.remove('active'));
+
+      // Remove active class from all navigation buttons
+      const buttons = document.querySelectorAll('.tab-btn');
+      buttons.forEach(btn => btn.classList.remove('active'));
+
+      // Activate selected tab & button
+      document.getElementById(tabId).classList.add('active');
+      event.currentTarget.classList.add('active');
+    }
+
+    // --- SOIL & WEEDS ASSESSMENT MODULE ---
+    let pulledWeedsCount = 0;
+    let selectedFruit = [];
+
+    function toggleWeed(element) {
+      element.classList.toggle('pulled');
+      updateSoilSummary();
+    }
+
+    function toggleFruit(element) {
+      element.classList.toggle('active');
+      const fruitName = element.innerText;
+
+      if (element.classList.contains('active')) {
+        if (!selectedFruit.includes(fruitName)) selectedFruit.push(fruitName);
+      } else {
+        selectedFruit = selectedFruit.filter(f => f !== fruitName);
+      }
+      updateSoilSummary();
+    }
+
+    function updateSoilSummary() {
+      const summaryBox = document.getElementById('soil-summary');
+      const summaryText = document.getElementById('soil-summary-text');
+      
+      const pulledElements = document.querySelectorAll('.pill-weed.pulled');
+      const weedNames = Array.from(pulledElements).map(el => el.innerText);
+
+      if (weedNames.length === 0 && selectedFruit.length === 0) {
+        summaryBox.style.display = 'none';
+        return;
+      }
+
+      summaryBox.style.display = 'block';
+      let text = '';
+
+      if (weedNames.length > 0) {
+        text += `<strong>Weeds to pull:</strong> ${weedNames.join(', ')}. <br>`;
+      }
+      if (selectedFruit.length > 0) {
+        text += `<strong>Fruit focus for growth:</strong> ${selectedFruit.join(', ')}.`;
+      }
+
+      summaryText.innerHTML = text;
+    }
+
+    // --- DAILY REFLECTION MODULE ---
+    function saveReflection() {
+      const noteInput = document.getElementById('daily-note');
+      const savedBox = document.getElementById('saved-reflection-box');
+      const savedText = document.getElementById('saved-reflection-text');
+
+      if (noteInput.value.trim() === '') return;
+
+      savedText.innerText = noteInput.value;
+      savedBox.style.display = 'block';
+      noteInput.value = '';
+    }
+
+    // --- ST. PATRICK'S PRAYER INTERACTIVE MODULE ---
+    function focusPrayer(element) {
+      const items = document.querySelectorAll('.breastplate-item');
+      items.forEach(item => item.classList.remove('focused'));
+      
+      element.classList.add('focused');
+      const text = element.innerText;
+      document.getElementById('prayer-focus-text').innerText = `"${text} — surrounding my path today."`;
+    }
+  </script>
+</body>
+</html>
