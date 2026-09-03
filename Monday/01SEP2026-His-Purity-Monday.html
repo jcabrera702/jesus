@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Holy Spirit: His Power | 1 Corinthians 12</title>
+  
+  <!-- Google Fonts: Inter for UI typography & Playfair Display for headers -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <!-- CSS Styles -->
+  <style>
+    /* ==========================================================================
+       1. CSS VARIABLES & DESIGN TOKENS
+       Designed for modern aesthetics: deep slate, royal indigo, soft amber
+       ========================================================================== */
+    :root {
+      --bg-main: #f8fafc;
+      --surface-card: #ffffff;
+      --surface-glass: rgba(255, 255, 255, 0.85);
+      --primary-indigo: #312e81;
+      --primary-light: #e0e7ff;
+      --accent-gold: #d97706;
+      --accent-gold-light: #fef3c7;
+      --text-dark: #0f172a;
+      --text-muted: #64748b;
+      --text-light: #f8fafc;
+      --border-color: #e2e8f0;
+      --radius-lg: 16px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -2px rgba(0,0,0,0.03);
+      --transition-fast: 0.2s ease;
+      --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ==========================================================================
+       2. BASE & RESET STYLES
+       ========================================================================== */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-dark);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3, .serif-font {
+      font-family: 'Playfair Display', Georgia, serif;
+    }
+
+    /* Header Container */
+    .app-header {
+      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+      color: var(--text-light);
+      padding: 3rem 1.5rem 4rem 1.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .app-header::after {
+      content: '';
+      position: absolute;
+      bottom: -20px;
+      left: 0;
+      right: 0;
+      height: 40px;
+      background: var(--bg-main);
+      border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+    }
+
+    .header-tag {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(4px);
+      padding: 0.35rem 1rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .app-header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      line-height: 1.2;
+    }
+
+    .app-header p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 1.25rem 4rem 1.25rem;
+    }
+
+    /* Navigation Tabs */
+    .tab-nav {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: -20px;
+      margin-bottom: 2.5rem;
+      position: relative;
+      z-index: 10;
+      overflow-x: auto;
+      padding: 0.25rem;
+    }
+
+    .tab-btn {
+      background: var(--surface-card);
+      border: 1px solid var(--border-color);
+      padding: 0.75rem 1.25rem;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition-fast);
+      white-space: nowrap;
+    }
+
+    .tab-btn:hover {
+      color: var(--primary-indigo);
+      border-color: var(--primary-indigo);
+    }
+
+    .tab-btn.active {
+      background: var(--primary-indigo);
+      color: var(--text-light);
+      border-color: var(--primary-indigo);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* Grid Layouts */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .grid-2 {
+        grid-template-columns: 1fr 1fr;
+      }
+      .app-header h1 {
+        font-size: 3.2rem;
+      }
+    }
+
+    /* Component Cards */
+    .card {
+      background: var(--surface-card);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      box-shadow: var(--shadow-md);
+      border: 1px solid rgba(0,0,0,0.03);
+      transition: var(--transition-normal);
+      margin-bottom: 1.5rem;
+    }
+
+    .card:hover {
+      box-shadow: var(--shadow-lg);
+    }
+
+    .card-title {
+      font-size: 1.4rem;
+      color: var(--primary-indigo);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Scripture Quote Box */
+    .scripture-box {
+      background: var(--primary-light);
+      border-left: 4px solid var(--primary-indigo);
+      padding: 1.25rem;
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      margin: 1rem 0;
+      font-style: italic;
+    }
+
+    .scripture-ref {
+      display: block;
+      margin-top: 0.5rem;
+      font-style: normal;
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--primary-indigo);
+      text-transform: uppercase;
+    }
+
+    /* Spiritual Gifts Grid */
+    .gifts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1.25rem;
+    }
+
+    .gift-card {
+      background: var(--bg-main);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .gift-card:hover, .gift-card.active {
+      border-color: var(--accent-gold);
+      background: var(--accent-gold-light);
+      transform: translateY(-2px);
+    }
+
+    .gift-card h4 {
+      color: var(--text-dark);
+      font-size: 1rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .gift-card p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* Interactive Question List */
+    .accordion-item {
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      margin-bottom: 0.75rem;
+      overflow: hidden;
+      background: var(--surface-card);
+    }
+
+    .accordion-header {
+      padding: 1rem 1.25rem;
+      background: var(--surface-card);
+      font-weight: 600;
+      color: var(--text-dark);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: var(--transition-fast);
+    }
+
+    .accordion-header:hover {
+      background: var(--primary-light);
+    }
+
+    .accordion-body {
+      padding: 1.25rem;
+      border-top: 1px solid var(--border-color);
+      display: none;
+      background: var(--bg-main);
+    }
+
+    .accordion-item.open .accordion-body {
+      display: block;
+    }
+
+    /* Buttons & Inputs */
+    .btn-primary {
+      background: var(--primary-indigo);
+      color: var(--text-light);
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition-fast);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-primary:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    .text-input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 0.95rem;
+      margin-top: 0.5rem;
+    }
+
+    .text-input:focus {
+      outline: none;
+      border-color: var(--primary-indigo);
+      box-shadow: 0 0 0 3px var(--primary-light);
+    }
+
+    /* Hidden Utility Class for Tab Switching */
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================================================
+       3. HEADER SECTION
+       Sermon Title, Passage, & Core Message Summary
+       ========================================================================== -->
+  <header class="app-header">
+    <div class="header-tag">1 Corinthians 12:1–27 Study</div>
+    <h1>The Holy Spirit: His Power</h1>
+    <p>Discovering spiritual gifts, unity in diversity, and building up the Body of Christ.</p>
+  </header>
+
+  <!-- Main Container -->
+  <main class="container">
+
+    <!-- Tab Navigation -->
+    <nav class="tab-nav" aria-label="Study Sections">
+      <button class="tab-btn active" onclick="switchTab('scripture')">Scripture & Icebreaker</button>
+      <button class="tab-btn" onclick="switchTab('gifts')">Spiritual Gifts</button>
+      <button class="tab-btn" onclick="switchTab('body')">The One Body</button>
+      <button class="tab-btn" onclick="switchTab('questions')">Discussion Questions</button>
+    </nav>
+
+    <!-- ==========================================================================
+         TAB 1: SCRIPTURE PASSAGE & ICEBREAKER
+         ========================================================================== -->
+    <section id="scripture" class="tab-content active">
+      
+      <!-- Icebreaker Card -->
+      <article class="card">
+        <h2 class="card-title">🧊 Icebreaker Reflection</h2>
+        <p>Growing up, was there a role you always seemed to end up filling in a group project, team, or family gathering—the organizer, the peacemaker, the fixer, the comedian, or the leader?</p>
+        <input type="text" id="icebreaker-note" class="text-input" placeholder="Type your role reflection here...">
+        <button class="btn-primary" style="margin-top: 0.75rem;" onclick="saveIcebreaker()">Save Note</button>
+        <div id="saved-icebreaker" class="scripture-box" style="display: none; margin-top: 1rem;">
+          <strong>Your Icebreaker Note:</strong>
+          <p id="saved-icebreaker-text" style="font-style: normal; margin-top: 0.25rem;"></p>
+        </div>
+      </article>
+
+      <!-- Scripture Passage Card -->
+      <article class="card">
+        <h2 class="card-title">📖 Passage: 1 Corinthians 12:1–27 (NIV)</h2>
+        <p>Now about the gifts of the Spirit, brothers and sisters, I do not want you to be uninformed...</p>
+        
+        <div class="scripture-box">
+          "Now to each one the manifestation of the Spirit is given for the common good... Just as a body, though one, has many parts, but all its many parts form one body, so it is with Christ."
+          <span class="scripture-ref">1 Corinthians 12:7, 12</span>
+        </div>
+
+        <details style="margin-top: 1rem; cursor: pointer;">
+          <summary style="font-weight: 600; color: var(--primary-indigo);">Click to read the full passage (Verses 1–27)</summary>
+          <p style="margin-top: 0.75rem; font-size: 0.95rem; color: var(--text-dark); line-height: 1.8;">
+            <sup>1</sup> Now about the gifts of the Spirit, brothers and sisters, I do not want you to be uninformed. 
+            <sup>2</sup> You know that when you were pagans, somehow or other you were influenced and led astray to mute idols. 
+            <sup>3</sup> Therefore I want you to know that no one who is speaking by the Spirit of God says, “Jesus be cursed,” and no one can say, “Jesus is Lord,” except by the Holy Spirit.<br><br>
+            <sup>4</sup> There are different kinds of gifts, but the same Spirit distributes them. 
+            <sup>5</sup> There are different kinds of service, but the same Lord. 
+            <sup>6</sup> There are different kinds of working, but in all of them and in everyone it is the same God at work.<br><br>
+            <sup>7</sup> Now to each one the manifestation of the Spirit is given for the common good. 
+            <sup>8</sup> To one there is given through the Spirit a message of wisdom, to another a message of knowledge by means of the same Spirit, 
+            <sup>9</sup> to another faith by the same Spirit, to another gifts of healing by that one Spirit, 
+            <sup>10</sup> to another miraculous powers, to another prophecy, to another distinguishing between spirits, to another speaking in different kinds of tongues, and to still another the interpretation of tongues. 
+            <sup>11</sup> All these are the work of one and the same Spirit, and he distributes them to each one, just as he determines.<br><br>
+            <sup>12</sup> Just as a body, though one, has many parts, but all its many parts form one body, so it is with Christ. 
+            <sup>13</sup> For we were all baptized by one Spirit so as to form one body—whether Jews or Gentiles, slave or free—and we were all given the one Spirit to drink. 
+            <sup>14</sup> Even so the body is not made up of one part but of many... 
+            <sup>27</sup> Now you are the body of Christ, and each one of you is a part of it.
+          </p>
+        </details>
+      </article>
+
+    </section>
+
+    <!-- ==========================================================================
+         TAB 2: SPIRITUAL GIFTS EXPLORER
+         Interactive exploration of gifts mentioned in verses 8–10
+         ========================================================================== -->
+    <section id="gifts" class="tab-content">
+      
+      <article class="card">
+        <h2 class="card-title">⚡ Manifestations of the Spirit (v. 8–10)</h2>
+        <p>Spiritual gifts are God's gifts <em>through you to someone else</em> for the <strong>common good</strong>—not for personal spotlight or status. Click a gift to explore its purpose:</p>
+
+        <div class="gifts-grid">
+          <div class="gift-card" onclick="showGift('Message of Wisdom', 'God-given insight into complex situations to apply truth effectively.')">
+            <h4>Message of Wisdom</h4>
+            <p>v. 8</p>
+          </div>
+          <div class="gift-card" onclick="showGift('Message of Knowledge', 'Deep understanding of divine truth and scripture revealed by the Spirit.')">
+            <h4>Message of Knowledge</h4>
+            <p>v. 8</p>
+          </div>
+          <div class="gift-card" onclick="showGift('Faith', 'Extraordinary trust in God’s power and promises during trials.')">
+            <h4>Faith</h4>
+            <p>v. 9</p>
+          </div>
+          <div class="gift-card" onclick="showGift('Gifts of Healing', 'Spirit-led restoration of physical, emotional, or spiritual wholeness.')">
+            <h4>Gifts of Healing</h4>
+            <p>v. 9</p>
+          </div>
+          <div class="gift-card" onclick="showGift('Miraculous Powers', 'Demonstrations of divine power that display God’s authority.')">
+            <h4>Miraculous Powers</h4>
+            <p>v. 10</p>
+          </div>
+          <div class="gift-card" onclick="showGift('Prophecy', 'Proclaiming God’s truth to bring encouragement, comfort, and direction.')">
+            <h4>Prophecy</h4>
+            <p>v. 10</p>
+          </div>
+          <div class="gift-card" onclick="showGift('Distinguishing Spirits', 'Discernment to recognize true spiritual origins vs. falsehood.')">
+            <h4>Distinguishing Spirits</h4>
+            <p>v. 10</p>
+          </div>
+          <div class="gift-card" onclick="showGift('Tongues & Interpretation', 'Spirit-inspired languages and interpretation for edifying the Church.')">
+            <h4>Tongues & Interpretation</h4>
+            <p>v. 10</p>
+          </div>
+        </div>
+
+        <div id="gift-details" class="scripture-box" style="display: none; margin-top: 1.5rem;">
+          <h4 id="gift-detail-title" style="color: var(--primary-indigo);">Select a Gift Above</h4>
+          <p id="gift-detail-text" style="font-style: normal; margin-top: 0.25rem;"></p>
+        </div>
+      </article>
+
+    </section>
+
+    <!-- ==========================================================================
+         TAB 3: THE ONE BODY ANALOGY
+         ========================================================================== -->
+    <section id="body" class="tab-content">
+      
+      <article class="card">
+        <h2 class="card-title">🧩 Unity in Diversity (v. 12–27)</h2>
+        <p>Paul challenges two major spiritual temptations in the body of Christ: <strong>Inferiority</strong> ("I don't belong") and <strong>Superiority</strong> ("I don't need you").</p>
+
+        <div class="grid-2" style="margin-top: 1.5rem;">
+          <div style="background: #f1f5f9; padding: 1.25rem; border-radius: var(--radius-md);">
+            <h3 style="color: var(--primary-indigo); margin-bottom: 0.5rem;">🛡️ Defeating Inferiority</h3>
+            <p style="font-size: 0.9rem;"><em>"If the foot should say, 'Because I am not a hand, I do not belong...'"</em> (v. 15)</p>
+            <p style="font-size: 0.9rem; margin-top: 0.5rem;"><strong>Core Truth:</strong> Your role is not your identity. Your identity is that you are a child of God. Unseen parts are indispensable.</p>
+          </div>
+
+          <div style="background: #f1f5f9; padding: 1.25rem; border-radius: var(--radius-md);">
+            <h3 style="color: var(--accent-gold); margin-bottom: 0.5rem;">⚖️ Defeating Superiority</h3>
+            <p style="font-size: 0.9rem;"><em>"The eye cannot say to the hand, 'I don't need you!'"</em> (v. 21)</p>
+            <p style="font-size: 0.9rem; margin-top: 0.5rem;"><strong>Core Truth:</strong> No single person has all the gifts. God designed us to need each other so that there is no division in the body.</p>
+          </div>
+        </div>
+      </article>
+
+    </section>
+
+    <!-- ==========================================================================
+         TAB 4: DISCUSSION QUESTIONS
+         Observation, Interpretation, and Application Questions
+         ========================================================================== -->
+    <section id="questions" class="tab-content">
+      
+      <article class="card">
+        <h2 class="card-title">💬 Study & Discussion Questions</h2>
+        <p>Click any question to view and record your answers or notes:</p>
+
+        <div style="margin-top: 1rem;">
+          
+          <!-- Question 1 -->
+          <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>1. What unites all believers into one body? (v. 13)</span>
+              <span>+</span>
+            </div>
+            <div class="accordion-body">
+              <p>We were all baptized by one Spirit so as to form one body—whether Jews or Gentiles, slave or free—and given the one Spirit to drink.</p>
+            </div>
+          </div>
+
+          <!-- Question 2 -->
+          <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>2. Why start with confessing "Jesus is Lord" before gifts?</span>
+              <span>+</span>
+            </div>
+            <div class="accordion-body">
+              <p>Because the primary evidence of the Holy Spirit's work is allegiance to Jesus Christ as Lord, not spectacular abilities. The Lordship of Christ is the anchor for all spiritual gifts.</p>
+            </div>
+          </div>
+
+          <!-- Question 3 -->
+          <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>3. How does viewing gifts as "for others" change our mindset?</span>
+              <span>+</span>
+            </div>
+            <div class="accordion-body">
+              <p>Instead of asking "What am I good at?", we begin asking "How can God use this to bless or encourage someone else today?" It shifts our focus from performance to ministry.</p>
+            </div>
+          </div>
+
+          <!-- Question 4 -->
+          <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              <span>4. Application: Who can you encourage or serve this week?</span>
+              <span>+</span>
+            </div>
+            <div class="accordion-body">
+              <input type="text" id="app-q4" class="text-input" placeholder="Type the name or role of someone you can encourage this week...">
+              <button class="btn-primary" style="margin-top: 0.5rem;" onclick="alert('Saved locally!')">Save Action Step</button>
+            </div>
+          </div>
+
+        </div>
+      </article>
+
+    </section>
+
+  </main>
+
+  <!-- ==========================================================================
+       4. JAVASCRIPT LOGIC
+       Modular logic for tab switching, gift explorer, accordion, and notes
+       ========================================================================== -->
+  <script>
+    // --- TAB SWITCHING MODULE ---
+    function switchTab(tabId) {
+      const contents = document.querySelectorAll('.tab-content');
+      contents.forEach(content => content.classList.remove('active'));
+
+      const buttons = document.querySelectorAll('.tab-btn');
+      buttons.forEach(btn => btn.classList.remove('active'));
+
+      document.getElementById(tabId).classList.add('active');
+      event.currentTarget.classList.add('active');
+    }
+
+    // --- ICEBREAKER NOTE MODULE ---
+    function saveIcebreaker() {
+      const noteInput = document.getElementById('icebreaker-note');
+      const savedBox = document.getElementById('saved-icebreaker');
+      const savedText = document.getElementById('saved-icebreaker-text');
+
+      if (noteInput.value.trim() === '') return;
+
+      savedText.innerText = noteInput.value;
+      savedBox.style.display = 'block';
+      noteInput.value = '';
+    }
+
+    // --- GIFTS EXPLORER MODULE ---
+    function showGift(title, description) {
+      const box = document.getElementById('gift-details');
+      const titleEl = document.getElementById('gift-detail-title');
+      const textEl = document.getElementById('gift-detail-text');
+
+      titleEl.innerText = title;
+      textEl.innerText = description;
+      box.style.display = 'block';
+    }
+
+    // --- ACCORDION TOGGLE MODULE ---
+    function toggleAccordion(header) {
+      const item = header.parentElement;
+      item.classList.toggle('open');
+      const icon = header.querySelector('span:last-child');
+      icon.innerText = item.classList.contains('open') ? '−' : '+';
+    }
+  </script>
+</body>
+</html>
